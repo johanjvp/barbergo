@@ -1,0 +1,389 @@
+.auth-page {
+  min-height: 100vh;
+
+  background:
+    #f4f4f4;
+}
+
+
+.auth-section {
+  padding:
+    90px
+    24px
+    120px;
+}
+
+
+.auth-container {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(380px, 480px);
+
+  gap: 90px;
+
+  align-items: center;
+
+  max-width: 1150px;
+
+  margin: 0 auto;
+}
+
+
+.auth-introduction {
+  max-width: 580px;
+}
+
+
+.eyebrow {
+  display: block;
+
+  margin-bottom: 20px;
+
+  color: #777777;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+
+.auth-introduction h1 {
+  margin:
+    0
+    0
+    22px;
+
+  color: #111111;
+
+  font-size:
+    clamp(
+      44px,
+      6vw,
+      78px
+    );
+
+  line-height: 0.98;
+
+  letter-spacing: -0.055em;
+}
+
+
+.auth-introduction p {
+  max-width: 520px;
+
+  margin: 0;
+
+  color: #6f6f6f;
+
+  font-size: 17px;
+
+  line-height: 1.7;
+}
+
+
+.auth-card {
+  padding: 40px;
+
+  border: 1px solid #e0e0e0;
+  border-radius: 28px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0
+    25px
+    80px
+    rgba(
+      0,
+      0,
+      0,
+      0.06
+    );
+}
+
+
+.auth-card-heading {
+  margin-bottom: 32px;
+}
+
+
+.auth-card-heading > span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #8a8a8a;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+
+.auth-card-heading h2 {
+  margin: 0;
+
+  color: #111111;
+
+  font-size: 30px;
+
+  letter-spacing: -0.035em;
+}
+
+
+.form-field {
+  margin-bottom: 21px;
+}
+
+
+.form-field label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #444444;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+.form-field input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 16px 17px;
+
+  border: 1px solid #dddddd;
+  border-radius: 13px;
+
+  background: #ffffff;
+
+  color: #111111;
+
+  font: inherit;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.form-field input:focus {
+  border-color: #111111;
+
+  box-shadow:
+    0
+    0
+    0
+    3px
+    rgba(
+      0,
+      0,
+      0,
+      0.05
+    );
+}
+
+
+.auth-error {
+  margin-bottom: 20px;
+
+  padding: 13px 15px;
+
+  border-radius: 11px;
+
+  background: #f6ecec;
+
+  color: #8d2525;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+.auth-submit {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+
+  margin-top: 6px;
+
+  padding: 17px 19px;
+
+  border: 0;
+  border-radius: 13px;
+
+  background: #111111;
+  color: #ffffff;
+
+  font: inherit;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+.auth-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+
+.auth-submit:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+.auth-footer {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-top: 26px;
+
+  padding-top: 25px;
+
+  border-top: 1px solid #eeeeee;
+
+  color: #777777;
+
+  font-size: 12px;
+}
+
+
+.auth-footer a {
+  color: #111111;
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+
+@media (
+  max-width: 850px
+) {
+
+  .auth-container {
+    grid-template-columns: 1fr;
+
+    gap: 45px;
+  }
+
+
+  .auth-introduction {
+    text-align: center;
+
+    margin: 0 auto;
+  }
+
+
+  .auth-introduction p {
+    margin: 0 auto;
+  }
+
+}
+
+
+@media (
+  max-width: 550px
+) {
+
+  .auth-section {
+    padding:
+      55px
+      16px
+      85px;
+  }
+
+
+  .auth-card {
+    padding: 27px 22px;
+
+    border-radius: 21px;
+  }
+
+
+  .auth-introduction h1 {
+    font-size: 44px;
+  }
+
+}
+
+
+.register-container {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.9fr)
+    minmax(500px, 1.1fr);
+
+  gap: 80px;
+
+  align-items: center;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+}
+
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 15px;
+}
+
+
+@media (
+  max-width: 900px
+) {
+
+  .register-container {
+    grid-template-columns:
+      1fr;
+
+    gap: 45px;
+  }
+
+}
+
+
+@media (
+  max-width: 600px
+) {
+
+  .form-grid {
+    grid-template-columns:
+      1fr;
+
+    gap: 0;
+  }
+
+}

@@ -1,0 +1,1910 @@
+<section class="dashboard-page">
+
+
+  <!-- ================================================= -->
+  <!-- HERO / ENCABEZADO -->
+  <!-- ================================================= -->
+
+  <div class="page-heading">
+
+    <div class="heading-copy">
+
+      <div class="heading-meta">
+
+        <span class="eyebrow">
+          CONTROL CENTER
+        </span>
+
+        <span class="live-chip">
+
+          <span class="live-dot"></span>
+
+          Datos en vivo
+
+        </span>
+
+      </div>
+
+
+      <h1>
+        Dashboard
+      </h1>
+
+
+      <p>
+        Rendimiento general, actividad de usuarios,
+        reservas y proyección comercial de BarberGo.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="refresh-button"
+      (click)="loadDashboard()"
+      [disabled]="loading"
+    >
+
+      <span
+        class="refresh-icon"
+        [class.spinning]="loading"
+      >
+        ↻
+      </span>
+
+      Actualizar datos
+
+    </button>
+
+  </div>
+
+
+
+  <!-- ================================================= -->
+  <!-- LOADING -->
+  <!-- ================================================= -->
+
+  @if (loading) {
+
+    <div class="loading-state">
+
+      <div class="loading-visual">
+
+        <div class="loading-spinner">
+        </div>
+
+        <div class="loading-pulse">
+        </div>
+
+      </div>
+
+
+      <div>
+
+        <strong>
+          Actualizando BarberGo
+        </strong>
+
+        <p>
+          Estamos consultando las métricas más recientes.
+        </p>
+
+      </div>
+
+    </div>
+
+  }
+
+
+
+  <!-- ================================================= -->
+  <!-- ERROR -->
+  <!-- ================================================= -->
+
+  @else if (error) {
+
+    <div class="error-state">
+
+      <span class="error-icon">
+        !
+      </span>
+
+
+      <div>
+
+        <strong>
+          No pudimos cargar el dashboard
+        </strong>
+
+        <p>
+          {{ error }}
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        (click)="loadDashboard()"
+      >
+        Reintentar
+      </button>
+
+    </div>
+
+  }
+
+
+
+  <!-- ================================================= -->
+  <!-- DASHBOARD -->
+  <!-- ================================================= -->
+
+  @else if (dashboard) {
+
+
+
+    <!-- ================================================= -->
+    <!-- PULSO DEL DÍA -->
+    <!-- ================================================= -->
+
+    <section class="summary-strip">
+
+
+      <!-- USUARIOS HOY -->
+
+      <div class="summary-item">
+
+        <span class="summary-icon blue">
+          U
+        </span>
+
+        <div>
+
+          <span>
+            Usuarios hoy
+          </span>
+
+          <strong>
+            +{{ dashboard.users.today }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="summary-divider">
+      </div>
+
+
+
+      <!-- NUEVAS BARBERÍAS -->
+
+      <div class="summary-item">
+
+        <span class="summary-icon violet">
+          B
+        </span>
+
+        <div>
+
+          <span>
+            Nuevas barberías
+          </span>
+
+          <strong>
+            +{{ dashboard.barbershops.new_this_month }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="summary-divider">
+      </div>
+
+
+
+      <!-- RESERVAS HOY -->
+
+      <div class="summary-item">
+
+        <span class="summary-icon green">
+          R
+        </span>
+
+        <div>
+
+          <span>
+            Reservas hoy
+          </span>
+
+          <strong>
+            {{ dashboard.bookings.today }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="summary-divider">
+      </div>
+
+
+
+      <!-- VALOR HOY -->
+
+      <div class="summary-item">
+
+        <span class="summary-icon orange">
+          $
+        </span>
+
+        <div>
+
+          <span>
+            Valor reservado hoy
+          </span>
+
+          <strong>
+
+            {{
+              formatCurrency(
+                dashboard
+                  .financial
+                  .reserved_value_today
+              )
+            }}
+
+          </strong>
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- KPIs PRINCIPALES -->
+    <!-- ================================================= -->
+
+    <section class="kpi-grid">
+
+
+      <!-- ================================================= -->
+      <!-- USUARIOS -->
+      <!-- ================================================= -->
+
+      <article class="kpi-card metric-users">
+
+        <div class="kpi-glow">
+        </div>
+
+
+        <div class="kpi-top">
+
+          <div>
+
+            <span class="kpi-label">
+              USUARIOS
+            </span>
+
+            <span class="kpi-subtitle">
+              Comunidad BarberGo
+            </span>
+
+          </div>
+
+
+          <span class="kpi-icon">
+            U
+          </span>
+
+        </div>
+
+
+        <strong class="kpi-value">
+
+          {{
+            formatNumber(
+              animatedUsers
+            )
+          }}
+
+        </strong>
+
+
+        <div class="kpi-metrics">
+
+
+          <div>
+
+            <span>
+              Hoy
+            </span>
+
+            <strong>
+              +{{ dashboard.users.today }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Semana
+            </span>
+
+            <strong>
+              +{{ dashboard.users.this_week }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Mes
+            </span>
+
+            <strong>
+              +{{ dashboard.users.this_month }}
+            </strong>
+
+          </div>
+
+
+        </div>
+
+      </article>
+
+
+
+      <!-- ================================================= -->
+      <!-- BARBERÍAS -->
+      <!-- ================================================= -->
+
+      <article class="kpi-card metric-shops">
+
+        <div class="kpi-glow">
+        </div>
+
+
+        <div class="kpi-top">
+
+          <div>
+
+            <span class="kpi-label">
+              BARBERÍAS
+            </span>
+
+            <span class="kpi-subtitle">
+              Negocios en plataforma
+            </span>
+
+          </div>
+
+
+          <span class="kpi-icon">
+            B
+          </span>
+
+        </div>
+
+
+        <strong class="kpi-value">
+
+          {{
+            formatNumber(
+              animatedBarbershops
+            )
+          }}
+
+        </strong>
+
+
+        <div class="kpi-metrics">
+
+
+          <div>
+
+            <span>
+              Total
+            </span>
+
+            <strong>
+              {{ dashboard.barbershops.total }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Activas
+            </span>
+
+            <strong>
+              {{ dashboard.barbershops.active }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Inactivas
+            </span>
+
+            <strong>
+              {{ dashboard.barbershops.inactive }}
+            </strong>
+
+          </div>
+
+
+        </div>
+
+      </article>
+
+
+
+      <!-- ================================================= -->
+      <!-- RESERVAS -->
+      <!-- ================================================= -->
+
+      <article class="kpi-card metric-bookings">
+
+        <div class="kpi-glow">
+        </div>
+
+
+        <div class="kpi-top">
+
+          <div>
+
+            <span class="kpi-label">
+              RESERVAS
+            </span>
+
+            <span class="kpi-subtitle">
+              Actividad comercial
+            </span>
+
+          </div>
+
+
+          <span class="kpi-icon">
+            R
+          </span>
+
+        </div>
+
+
+        <strong class="kpi-value">
+
+          {{
+            formatNumber(
+              animatedBookings
+            )
+          }}
+
+        </strong>
+
+
+        <div class="kpi-metrics">
+
+
+          <div>
+
+            <span>
+              Hoy
+            </span>
+
+            <strong>
+              {{ dashboard.bookings.today }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Semana
+            </span>
+
+            <strong>
+              {{ dashboard.bookings.this_week }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Histórico
+            </span>
+
+            <strong>
+              {{ dashboard.bookings.total }}
+            </strong>
+
+          </div>
+
+
+        </div>
+
+      </article>
+
+
+
+      <!-- ================================================= -->
+      <!-- VALOR RESERVADO -->
+      <!-- ================================================= -->
+
+      <article class="kpi-card metric-revenue">
+
+        <div class="kpi-glow">
+        </div>
+
+
+        <div class="kpi-top">
+
+          <div>
+
+            <span class="kpi-label">
+              VALOR RESERVADO
+            </span>
+
+            <span class="kpi-subtitle">
+              Volumen mensual
+            </span>
+
+          </div>
+
+
+          <span class="kpi-icon">
+            $
+          </span>
+
+        </div>
+
+
+        <strong class="kpi-value money">
+
+          {{
+            formatCurrency(
+              animatedReservedValue
+            )
+          }}
+
+        </strong>
+
+
+        <div class="kpi-metrics">
+
+
+          <div>
+
+            <span>
+              Hoy
+            </span>
+
+            <strong>
+
+              {{
+                formatCurrency(
+                  dashboard
+                    .financial
+                    .reserved_value_today
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Ticket promedio
+            </span>
+
+            <strong>
+
+              {{
+                formatCurrency(
+                  dashboard
+                    .financial
+                    .average_ticket
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+
+        </div>
+
+      </article>
+
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- EVOLUCIÓN 30 DÍAS -->
+    <!-- ================================================= -->
+
+    <section class="section-block">
+
+
+      <div class="section-heading-row">
+
+
+        <div>
+
+          <span class="eyebrow">
+            ACTIVIDAD DE LA PLATAFORMA
+          </span>
+
+          <h2>
+            Evolución últimos 30 días
+          </h2>
+
+          <p class="section-description">
+            Comportamiento diario registrado en BarberGo.
+          </p>
+
+        </div>
+
+
+        <div class="chart-tabs">
+
+
+          <button
+            type="button"
+            [class.active]="
+              selectedGrowth === 'bookings'
+            "
+            (click)="
+              showGrowth(
+                'bookings'
+              )
+            "
+          >
+            Reservas
+          </button>
+
+
+          <button
+            type="button"
+            [class.active]="
+              selectedGrowth === 'users'
+            "
+            (click)="
+              showGrowth(
+                'users'
+              )
+            "
+          >
+            Usuarios
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- GRÁFICA PROFESIONAL -->
+
+      <div class="chart-card professional-chart">
+
+
+        <div class="chart-live-indicator">
+
+          <span>
+          </span>
+
+          {{
+            selectedGrowth === 'bookings'
+              ? 'Actividad de reservas'
+              : 'Crecimiento de usuarios'
+          }}
+
+        </div>
+
+
+        <div class="chart-canvas-container growth">
+
+          <canvas
+            #growthChartCanvas
+          >
+          </canvas>
+
+        </div>
+
+
+        <div class="chart-footer">
+
+          <span>
+            Últimos 30 días
+          </span>
+
+
+          <div class="chart-legend">
+
+            <span class="legend-dot">
+            </span>
+
+            {{
+              selectedGrowth === 'bookings'
+                ? 'Reservas creadas'
+                : 'Usuarios registrados'
+            }}
+
+          </div>
+
+
+          <span>
+            Datos BarberGo
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- VISUAL ANALYTICS -->
+    <!-- ================================================= -->
+
+    <section class="section-block">
+
+
+      <div class="section-heading-row">
+
+        <div>
+
+          <span class="eyebrow">
+            VISUAL ANALYTICS
+          </span>
+
+          <h2>
+            Lectura rápida del negocio
+          </h2>
+
+          <p class="section-description">
+            Distribución operativa y comportamiento económico.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="visual-analytics-grid">
+
+
+        <!-- ================================================= -->
+        <!-- DISTRIBUCIÓN DE RESERVAS -->
+        <!-- ================================================= -->
+
+        <article class="visual-chart-card">
+
+
+          <div class="visual-chart-heading">
+
+            <div>
+
+              <span>
+                OPERACIÓN
+              </span>
+
+              <h3>
+                Distribución de reservas
+              </h3>
+
+            </div>
+
+
+            <div class="chart-status-chip">
+
+              <span>
+              </span>
+
+              Live
+
+            </div>
+
+          </div>
+
+
+
+          <div class="chart-canvas-container doughnut">
+
+            <canvas
+              #statusChartCanvas
+            >
+            </canvas>
+
+          </div>
+
+
+
+          <div class="visual-chart-footer">
+
+            <span>
+              Total
+            </span>
+
+            <strong>
+
+              {{
+                formatNumber(
+                  dashboard
+                    .bookings
+                    .total
+                )
+              }}
+
+              reservas
+
+            </strong>
+
+          </div>
+
+
+        </article>
+
+
+
+        <!-- ================================================= -->
+        <!-- FLUJO ECONÓMICO -->
+        <!-- ================================================= -->
+
+        <article class="visual-chart-card dark-chart">
+
+
+          <div class="visual-chart-heading">
+
+            <div>
+
+              <span>
+                BUSINESS MODEL
+              </span>
+
+              <h3>
+                Flujo económico simulado
+              </h3>
+
+            </div>
+
+
+            <span class="simulation-small">
+              SIMULACIÓN
+            </span>
+
+          </div>
+
+
+
+          <div class="chart-canvas-container financial">
+
+            <canvas
+              #financialChartCanvas
+            >
+            </canvas>
+
+          </div>
+
+
+
+          <div class="visual-chart-footer dark">
+
+            <span>
+              Comisión BarberGo
+            </span>
+
+            <strong>
+
+              {{
+                dashboard
+                  .financial_simulation
+                  .commission_percentage
+              }}%
+
+            </strong>
+
+          </div>
+
+
+        </article>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- ESTADO RESERVAS -->
+    <!-- ================================================= -->
+
+    <section class="section-block">
+
+
+      <div class="section-heading-row">
+
+
+        <div>
+
+          <span class="eyebrow">
+            OPERACIÓN
+          </span>
+
+          <h2>
+            Estado de reservas
+          </h2>
+
+          <p class="section-description">
+            Distribución actual del flujo de atención.
+          </p>
+
+        </div>
+
+
+        <div class="section-total">
+
+          <strong>
+            {{ dashboard.bookings.total }}
+          </strong>
+
+          reservas históricas
+
+        </div>
+
+
+      </div>
+
+
+
+      <div class="status-grid">
+
+
+        <!-- PENDIENTES -->
+
+        <article class="status-card status-pending">
+
+          <span class="status-icon">
+            P
+          </span>
+
+          <div>
+
+            <strong>
+              {{ dashboard.bookings.pending }}
+            </strong>
+
+            <span>
+              Pendientes
+            </span>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- CONFIRMADAS -->
+
+        <article class="status-card status-confirmed">
+
+          <span class="status-icon">
+            C
+          </span>
+
+          <div>
+
+            <strong>
+              {{ dashboard.bookings.confirmed }}
+            </strong>
+
+            <span>
+              Confirmadas
+            </span>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- EN PROCESO -->
+
+        <article class="status-card status-progress">
+
+          <span class="status-icon">
+            →
+          </span>
+
+          <div>
+
+            <strong>
+              {{ dashboard.bookings.in_progress }}
+            </strong>
+
+            <span>
+              En proceso
+            </span>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- COMPLETADAS -->
+
+        <article class="status-card status-completed">
+
+          <span class="status-icon">
+            ✓
+          </span>
+
+          <div>
+
+            <strong>
+              {{ dashboard.bookings.completed }}
+            </strong>
+
+            <span>
+              Completadas
+            </span>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- CANCELADAS -->
+
+        <article class="status-card status-cancelled">
+
+          <span class="status-icon">
+            ×
+          </span>
+
+          <div>
+
+            <strong>
+              {{ dashboard.bookings.cancelled }}
+            </strong>
+
+            <span>
+              Canceladas
+            </span>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- NO SHOW -->
+
+        <article class="status-card status-noshow">
+
+          <span class="status-icon">
+            !
+          </span>
+
+          <div>
+
+            <strong>
+              {{ dashboard.bookings.no_show }}
+            </strong>
+
+            <span>
+              No-show
+            </span>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- SIMULACIÓN FINANCIERA -->
+    <!-- ================================================= -->
+
+    <section class="financial-section">
+
+
+      <div class="financial-decoration one">
+      </div>
+
+      <div class="financial-decoration two">
+      </div>
+
+
+
+      <div class="financial-heading">
+
+
+        <div>
+
+
+          <span class="simulation-badge">
+
+            <span class="simulation-dot">
+            </span>
+
+            SIMULACIÓN FINANCIERA
+
+          </span>
+
+
+          <h2>
+            Potencial comercial de BarberGo
+          </h2>
+
+
+          <p>
+
+            Escenario basado en una comisión simulada del
+
+            <strong>
+
+              {{
+                dashboard
+                  .financial_simulation
+                  .commission_percentage
+              }}%
+
+            </strong>.
+
+          </p>
+
+
+        </div>
+
+
+
+        <div class="commission-box">
+
+          <span>
+            COMISIÓN MODELO
+          </span>
+
+          <strong>
+
+            {{
+              dashboard
+                .financial_simulation
+                .commission_percentage
+            }}%
+
+          </strong>
+
+          <small>
+            Simulada
+          </small>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ================================================= -->
+      <!-- TARJETAS FINANCIERAS -->
+      <!-- ================================================= -->
+
+      <div class="financial-grid">
+
+
+        <!-- GMV -->
+
+        <article class="financial-card blue">
+
+          <div class="financial-card-icon">
+            G
+          </div>
+
+          <span>
+            GMV
+          </span>
+
+          <strong>
+
+            {{
+              formatCurrency(
+                dashboard
+                  .financial_simulation
+                  .gross_booking_value
+              )
+            }}
+
+          </strong>
+
+          <p>
+            Valor bruto potencialmente procesado.
+          </p>
+
+        </article>
+
+
+
+        <!-- INGRESO BARBERGO -->
+
+        <article class="financial-card green">
+
+          <div class="financial-card-icon">
+            BG
+          </div>
+
+          <span>
+            INGRESO BARBERGO
+          </span>
+
+          <strong>
+
+            {{
+              formatCurrency(
+                dashboard
+                  .financial_simulation
+                  .projected_platform_revenue
+              )
+            }}
+
+          </strong>
+
+          <p>
+            Comisión proyectada para la plataforma.
+          </p>
+
+        </article>
+
+
+
+        <!-- BARBERÍAS -->
+
+        <article class="financial-card violet">
+
+          <div class="financial-card-icon">
+            B
+          </div>
+
+          <span>
+            PARA BARBERÍAS
+          </span>
+
+          <strong>
+
+            {{
+              formatCurrency(
+                dashboard
+                  .financial_simulation
+                  .projected_barbershop_payout
+              )
+            }}
+
+          </strong>
+
+          <p>
+            Liquidación proyectada a establecimientos.
+          </p>
+
+        </article>
+
+
+
+        <!-- COMPLETADO -->
+
+        <article class="financial-card orange">
+
+          <div class="financial-card-icon">
+            ✓
+          </div>
+
+          <span>
+            COMPLETADO
+          </span>
+
+          <strong>
+
+            {{
+              formatCurrency(
+                dashboard
+                  .financial_simulation
+                  .completed_value
+              )
+            }}
+
+          </strong>
+
+          <p>
+            Valor asociado a servicios completados.
+          </p>
+
+        </article>
+
+
+      </div>
+
+
+
+      <!-- ================================================= -->
+      <!-- FINANCIERO SECUNDARIO -->
+      <!-- ================================================= -->
+
+      <div class="financial-secondary-grid">
+
+
+        <div class="financial-mini">
+
+          <span>
+            Comisión completada
+          </span>
+
+          <strong>
+
+            {{
+              formatCurrency(
+                dashboard
+                  .financial_simulation
+                  .completed_platform_revenue
+              )
+            }}
+
+          </strong>
+
+        </div>
+
+
+
+        <div class="financial-mini">
+
+          <span>
+            Cancelaciones
+          </span>
+
+          <strong>
+
+            {{
+              formatCurrency(
+                dashboard
+                  .financial_simulation
+                  .cancelled_value
+              )
+            }}
+
+          </strong>
+
+        </div>
+
+
+
+        <div class="financial-mini">
+
+          <span>
+            No-show
+          </span>
+
+          <strong>
+
+            {{
+              formatCurrency(
+                dashboard
+                  .financial_simulation
+                  .no_show_value
+              )
+            }}
+
+          </strong>
+
+        </div>
+
+
+
+        <div class="financial-mini lost">
+
+          <span>
+            Potencial perdido
+          </span>
+
+          <strong>
+
+            {{
+              formatCurrency(
+                dashboard
+                  .financial_simulation
+                  .lost_value
+              )
+            }}
+
+          </strong>
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- SALUD DE LA PLATAFORMA -->
+    <!-- ================================================= -->
+
+    <section class="section-block">
+
+
+      <div class="section-heading-row">
+
+        <div>
+
+          <span class="eyebrow">
+            COMPORTAMIENTO
+          </span>
+
+          <h2>
+            Salud de la plataforma
+          </h2>
+
+          <p class="section-description">
+            Indicadores de fidelización y calidad operacional.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="analytics-grid">
+
+
+        <!-- CLIENTES ÚNICOS -->
+
+        <article class="analytics-card tone-blue">
+
+          <div class="analytics-head">
+
+            <span class="analytics-icon">
+              U
+            </span>
+
+            <span class="analytics-label">
+              CLIENTES ÚNICOS
+            </span>
+
+          </div>
+
+
+          <strong>
+
+            {{
+              formatNumber(
+                dashboard
+                  .users
+                  .unique_customers
+              )
+            }}
+
+          </strong>
+
+
+          <p>
+            Usuarios con al menos una reserva.
+          </p>
+
+        </article>
+
+
+
+        <!-- RECURRENCIA -->
+
+        <article class="analytics-card tone-violet">
+
+          <div class="analytics-head">
+
+            <span class="analytics-icon">
+              ↻
+            </span>
+
+            <span class="analytics-label">
+              RECURRENCIA
+            </span>
+
+          </div>
+
+
+          <strong>
+
+            {{
+              formatPercentage(
+                dashboard
+                  .users
+                  .returning_customer_rate
+              )
+            }}
+
+          </strong>
+
+
+          <p>
+
+            {{
+              dashboard
+                .users
+                .returning_customers
+            }}
+
+            clientes han reservado más de una vez.
+
+          </p>
+
+        </article>
+
+
+
+        <!-- CANCELACIONES -->
+
+        <article class="analytics-card tone-red">
+
+          <div class="analytics-head">
+
+            <span class="analytics-icon">
+              ×
+            </span>
+
+            <span class="analytics-label">
+              CANCELACIÓN
+            </span>
+
+          </div>
+
+
+          <strong>
+
+            {{
+              formatPercentage(
+                dashboard
+                  .bookings
+                  .cancellation_rate
+              )
+            }}
+
+          </strong>
+
+
+          <p>
+            Proporción histórica de cancelaciones.
+          </p>
+
+        </article>
+
+
+
+        <!-- NO SHOW -->
+
+        <article class="analytics-card tone-orange">
+
+          <div class="analytics-head">
+
+            <span class="analytics-icon">
+              !
+            </span>
+
+            <span class="analytics-label">
+              NO-SHOW
+            </span>
+
+          </div>
+
+
+          <strong>
+
+            {{
+              formatPercentage(
+                dashboard
+                  .bookings
+                  .no_show_rate
+              )
+            }}
+
+          </strong>
+
+
+          <p>
+            Clientes que no asistieron a la cita.
+          </p>
+
+        </article>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- RANKINGS -->
+    <!-- ================================================= -->
+
+    <section class="section-block">
+
+
+      <div class="section-heading-row">
+
+        <div>
+
+          <span class="eyebrow">
+            PERFORMANCE
+          </span>
+
+          <h2>
+            Lo mejor de BarberGo
+          </h2>
+
+          <p class="section-description">
+            Negocios y servicios con mayor actividad.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="rankings-grid">
+
+
+        <!-- ================================================= -->
+        <!-- BARBERÍAS -->
+        <!-- ================================================= -->
+
+        <article class="ranking-card">
+
+
+          <div class="ranking-heading">
+
+            <div>
+
+              <span>
+                TOP PERFORMANCE
+              </span>
+
+              <h3>
+                Barberías
+              </h3>
+
+            </div>
+
+
+            <span class="ranking-badge">
+              TOP 5
+            </span>
+
+          </div>
+
+
+
+          <div class="ranking-list">
+
+
+            @for (
+              shop of
+                dashboard
+                  .rankings
+                  .top_barbershops;
+              track shop.barbershop_id;
+              let index = $index
+            ) {
+
+
+              <div class="ranking-row">
+
+
+                <span
+                  class="ranking-position"
+                  [class.first]="index === 0"
+                >
+                  {{ index + 1 }}
+                </span>
+
+
+
+                <div class="ranking-information">
+
+                  <strong>
+                    {{ shop.barbershop_name }}
+                  </strong>
+
+                  <span>
+
+                    {{
+                      shop.bookings_count
+                    }}
+
+                    reservas
+
+                  </span>
+
+                </div>
+
+
+
+                <strong class="ranking-value">
+
+                  {{
+                    formatCurrency(
+                      shop.reserved_value
+                    )
+                  }}
+
+                </strong>
+
+
+              </div>
+
+
+            }
+
+
+          </div>
+
+
+        </article>
+
+
+
+        <!-- ================================================= -->
+        <!-- SERVICIOS -->
+        <!-- ================================================= -->
+
+        <article class="ranking-card">
+
+
+          <div class="ranking-heading">
+
+            <div>
+
+              <span>
+                MÁS SOLICITADOS
+              </span>
+
+              <h3>
+                Servicios
+              </h3>
+
+            </div>
+
+
+            <span class="ranking-badge">
+              TOP 5
+            </span>
+
+          </div>
+
+
+
+          <div class="ranking-list">
+
+
+            @for (
+              service of
+                dashboard
+                  .rankings
+                  .top_services;
+              track service.service_id;
+              let index = $index
+            ) {
+
+
+              <div class="ranking-row">
+
+
+                <span
+                  class="ranking-position"
+                  [class.first]="index === 0"
+                >
+                  {{ index + 1 }}
+                </span>
+
+
+
+                <div class="ranking-information">
+
+                  <strong>
+                    {{ service.service_name }}
+                  </strong>
+
+                  <span>
+
+                    {{
+                      service.bookings_count
+                    }}
+
+                    reservas
+
+                  </span>
+
+                </div>
+
+
+
+                <strong class="ranking-value">
+
+                  {{
+                    formatCurrency(
+                      service.booked_value
+                    )
+                  }}
+
+                </strong>
+
+
+              </div>
+
+
+            }
+
+
+          </div>
+
+
+        </article>
+
+
+      </div>
+
+
+    </section>
+
+
+  }
+
+</section>

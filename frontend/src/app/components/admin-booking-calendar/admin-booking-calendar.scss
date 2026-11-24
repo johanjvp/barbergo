@@ -1,0 +1,1368 @@
+:host {
+  display: block;
+
+  width: 100%;
+}
+
+
+/* =====================================================
+   CONTENEDOR
+===================================================== */
+
+.calendar-shell {
+  width: 100%;
+  min-width: 0;
+
+  border:
+    1px solid
+    #e8eaf0;
+
+  border-radius: 18px;
+
+  background:
+    #ffffff;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 14px 34px
+    rgba(
+      15,
+      23,
+      42,
+      0.05
+    );
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.calendar-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 20px;
+
+  border-bottom:
+    1px solid
+    #eef0f4;
+}
+
+
+.calendar-eyebrow {
+  color:
+    #2563eb;
+
+  font-size: 7px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.12em;
+}
+
+
+.calendar-header h3 {
+  margin:
+    5px 0 0;
+
+  color:
+    #111318;
+
+  font-size: 20px;
+}
+
+
+.calendar-header p {
+  margin:
+    4px 0 0;
+
+  color:
+    #777b84;
+
+  font-size: 9px;
+}
+
+
+/* =====================================================
+   NAVEGACIÓN
+===================================================== */
+
+.calendar-navigation {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+}
+
+
+.calendar-navigation button {
+  min-width: 38px;
+  min-height: 36px;
+
+  border:
+    1px solid
+    #e8eaf0;
+
+  border-radius: 9px;
+
+  background:
+    #ffffff;
+
+  color:
+    #454951;
+
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    0.2s ease;
+}
+
+
+.calendar-navigation button:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    rgba(
+      59,
+      130,
+      246,
+      0.25
+    );
+
+  color:
+    #2563eb;
+}
+
+
+.calendar-navigation
+.today-button {
+  padding:
+    0
+    13px;
+
+  color:
+    #2563eb;
+
+  background:
+    #eff6ff;
+}
+
+
+/* =====================================================
+   SCROLL
+===================================================== */
+
+.calendar-scroll {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.calendar-grid {
+  min-width: 1050px;
+
+  display: grid;
+
+  grid-template-columns:
+    76px
+    repeat(
+      7,
+      minmax(
+        135px,
+        1fr
+      )
+    );
+}
+
+
+/* =====================================================
+   CABECERA HORA
+===================================================== */
+
+.calendar-corner {
+  min-height: 66px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-right:
+    1px solid
+    #edf0f4;
+
+  border-bottom:
+    1px solid
+    #edf0f4;
+
+  color:
+    #999da6;
+
+  background:
+    #fafbfc;
+
+  font-size: 7px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.08em;
+}
+
+
+/* =====================================================
+   DÍAS
+===================================================== */
+
+.calendar-day-header {
+  min-height: 66px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  border-right:
+    1px solid
+    #edf0f4;
+
+  border-bottom:
+    1px solid
+    #edf0f4;
+
+  background:
+    #fafbfc;
+}
+
+
+.calendar-day-header span {
+  color:
+    #8b8f98;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  text-transform:
+    uppercase;
+}
+
+
+.calendar-day-header strong {
+  margin-top: 3px;
+
+  color:
+    #111318;
+
+  font-size: 17px;
+}
+
+
+.calendar-day-header small {
+  color:
+    #999da6;
+
+  font-size: 7px;
+}
+
+
+.calendar-day-header.today {
+  background:
+    linear-gradient(
+      180deg,
+      #eff6ff,
+      #f8faff
+    );
+}
+
+
+.calendar-day-header.today strong {
+  width: 30px;
+  height: 30px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3b82f6,
+      #8b5cf6
+    );
+}
+
+
+/* =====================================================
+   COLUMNA HORAS
+===================================================== */
+
+.calendar-time-column {
+  position: relative;
+
+  border-right:
+    1px solid
+    #edf0f4;
+
+  background:
+    #fafbfc;
+}
+
+
+.time-label {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: center;
+
+  padding-top: 5px;
+
+  border-bottom:
+    1px solid
+    #edf0f4;
+
+  color:
+    #9297a1;
+
+  font-size: 7px;
+}
+
+
+/* =====================================================
+   COLUMNA DÍA
+===================================================== */
+
+.calendar-day-column {
+  position: relative;
+
+  border-right:
+    1px solid
+    #edf0f4;
+
+  background:
+    #ffffff;
+}
+
+
+.calendar-day-column.today {
+  background:
+    rgba(
+      59,
+      130,
+      246,
+      0.018
+    );
+}
+
+
+.calendar-hour-line {
+  width: 100%;
+
+  border-bottom:
+    1px solid
+    #f0f2f5;
+}
+
+
+/* =====================================================
+   RESERVA
+===================================================== */
+
+.calendar-booking {
+  position: absolute;
+
+  z-index: 2;
+
+  left: 5px;
+  right: 5px;
+
+  min-height: 38px;
+
+  overflow: visible;
+
+  padding:
+    6px
+    7px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius: 8px;
+
+  text-align: left;
+
+  font: inherit;
+
+  cursor: pointer;
+
+  transition:
+    transform
+    0.20s
+    ease,
+    box-shadow
+    0.20s
+    ease,
+    filter
+    0.20s
+    ease;
+}
+
+
+.calendar-booking:hover {
+  z-index: 20;
+
+  transform:
+    translateY(-2px)
+    scale(1.015);
+
+  box-shadow:
+    0 10px 22px
+    rgba(
+      15,
+      23,
+      42,
+      0.13
+    );
+
+  filter:
+    saturate(1.08);
+}
+
+
+.calendar-booking
+.booking-calendar-time {
+  display: block;
+
+  font-size: 7px;
+  font-weight: 900;
+}
+
+
+.calendar-booking > strong {
+  display: block;
+
+  margin-top: 2px;
+
+  overflow: hidden;
+
+  font-size: 8px;
+  font-weight: 850;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.calendar-booking > small {
+  display: block;
+
+  margin-top: 2px;
+
+  overflow: hidden;
+
+  font-size: 7px;
+
+  opacity: 0.82;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   COLORES ESTADOS
+===================================================== */
+
+.calendar-booking.pending {
+  color:
+    #92400e;
+
+  border-color:
+    #fde68a;
+
+  background:
+    #fffbeb;
+}
+
+
+.calendar-booking.confirmed {
+  color:
+    #5b21b6;
+
+  border-color:
+    #ddd6fe;
+
+  background:
+    #f5f3ff;
+}
+
+
+.calendar-booking.in-progress {
+  color:
+    #0e7490;
+
+  border-color:
+    #a5f3fc;
+
+  background:
+    #ecfeff;
+}
+
+
+.calendar-booking.completed {
+  color:
+    #047857;
+
+  border-color:
+    #a7f3d0;
+
+  background:
+    #ecfdf5;
+}
+
+
+.calendar-booking.cancelled {
+  color:
+    #b91c1c;
+
+  border-color:
+    #fecaca;
+
+  background:
+    #fef2f2;
+}
+
+
+.calendar-booking.rejected {
+  color:
+    #c2410c;
+
+  border-color:
+    #fed7aa;
+
+  background:
+    #fff7ed;
+}
+
+
+.calendar-booking.no-show {
+  color:
+    #475569;
+
+  border-color:
+    #cbd5e1;
+
+  background:
+    #f8fafc;
+}
+
+
+/* =====================================================
+   TOOLTIP
+===================================================== */
+
+.booking-hover-card {
+  position: absolute;
+
+  z-index: 100;
+
+  left: calc(
+    100%
+    +
+    10px
+  );
+
+  top: 0;
+
+  width: 210px;
+
+  display: none;
+
+  padding: 13px;
+
+  border:
+    1px solid
+    #e6e8ee;
+
+  border-radius: 12px;
+
+  background:
+    #ffffff;
+
+  color:
+    #454951;
+
+  box-shadow:
+    0 20px 45px
+    rgba(
+      15,
+      23,
+      42,
+      0.18
+    );
+
+  pointer-events: none;
+}
+
+
+.calendar-booking:hover
+.booking-hover-card {
+  display: block;
+
+  animation:
+    calendarTooltip
+    0.18s
+    ease
+    both;
+}
+
+
+.booking-hover-card
+.hover-time {
+  display: block;
+
+  color:
+    #2563eb;
+
+  font-size: 8px;
+  font-weight: 850;
+}
+
+
+.booking-hover-card strong {
+  display: block;
+
+  margin-top: 7px;
+
+  color:
+    #111318;
+
+  font-size: 11px;
+}
+
+
+.booking-hover-card > span {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 8px;
+}
+
+
+.booking-hover-card b {
+  display: block;
+
+  margin-top: 8px;
+
+  color:
+    #059669;
+
+  font-size: 10px;
+}
+
+
+.booking-hover-card em {
+  display: block;
+
+  margin-top: 8px;
+
+  color:
+    #999da6;
+
+  font-size: 7px;
+  font-style: normal;
+}
+
+
+/* =====================================================
+   ANIMACIÓN TOOLTIP
+===================================================== */
+
+@keyframes calendarTooltip {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(-5px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(0);
+  }
+
+}
+
+/* =====================================================
+   ESTADO DE CARGA DE AGENDA
+===================================================== */
+
+.calendar-agenda-state {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    10px
+    18px;
+
+  border-bottom:
+    1px solid
+    #eef0f4;
+
+  background:
+    #f8fafc;
+
+  color:
+    #64748b;
+
+  font-size: 8px;
+  font-weight: 700;
+}
+
+
+.calendar-agenda-state.error {
+  color:
+    #b91c1c;
+
+  background:
+    #fef2f2;
+}
+
+
+.calendar-agenda-state.error strong {
+  margin-right:
+    4px;
+}
+
+
+.calendar-agenda-loader {
+  width: 13px;
+  height: 13px;
+
+  border:
+    2px solid
+    #dbeafe;
+
+  border-top-color:
+    #2563eb;
+
+  border-radius:
+    50%;
+
+  animation:
+    calendarAgendaSpin
+    0.7s
+    linear
+    infinite;
+}
+
+
+@keyframes calendarAgendaSpin {
+
+  to {
+    transform:
+      rotate(
+        360deg
+      );
+  }
+
+}
+
+
+/* =====================================================
+   LEYENDA
+===================================================== */
+
+.calendar-legend {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap:
+    8px
+    18px;
+
+  padding:
+    10px
+    18px;
+
+  border-bottom:
+    1px solid
+    #eef0f4;
+
+  background:
+    #ffffff;
+}
+
+
+.calendar-legend > div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color:
+    #64748b;
+
+  font-size: 7px;
+  font-weight: 800;
+}
+
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+
+  display: inline-block;
+
+  border-radius:
+    3px;
+}
+
+
+.legend-dot.working {
+  background:
+    #dcfce7;
+
+  border:
+    1px solid
+    #86efac;
+}
+
+
+.legend-dot.break {
+  background:
+    #fef3c7;
+
+  border:
+    1px solid
+    #fcd34d;
+}
+
+
+.legend-dot.blocked {
+  background:
+    #fee2e2;
+
+  border:
+    1px solid
+    #fca5a5;
+}
+
+
+.legend-dot.booking {
+  background:
+    #ede9fe;
+
+  border:
+    1px solid
+    #c4b5fd;
+}
+
+
+/* =====================================================
+   ESTADO DEL DÍA EN HEADER
+===================================================== */
+
+.day-status {
+  margin-top:
+    4px;
+
+  padding:
+    2px
+    5px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    6px;
+
+  font-style:
+    normal;
+
+  font-weight:
+    900;
+
+  line-height:
+    1.2;
+}
+
+
+.day-status.working {
+  color:
+    #047857;
+
+  background:
+    #d1fae5;
+}
+
+
+.day-status.closed {
+  color:
+    #991b1b;
+
+  background:
+    #fee2e2;
+}
+
+
+.day-status.off {
+  color:
+    #475569;
+
+  background:
+    #e2e8f0;
+}
+
+
+.calendar-day-header.closed {
+  background:
+    #f8fafc;
+}
+
+
+/* =====================================================
+   COLUMNAS CERRADAS / NO DISPONIBLES
+===================================================== */
+
+.calendar-day-column.barbershop-closed {
+  background:
+    #fafafa;
+}
+
+
+.calendar-day-column.barber-off {
+  background:
+    #fbfcfd;
+}
+
+
+/* =====================================================
+   CAPAS DE CERRADO
+===================================================== */
+
+.calendar-closed-layer,
+.calendar-off-layer {
+  position: absolute;
+
+  z-index: 0;
+
+  inset:
+    0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+}
+
+
+.calendar-closed-layer {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(
+        148,
+        163,
+        184,
+        0.07
+      ),
+      rgba(
+        148,
+        163,
+        184,
+        0.07
+      )
+      8px,
+      rgba(
+        148,
+        163,
+        184,
+        0.02
+      )
+      8px,
+      rgba(
+        148,
+        163,
+        184,
+        0.02
+      )
+      16px
+    );
+}
+
+
+.calendar-off-layer {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(
+        100,
+        116,
+        139,
+        0.035
+      ),
+      rgba(
+        100,
+        116,
+        139,
+        0.035
+      )
+      10px,
+      transparent
+      10px,
+      transparent
+      20px
+    );
+}
+
+
+.calendar-closed-layer span,
+.calendar-off-layer span {
+  transform:
+    rotate(
+      -90deg
+    );
+
+  color:
+    #94a3b8;
+
+  font-size:
+    7px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.08em;
+
+  opacity:
+    0.7;
+}
+
+
+/* =====================================================
+   JORNADA LABORAL
+===================================================== */
+
+.calendar-working-range {
+  position: absolute;
+
+  z-index: 0;
+
+  left:
+    2px;
+
+  right:
+    2px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      34,
+      197,
+      94,
+      0.24
+    );
+
+  border-radius:
+    8px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        220,
+        252,
+        231,
+        0.44
+      ),
+      rgba(
+        240,
+        253,
+        244,
+        0.25
+      )
+    );
+
+  pointer-events: none;
+}
+
+
+.working-range-label {
+  position: absolute;
+
+  top:
+    4px;
+
+  left:
+    5px;
+
+  color:
+    #15803d;
+
+  font-size:
+    6px;
+
+  font-weight:
+    900;
+
+  opacity:
+    0.8;
+}
+
+
+/* =====================================================
+   DESCANSOS
+===================================================== */
+
+.calendar-break {
+  position: absolute;
+
+  z-index: 4;
+
+  left:
+    4px;
+
+  right:
+    4px;
+
+  overflow: hidden;
+
+  padding:
+    4px
+    6px;
+
+  border:
+    1px dashed
+    #f59e0b;
+
+  border-radius:
+    7px;
+
+  background:
+    rgba(
+      254,
+      243,
+      199,
+      0.92
+    );
+
+  color:
+    #92400e;
+
+  pointer-events: none;
+}
+
+
+.calendar-break strong {
+  display: block;
+
+  overflow: hidden;
+
+  font-size:
+    7px;
+
+  font-weight:
+    900;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.calendar-break span {
+  display: block;
+
+  margin-top:
+    2px;
+
+  font-size:
+    6px;
+
+  opacity:
+    0.85;
+}
+
+
+/* =====================================================
+   BLOQUEOS
+===================================================== */
+
+.calendar-block {
+  position: absolute;
+
+  z-index: 5;
+
+  left:
+    4px;
+
+  right:
+    4px;
+
+  overflow: hidden;
+
+  padding:
+    4px
+    6px;
+
+  border:
+    1px solid
+    #fca5a5;
+
+  border-radius:
+    7px;
+
+  background:
+    repeating-linear-gradient(
+      135deg,
+      #fef2f2,
+      #fef2f2
+      7px,
+      #fee2e2
+      7px,
+      #fee2e2
+      14px
+    );
+
+  color:
+    #991b1b;
+
+  pointer-events: none;
+}
+
+
+.calendar-block strong {
+  display: block;
+
+  font-size:
+    7px;
+
+  font-weight:
+    900;
+}
+
+
+.calendar-block span {
+  display: block;
+
+  margin-top:
+    2px;
+
+  font-size:
+    6px;
+}
+
+
+.calendar-block small {
+  display: block;
+
+  margin-top:
+    2px;
+
+  overflow: hidden;
+
+  font-size:
+    6px;
+
+  opacity:
+    0.82;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   AJUSTE CAPAS
+===================================================== */
+
+.calendar-hour-line {
+  position: relative;
+
+  z-index: 1;
+}
+
+
+.calendar-booking {
+  z-index: 10;
+}
+
+
+.calendar-booking:hover {
+  z-index: 50;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (
+  max-width: 700px
+) {
+
+  .calendar-header {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+
+  .calendar-navigation {
+    width: 100%;
+
+    justify-content:
+      space-between;
+  }
+
+
+  .calendar-navigation
+  .today-button {
+    flex: 1;
+  }
+
+}
+

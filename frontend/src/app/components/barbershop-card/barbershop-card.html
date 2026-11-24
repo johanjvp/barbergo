@@ -1,0 +1,99 @@
+<article class="shop-card">
+
+  <div class="image-wrapper">
+
+    <img
+      [src]="image"
+      [alt]="name"
+      class="shop-image"
+    >
+
+    <div class="image-overlay"></div>
+
+
+    <div class="distance-badge">
+      {{ distance }}
+    </div>
+
+
+    <button
+      type="button"
+      class="favorite-button"
+      aria-label="Guardar barbería"
+    >
+      ♡
+    </button>
+
+  </div>
+
+
+  <div class="shop-content">
+
+    <div class="shop-header">
+
+      <div>
+
+        <h3>
+          {{ name }}
+        </h3>
+
+        <p class="location">
+          {{ neighborhood }}
+        </p>
+
+      </div>
+
+
+      <div class="price">
+
+        <span>
+          Desde
+        </span>
+
+        <strong>
+          {{ price }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="tags">
+
+      @for (
+        tag of tags;
+        track tag
+      ) {
+
+        <span>
+          {{ tag }}
+        </span>
+
+      }
+
+    </div>
+
+
+    <button
+      type="button"
+      class="view-button"
+      [routerLink]="[
+        '/barberias',
+        id
+      ]"
+    >
+
+      <span>
+        Ver barbería
+      </span>
+
+      <span class="arrow">
+        →
+      </span>
+
+    </button>
+
+  </div>
+
+</article>

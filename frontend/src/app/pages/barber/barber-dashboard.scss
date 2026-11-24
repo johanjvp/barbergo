@@ -1,0 +1,1800 @@
+/* ===================================================== */
+/* PÁGINA */
+/* ===================================================== */
+
+.barber-dashboard {
+  width:
+    min(
+      1180px,
+      calc(100% - 48px)
+    );
+
+  margin:
+    0 auto;
+
+  padding:
+    42px 0 72px;
+
+  color:
+    #171717;
+}
+
+
+/* ===================================================== */
+/* HEADER */
+/* ===================================================== */
+
+.dashboard-header {
+  display:
+    flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-between;
+
+  gap:
+    24px;
+
+  margin-bottom:
+    30px;
+}
+
+
+.dashboard-header-copy {
+  min-width:
+    0;
+}
+
+
+.dashboard-eyebrow {
+  display:
+    block;
+
+  margin-bottom:
+    7px;
+
+  color:
+    #8b8b8b;
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.14em;
+}
+
+
+.dashboard-header h1 {
+  margin:
+    0;
+
+  color:
+    #111111;
+
+  font-size:
+    clamp(
+      32px,
+      4vw,
+      46px
+    );
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    -0.045em;
+}
+
+
+.dashboard-header p {
+  margin:
+    8px 0 0;
+
+  color:
+    #777777;
+
+  font-size:
+    14px;
+}
+
+
+.dashboard-header-actions {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+}
+
+
+/* ===================================================== */
+/* FECHA */
+/* ===================================================== */
+
+.date-control {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    6px;
+}
+
+
+.date-control span {
+  color:
+    #8a8a8a;
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.09em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.date-control input {
+  min-height:
+    42px;
+
+  padding:
+    0 12px;
+
+  border:
+    1px solid
+    #dddddd;
+
+  border-radius:
+    10px;
+
+  background:
+    #ffffff;
+
+  color:
+    #202020;
+
+  font:
+    inherit;
+
+  font-size:
+    13px;
+
+  outline:
+    none;
+
+  transition:
+    border-color
+    0.2s ease,
+    box-shadow
+    0.2s ease;
+}
+
+
+.date-control input:focus {
+  border-color:
+    #999999;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(0, 0, 0, 0.04);
+}
+
+
+/* ===================================================== */
+/* ESTADOS */
+/* ===================================================== */
+
+.dashboard-state {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    320px;
+
+  padding:
+    40px;
+
+  border:
+    1px solid
+    #e8e8e8;
+
+  border-radius:
+    18px;
+
+  background:
+    #ffffff;
+
+  text-align:
+    center;
+}
+
+
+.dashboard-state strong {
+  margin-top:
+    18px;
+
+  color:
+    #222222;
+
+  font-size:
+    17px;
+}
+
+
+.dashboard-state p {
+  margin:
+    6px 0 0;
+
+  color:
+    #858585;
+
+  font-size:
+    13px;
+}
+
+
+.error-state {
+  border-color:
+    #f0d5d5;
+
+  background:
+    #fffafa;
+}
+
+
+.dashboard-loader {
+  width:
+    28px;
+
+  height:
+    28px;
+
+  border:
+    3px solid
+    #e8e8e8;
+
+  border-top-color:
+    #111111;
+
+  border-radius:
+    50%;
+
+  animation:
+    barberSpin
+    0.7s linear
+    infinite;
+}
+
+
+@keyframes barberSpin {
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+
+}
+
+
+.secondary-button {
+  margin-top:
+    18px;
+
+  min-height:
+    38px;
+
+  padding:
+    0 15px;
+
+  border:
+    1px solid
+    #d7d7d7;
+
+  border-radius:
+    9px;
+
+  background:
+    #ffffff;
+
+  color:
+    #222222;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+}
+
+
+/* ===================================================== */
+/* BARBERÍA ASIGNADA */
+/* ===================================================== */
+
+.barbershop-summary {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    14px;
+
+  margin-bottom:
+    20px;
+
+  padding:
+    17px 18px;
+
+  border:
+    1px solid
+    #e8e8e8;
+
+  border-radius:
+    16px;
+
+  background:
+    #ffffff;
+}
+
+
+.barbershop-summary-icon {
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  width:
+    42px;
+
+  height:
+    42px;
+
+  flex:
+    0 0 auto;
+
+  border-radius:
+    11px;
+
+  background:
+    #111111;
+
+  color:
+    #ffffff;
+}
+
+
+.barbershop-summary-icon svg {
+  width:
+    19px;
+
+  height:
+    19px;
+
+  fill:
+    none;
+
+  stroke:
+    currentColor;
+
+  stroke-width:
+    1.6;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+}
+
+
+.barbershop-summary-copy {
+  min-width:
+    0;
+}
+
+
+.barbershop-summary-copy span {
+  display:
+    block;
+
+  margin-bottom:
+    2px;
+
+  color:
+    #929292;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.1em;
+}
+
+
+.barbershop-summary-copy strong {
+  display:
+    block;
+
+  color:
+    #161616;
+
+  font-size:
+    15px;
+}
+
+
+.barbershop-summary-copy p {
+  margin:
+    3px 0 0;
+
+  color:
+    #7f7f7f;
+
+  font-size:
+    12px;
+}
+
+
+/* ===================================================== */
+/* TOOLBAR */
+/* ===================================================== */
+
+.agenda-toolbar {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap:
+    20px;
+
+  margin-bottom:
+    20px;
+
+  padding:
+    7px;
+
+  border:
+    1px solid
+    #e8e8e8;
+
+  border-radius:
+    13px;
+
+  background:
+    #ffffff;
+}
+
+
+.agenda-tabs {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    4px;
+}
+
+
+.agenda-tab {
+  min-height:
+    36px;
+
+  padding:
+    0 14px;
+
+  border:
+    0;
+
+  border-radius:
+    8px;
+
+  background:
+    transparent;
+
+  color:
+    #777777;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+  transition:
+    background
+    0.18s ease,
+    color
+    0.18s ease;
+}
+
+
+.agenda-tab:hover {
+  background:
+    #f4f4f4;
+
+  color:
+    #222222;
+}
+
+
+.agenda-tab.active {
+  background:
+    #111111;
+
+  color:
+    #ffffff;
+}
+
+
+.agenda-range {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    flex-end;
+
+  padding:
+    0 10px;
+}
+
+
+.agenda-range span {
+  color:
+    #999999;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.08em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.agenda-range strong {
+  margin-top:
+    2px;
+
+  color:
+    #333333;
+
+  font-size:
+    11px;
+}
+
+
+/* ===================================================== */
+/* MÉTRICAS */
+/* ===================================================== */
+
+.dashboard-stats {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    14px;
+
+  margin-bottom:
+    28px;
+}
+
+
+.stat-card {
+  padding:
+    18px;
+
+  border:
+    1px solid
+    #e8e8e8;
+
+  border-radius:
+    15px;
+
+  background:
+    #ffffff;
+}
+
+
+.stat-copy span {
+  display:
+    block;
+
+  color:
+    #999999;
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.1em;
+}
+
+
+.stat-copy strong {
+  display:
+    block;
+
+  margin-top:
+    8px;
+
+  color:
+    #111111;
+
+  font-size:
+    28px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    -0.04em;
+}
+
+
+.stat-copy p {
+  margin:
+    3px 0 0;
+
+  color:
+    #898989;
+
+  font-size:
+    11px;
+}
+
+
+/* ===================================================== */
+/* SECCIONES */
+/* ===================================================== */
+
+.next-booking-section,
+.agenda-section {
+  margin-top:
+    28px;
+}
+
+
+.section-heading {
+  display:
+    flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-between;
+
+  gap:
+    18px;
+
+  margin-bottom:
+    13px;
+}
+
+
+.section-heading span {
+  color:
+    #999999;
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.1em;
+}
+
+
+.section-heading h2 {
+  margin:
+    4px 0 0;
+
+  color:
+    #171717;
+
+  font-size:
+    19px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    -0.025em;
+}
+
+
+.booking-count {
+  padding:
+    6px 9px;
+
+  border:
+    1px solid
+    #e1e1e1;
+
+  border-radius:
+    8px;
+
+  background:
+    #ffffff;
+}
+
+
+/* ===================================================== */
+/* PRÓXIMA CITA */
+/* ===================================================== */
+
+.next-booking-card {
+  display:
+    grid;
+
+  grid-template-columns:
+    120px minmax(0, 1fr);
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    #e3e3e3;
+
+  border-radius:
+    18px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.035);
+}
+
+
+.next-booking-time {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    190px;
+
+  padding:
+    20px;
+
+  background:
+    #111111;
+
+  color:
+    #ffffff;
+}
+
+
+.next-booking-time span {
+  color:
+    #9d9d9d;
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.1em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.next-booking-time strong {
+  margin:
+    5px 0 2px;
+
+  font-size:
+    29px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    -0.04em;
+}
+
+
+.next-booking-time small {
+  color:
+    #bdbdbd;
+
+  font-size:
+    10px;
+}
+
+
+.next-booking-content {
+  padding:
+    22px;
+}
+
+
+.next-booking-top {
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  justify-content:
+    space-between;
+
+  gap:
+    18px;
+}
+
+
+.booking-label {
+  color:
+    #a0a0a0;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.1em;
+}
+
+
+.next-booking-top h3 {
+  margin:
+    5px 0 0;
+
+  color:
+    #151515;
+
+  font-size:
+    21px;
+
+  font-weight:
+    800;
+}
+
+
+.next-booking-details {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    12px;
+
+  margin-top:
+    22px;
+}
+
+
+.booking-detail {
+  padding:
+    12px;
+
+  border:
+    1px solid
+    #ededed;
+
+  border-radius:
+    10px;
+
+  background:
+    #fafafa;
+}
+
+
+.booking-detail span {
+  display:
+    block;
+
+  color:
+    #999999;
+
+  font-size:
+    8px;
+
+  font-weight:
+    700;
+}
+
+
+.booking-detail strong {
+  display:
+    block;
+
+  margin-top:
+    4px;
+
+  color:
+    #333333;
+
+  font-size:
+    12px;
+}
+
+
+.booking-notes {
+  margin-top:
+    14px;
+
+  padding:
+    12px 13px;
+
+  border-radius:
+    10px;
+
+  background:
+    #f7f7f7;
+}
+
+
+.booking-notes span {
+  color:
+    #999999;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.08em;
+}
+
+
+.booking-notes p {
+  margin:
+    4px 0 0;
+
+  color:
+    #555555;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.45;
+}
+
+
+.empty-next-booking {
+  padding:
+    26px;
+
+  border:
+    1px dashed
+    #dcdcdc;
+
+  border-radius:
+    14px;
+
+  background:
+    #fafafa;
+}
+
+
+.empty-next-booking strong {
+  color:
+    #333333;
+
+  font-size:
+    14px;
+}
+
+
+.empty-next-booking p {
+  margin:
+    4px 0 0;
+
+  color:
+    #8a8a8a;
+
+  font-size:
+    12px;
+}
+
+
+/* ===================================================== */
+/* ESTADOS DE CITA */
+/* ===================================================== */
+
+.status-badge {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    25px;
+
+  padding:
+    0 9px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.05em;
+
+  text-transform:
+    uppercase;
+
+  white-space:
+    nowrap;
+}
+
+
+.status-badge.confirmed {
+  background:
+    #eef7f1;
+
+  color:
+    #267145;
+}
+
+
+.status-badge.pending {
+  background:
+    #fff7e5;
+
+  color:
+    #91651a;
+}
+
+
+.status-badge.in-progress {
+  background:
+    #edf3ff;
+
+  color:
+    #345ca8;
+}
+
+
+.status-badge.completed {
+  background:
+    #efefef;
+
+  color:
+    #555555;
+}
+
+
+.status-badge.cancelled {
+  background:
+    #fff0f0;
+
+  color:
+    #a13b3b;
+}
+
+
+.status-badge.no-show {
+  background:
+    #f5edf8;
+
+  color:
+    #744183;
+}
+
+
+.status-badge.default {
+  background:
+    #f2f2f2;
+
+  color:
+    #666666;
+}
+
+
+/* ===================================================== */
+/* AGENDA VACÍA */
+/* ===================================================== */
+
+.agenda-empty {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    220px;
+
+  padding:
+    30px;
+
+  border:
+    1px dashed
+    #dcdcdc;
+
+  border-radius:
+    15px;
+
+  background:
+    #fafafa;
+
+  text-align:
+    center;
+}
+
+
+.agenda-empty-icon {
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  width:
+    42px;
+
+  height:
+    42px;
+
+  margin-bottom:
+    12px;
+
+  border-radius:
+    11px;
+
+  background:
+    #eeeeee;
+
+  color:
+    #5f5f5f;
+}
+
+
+.agenda-empty-icon svg {
+  width:
+    19px;
+
+  height:
+    19px;
+
+  fill:
+    none;
+
+  stroke:
+    currentColor;
+
+  stroke-width:
+    1.7;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+}
+
+
+.agenda-empty strong {
+  color:
+    #333333;
+
+  font-size:
+    14px;
+}
+
+
+.agenda-empty p {
+  margin:
+    4px 0 0;
+
+  color:
+    #8d8d8d;
+
+  font-size:
+    12px;
+}
+
+
+/* ===================================================== */
+/* LISTA DE AGENDA */
+/* ===================================================== */
+
+.agenda-list {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+}
+
+
+.agenda-item {
+  display:
+    grid;
+
+  grid-template-columns:
+    64px 24px minmax(0, 1fr);
+
+  align-items:
+    stretch;
+}
+
+
+.agenda-item-time {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    flex-end;
+
+  padding:
+    18px 0;
+}
+
+
+.agenda-item-time strong {
+  color:
+    #222222;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+}
+
+
+.agenda-item-time span {
+  margin-top:
+    2px;
+
+  color:
+    #a0a0a0;
+
+  font-size:
+    9px;
+}
+
+
+.agenda-item-line {
+  position:
+    relative;
+
+  display:
+    flex;
+
+  justify-content:
+    center;
+}
+
+
+.agenda-item-line::before {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  bottom:
+    0;
+
+  width:
+    1px;
+
+  background:
+    #e6e6e6;
+}
+
+
+.agenda-item-dot {
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  width:
+    8px;
+
+  height:
+    8px;
+
+  margin-top:
+    22px;
+
+  border:
+    2px solid
+    #ffffff;
+
+  border-radius:
+    50%;
+
+  background:
+    #111111;
+
+  box-shadow:
+    0 0 0 1px
+    #d4d4d4;
+}
+
+
+.agenda-item-card {
+  margin:
+    6px 0 8px;
+
+  padding:
+    16px;
+
+  border:
+    1px solid
+    #e7e7e7;
+
+  border-radius:
+    14px;
+
+  background:
+    #ffffff;
+
+  transition:
+    border-color
+    0.18s ease,
+    box-shadow
+    0.18s ease,
+    transform
+    0.18s ease;
+}
+
+
+.agenda-item-card:hover {
+  border-color:
+    #d8d8d8;
+
+  box-shadow:
+    0 8px 24px
+    rgba(0, 0, 0, 0.035);
+
+  transform:
+    translateY(-1px);
+}
+
+
+.agenda-item-main {
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  justify-content:
+    space-between;
+
+  gap:
+    18px;
+}
+
+
+.agenda-item-client span {
+  color:
+    #999999;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.06em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.agenda-item-client strong {
+  display:
+    block;
+
+  margin-top:
+    4px;
+
+  color:
+    #202020;
+
+  font-size:
+    14px;
+}
+
+
+.agenda-item-client p {
+  margin:
+    3px 0 0;
+
+  color:
+    #777777;
+
+  font-size:
+    11px;
+}
+
+
+.agenda-item-meta {
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    8px 16px;
+
+  margin-top:
+    12px;
+
+  padding-top:
+    12px;
+
+  border-top:
+    1px solid
+    #f0f0f0;
+
+  color:
+    #777777;
+
+  font-size:
+    10px;
+}
+
+
+.agenda-item-meta strong {
+  color:
+    #444444;
+}
+
+
+.agenda-item-note {
+  margin-top:
+    12px;
+
+  padding:
+    10px 11px;
+
+  border-radius:
+    9px;
+
+  background:
+    #f8f8f8;
+}
+
+
+.agenda-item-note span {
+  color:
+    #999999;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  text-transform:
+    uppercase;
+}
+
+
+.agenda-item-note p {
+  margin:
+    3px 0 0;
+
+  color:
+    #555555;
+
+  font-size:
+    11px;
+
+  line-height:
+    1.45;
+}
+
+
+/* ===================================================== */
+/* RESPONSIVE */
+/* ===================================================== */
+
+@media (
+  max-width: 900px
+) {
+
+  .dashboard-stats {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  }
+
+
+  .next-booking-card {
+    grid-template-columns:
+      100px
+      minmax(0, 1fr);
+  }
+
+
+  .next-booking-details {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+
+@media (
+  max-width: 700px
+) {
+
+  .barber-dashboard {
+    width:
+      calc(
+        100% - 28px
+      );
+
+    padding-top:
+      26px;
+  }
+
+
+  .dashboard-header {
+    flex-direction:
+      column;
+
+    align-items:
+      stretch;
+  }
+
+
+  .dashboard-header-actions {
+    width:
+      100%;
+  }
+
+
+  .date-control {
+    width:
+      100%;
+  }
+
+
+  .date-control input {
+    width:
+      100%;
+  }
+
+
+  .agenda-toolbar {
+    flex-direction:
+      column;
+
+    align-items:
+      stretch;
+  }
+
+
+  .agenda-range {
+    align-items:
+      flex-start;
+
+    padding:
+      4px 8px 6px;
+  }
+
+
+  .dashboard-stats {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .next-booking-card {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .next-booking-time {
+    min-height:
+      auto;
+
+    flex-direction:
+      row;
+
+    justify-content:
+      flex-start;
+
+    gap:
+      8px;
+
+    padding:
+      14px 18px;
+  }
+
+
+  .next-booking-time strong {
+    margin:
+      0;
+
+    font-size:
+      20px;
+  }
+
+
+  .next-booking-details {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+@media (
+  max-width: 520px
+) {
+
+  .dashboard-header h1 {
+    font-size:
+      31px;
+  }
+
+
+  .barbershop-summary {
+    align-items:
+      flex-start;
+  }
+
+
+  .agenda-tabs {
+    width:
+      100%;
+  }
+
+
+  .agenda-tab {
+    flex:
+      1;
+  }
+
+
+  .next-booking-top {
+    flex-direction:
+      column;
+  }
+
+
+  .agenda-item {
+    grid-template-columns:
+      52px
+      18px
+      minmax(0, 1fr);
+  }
+
+
+  .agenda-item-main {
+    flex-direction:
+      column;
+
+    gap:
+      10px;
+  }
+
+
+  .agenda-item-status {
+    width:
+      100%;
+  }
+
+}

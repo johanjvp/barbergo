@@ -1,0 +1,200 @@
+.admin-layout {
+  min-height:
+    100vh;
+
+  background:
+    #f5f5f5;
+}
+
+
+.admin-main {
+  min-height:
+    100vh;
+
+  margin-left:
+    250px;
+}
+
+
+/* ===================================================== */
+/* HEADER */
+/* ===================================================== */
+
+.admin-header {
+  position:
+    sticky;
+
+  top:
+    0;
+
+  z-index:
+    50;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  height:
+    81px;
+
+  padding:
+    0 34px;
+
+  box-sizing:
+    border-box;
+
+  border-bottom:
+    1px solid #e8e8e8;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.94
+    );
+
+  backdrop-filter:
+    blur(12px);
+}
+
+
+.admin-header > div:first-child {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    4px;
+}
+
+
+.header-eyebrow {
+  color:
+    #a3a3a3;
+
+  font-size:
+    7px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.16em;
+}
+
+
+.admin-header strong {
+  color:
+    #1a1a1a;
+
+  font-size:
+    12px;
+}
+
+
+.header-actions {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    14px;
+}
+
+
+.environment {
+  padding:
+    6px 9px;
+
+  border:
+    1px solid #e2e2e2;
+
+  border-radius:
+    7px;
+
+  color:
+    #777777;
+
+  font-size:
+    7px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.1em;
+}
+
+
+.header-avatar {
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  width:
+    34px;
+
+  height:
+    34px;
+
+  border-radius:
+    10px;
+
+  background:
+    #111111;
+
+  color:
+    #ffffff;
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+}
+
+
+/* ===================================================== */
+/* CONTENT */
+/* ===================================================== */
+
+.admin-content {
+  padding:
+    35px;
+
+  box-sizing:
+    border-box;
+}
+
+
+/* ===================================================== */
+/* RESPONSIVE */
+/* ===================================================== */
+
+@media (
+  max-width: 900px
+) {
+
+  .admin-main {
+    margin-left:
+      0;
+  }
+
+  app-admin-sidebar {
+    display:
+      none;
+  }
+
+}

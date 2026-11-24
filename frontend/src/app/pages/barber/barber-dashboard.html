@@ -1,0 +1,686 @@
+<section class="barber-dashboard">
+
+  <!-- =================================================== -->
+  <!-- ENCABEZADO -->
+  <!-- =================================================== -->
+
+  <header class="dashboard-header">
+
+    <div class="dashboard-header-copy">
+
+      <span class="dashboard-eyebrow">
+        PANEL DEL BARBERO
+      </span>
+
+      <h1>
+        Mi agenda
+      </h1>
+
+      @if (barber) {
+
+        <p>
+          {{ barber.first_name }} {{ barber.last_name }}
+          ·
+          {{ barber.barbershop_name }}
+        </p>
+
+      }
+
+    </div>
+
+
+    <div class="dashboard-header-actions">
+
+      <label class="date-control">
+
+        <span>
+          Seleccionar fecha
+        </span>
+
+        <input
+          type="date"
+          [value]="selectedDate"
+          (change)="selectDate($event)"
+        >
+
+      </label>
+
+    </div>
+
+  </header>
+
+
+  <!-- =================================================== -->
+  <!-- CARGANDO -->
+  <!-- =================================================== -->
+
+  @if (loading) {
+
+    <div class="dashboard-state">
+
+      <div class="dashboard-loader">
+      </div>
+
+      <strong>
+        Cargando agenda...
+      </strong>
+
+      <p>
+        Estamos consultando tus citas asignadas.
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- =================================================== -->
+  <!-- ERROR -->
+  <!-- =================================================== -->
+
+  @else if (errorMessage) {
+
+    <div class="dashboard-state error-state">
+
+      <strong>
+        No fue posible cargar la agenda
+      </strong>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="loadToday()"
+      >
+        Intentar nuevamente
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- =================================================== -->
+  <!-- CONTENIDO -->
+  <!-- =================================================== -->
+
+  @else {
+
+    <!-- ================================================= -->
+    <!-- BARBERÍA -->
+    <!-- ================================================= -->
+
+    @if (barber) {
+
+      <section class="barbershop-summary">
+
+        <div class="barbershop-summary-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M4 10h16M5 10v9h14v-9M3 10l2-5h14l2 5M9 14h6v5H9z"
+            />
+          </svg>
+
+        </div>
+
+        <div class="barbershop-summary-copy">
+
+          <span>
+            BARBERÍA ASIGNADA
+          </span>
+
+          <strong>
+            {{ barber.barbershop_name }}
+          </strong>
+
+          <p>
+            {{ barber.barbershop_address }}
+            ·
+            {{ barber.barbershop_city }}
+          </p>
+
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- ================================================= -->
+    <!-- FILTROS -->
+    <!-- ================================================= -->
+
+    <section class="agenda-toolbar">
+
+      <div class="agenda-tabs">
+
+        <button
+          type="button"
+          class="agenda-tab"
+          [class.active]="dateFrom === selectedDate && dateTo === selectedDate"
+          (click)="loadToday()"
+        >
+          Hoy
+        </button>
+
+
+        <button
+          type="button"
+          class="agenda-tab"
+          [class.active]="dateFrom !== dateTo"
+          (click)="loadWeek()"
+        >
+          Esta semana
+        </button>
+
+      </div>
+
+
+      <div class="agenda-range">
+
+        <span>
+          Periodo consultado
+        </span>
+
+        <strong>
+
+          @if (dateFrom === dateTo) {
+
+            {{ dateFrom | date:'dd MMM yyyy' }}
+
+          }
+
+          @else {
+
+            {{ dateFrom | date:'dd MMM' }}
+            -
+            {{ dateTo | date:'dd MMM yyyy' }}
+
+          }
+
+        </strong>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- MÉTRICAS -->
+    <!-- ================================================= -->
+
+    <section class="dashboard-stats">
+
+      <article class="stat-card">
+
+        <div class="stat-copy">
+
+          <span>
+            CITAS
+          </span>
+
+          <strong>
+            {{ bookings.length }}
+          </strong>
+
+          <p>
+            En el periodo seleccionado
+          </p>
+
+        </div>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <div class="stat-copy">
+
+          <span>
+            PENDIENTES
+          </span>
+
+          <strong>
+            {{ pendingCount }}
+          </strong>
+
+          <p>
+            Pendientes o confirmadas
+          </p>
+
+        </div>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <div class="stat-copy">
+
+          <span>
+            COMPLETADAS
+          </span>
+
+          <strong>
+            {{ completedCount }}
+          </strong>
+
+          <p>
+            Servicios finalizados
+          </p>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- PRÓXIMA CITA -->
+    <!-- ================================================= -->
+
+    <section class="next-booking-section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <span>
+            PRÓXIMA CITA
+          </span>
+
+          <h2>
+            Tu siguiente servicio
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      @if (nextBooking; as booking) {
+
+        <article class="next-booking-card">
+
+          <div class="next-booking-time">
+
+            <span>
+              {{
+                booking.start_at
+                  | date:'EEE'
+              }}
+            </span>
+
+            <strong>
+              {{
+                booking.start_at
+                  | date:'HH:mm'
+              }}
+            </strong>
+
+            <small>
+              {{
+                booking.start_at
+                  | date:'dd MMM'
+              }}
+            </small>
+
+          </div>
+
+
+          <div class="next-booking-content">
+
+            <div class="next-booking-top">
+
+              <div>
+
+                <span class="booking-label">
+                  CLIENTE
+                </span>
+
+                <h3>
+                  {{ booking.client_name }}
+                </h3>
+
+              </div>
+
+
+              <span
+                class="status-badge"
+                [class]="
+                  'status-badge ' +
+                  getStatusClass(
+                    booking.status_code
+                  )
+                "
+              >
+                {{ booking.status_name }}
+              </span>
+
+            </div>
+
+
+            <div class="next-booking-details">
+
+              <div class="booking-detail">
+
+                <span>
+                  Servicio
+                </span>
+
+                <strong>
+                  {{ booking.service_name }}
+                </strong>
+
+              </div>
+
+
+              <div class="booking-detail">
+
+                <span>
+                  Duración
+                </span>
+
+                <strong>
+                  {{ booking.duration_minutes }} min
+                </strong>
+
+              </div>
+
+
+              <div class="booking-detail">
+
+                <span>
+                  Valor
+                </span>
+
+                <strong>
+                  {{
+                    formatPrice(
+                      booking.service_price
+                    )
+                  }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            @if (booking.customer_notes) {
+
+              <div class="booking-notes">
+
+                <span>
+                  Nota del cliente
+                </span>
+
+                <p>
+                  {{ booking.customer_notes }}
+                </p>
+
+              </div>
+
+            }
+
+          </div>
+
+        </article>
+
+      }
+
+      @else {
+
+        <div class="empty-next-booking">
+
+          <strong>
+            No tienes una próxima cita
+          </strong>
+
+          <p>
+            No hay servicios pendientes dentro del periodo consultado.
+          </p>
+
+        </div>
+
+      }
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- AGENDA -->
+    <!-- ================================================= -->
+
+    <section class="agenda-section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <span>
+            AGENDA
+          </span>
+
+          <h2>
+            Citas programadas
+          </h2>
+
+        </div>
+
+
+        <span class="booking-count">
+
+          {{ bookings.length }}
+
+          @if (bookings.length === 1) {
+
+            cita
+
+          }
+
+          @else {
+
+            citas
+
+          }
+
+        </span>
+
+      </div>
+
+
+      @if (bookings.length === 0) {
+
+        <div class="agenda-empty">
+
+          <div class="agenda-empty-icon">
+
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <rect
+                x="4"
+                y="5"
+                width="16"
+                height="15"
+                rx="2"
+              />
+
+              <path
+                d="M8 3v4M16 3v4M4 10h16"
+              />
+            </svg>
+
+          </div>
+
+          <strong>
+            No tienes citas programadas
+          </strong>
+
+          <p>
+            Tu agenda está libre para este periodo.
+          </p>
+
+        </div>
+
+      }
+
+      @else {
+
+        <div class="agenda-list">
+
+          @for (
+            booking of bookings;
+            track booking.id
+          ) {
+
+            <article class="agenda-item">
+
+              <div class="agenda-item-time">
+
+                <strong>
+                  {{
+                    booking.start_at
+                      | date:'HH:mm'
+                  }}
+                </strong>
+
+                <span>
+                  {{
+                    booking.end_at
+                      | date:'HH:mm'
+                  }}
+                </span>
+
+              </div>
+
+
+              <div class="agenda-item-line">
+
+                <span class="agenda-item-dot">
+                </span>
+
+              </div>
+
+
+              <div class="agenda-item-card">
+
+                <div class="agenda-item-main">
+
+                  <div class="agenda-item-client">
+
+                    <span>
+                      {{
+                        booking.start_at
+                          | date:'EEE, dd MMM'
+                      }}
+                    </span>
+
+                    <strong>
+                      {{ booking.client_name }}
+                    </strong>
+
+                    <p>
+                      {{ booking.service_name }}
+                    </p>
+
+                  </div>
+
+
+                  <div class="agenda-item-status">
+
+                    <span
+                      class="status-badge"
+                      [class]="
+                        'status-badge ' +
+                        getStatusClass(
+                          booking.status_code
+                        )
+                      "
+                    >
+                      {{ booking.status_name }}
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <div class="agenda-item-meta">
+
+                  <span>
+
+                    <strong>
+                      {{ booking.duration_minutes }}
+                    </strong>
+
+                    min
+
+                  </span>
+
+
+                  <span>
+                    {{
+                      formatPrice(
+                        booking.service_price
+                      )
+                    }}
+                  </span>
+
+
+                  @if (
+                    booking.client_phone
+                  ) {
+
+                    <span>
+                      {{ booking.client_phone }}
+                    </span>
+
+                  }
+
+                </div>
+
+
+                @if (
+                  booking.customer_notes
+                ) {
+
+                  <div class="agenda-item-note">
+
+                    <span>
+                      Nota
+                    </span>
+
+                    <p>
+                      {{ booking.customer_notes }}
+                    </p>
+
+                  </div>
+
+                }
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+  }
+
+</section>

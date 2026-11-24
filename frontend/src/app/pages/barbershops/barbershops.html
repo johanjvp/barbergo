@@ -1,0 +1,368 @@
+<app-navbar></app-navbar>
+
+<main class="barbershops-page">
+
+  <!-- HERO -->
+  <section class="page-header">
+    <div class="container hero-container">
+
+      <div class="hero-copy">
+        <h1>Tu próximo corte empieza aquí.</h1>
+
+        <p>
+          Compara barberías por zona, precio y servicios,
+          y elige la que mejor se ajusta a tu estilo.
+        </p>
+      </div>
+
+      <!-- Poste de barbero: gira solo mientras se cargan resultados -->
+      <div class="pole" [class.is-spinning]="loading" aria-hidden="true"></div>
+
+    </div>
+  </section>
+
+
+  <!-- BUSCADOR -->
+  <section class="search-section">
+    <div class="container">
+
+      <form class="search-panel" (ngSubmit)="searchBarbershops()">
+
+        <div class="search-field">
+          <label for="search-input">Qué buscas</label>
+          <input
+            id="search-input"
+            type="text"
+            name="search"
+            [(ngModel)]="search"
+            placeholder="Nombre, corte, barba"
+            autocomplete="off"
+          >
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="search-field">
+          <label for="neighborhood-input">Barrio o zona</label>
+          <input
+            id="neighborhood-input"
+            type="text"
+            name="neighborhood"
+            [(ngModel)]="neighborhood"
+            placeholder="Riomar, Alto Prado"
+            autocomplete="off"
+          >
+        </div>
+
+        <button class="search-button" type="submit" [disabled]="loading">
+          @if (loading) {
+            <span class="button-loader"></span>
+            Buscando
+          } @else {
+            Buscar
+          }
+        </button>
+
+      </form>
+
+      @if (search || neighborhood) {
+        <div class="active-filters">
+          <span>Filtros:</span>
+
+          @if (search) {
+            <button
+              type="button"
+              class="filter-chip"
+              (click)="search = ''; searchBarbershops()"
+            >
+              {{ search }} <span aria-hidden="true">×</span>
+            </button>
+          }
+
+          @if (neighborhood) {
+            <button
+              type="button"
+              class="filter-chip"
+              (click)="neighborhood = ''; searchBarbershops()"
+            >
+              {{ neighborhood }} <span aria-hidden="true">×</span>
+            </button>
+          }
+
+          <button type="button" class="clear-all-button" (click)="clearFilters()">
+            Quitar todos
+          </button>
+        </div>
+      }
+
+    </div>
+  </section>
+
+
+  <!-- RESULTADOS -->
+  <section class="results">
+    <div class="container">
+
+      <!-- MAPA -->
+      <div class="map-heading">
+        <div>
+          <h2>Barberías en el mapa</h2>
+          <p>Pasa el mouse o toca un punto para ver el precio y la distancia.</p>
+        </div>
+
+        @if (!loading) {
+          <span class="map-counter">
+            <strong>{{ total }}</strong>
+            {{ total === 1 ? 'barbería' : 'barberías' }}
+          </span>
+        }
+      </div>
+
+      <div class="map-shell">
+
+        <!-- Franja de barbero: indica carga -->
+        <div class="load-bar" [class.is-active]="loading"></div>
+
+        <div class="map-stage">
+
+          <div class="map-section">
+            @if (loading) {
+              <div class="map-loading">
+                <span class="location-loader"></span>
+                <strong>Cargando barberías</strong>
+              </div>
+            } @else {
+              <app-barbershop-map
+                [shops]="visibleShops"
+                [highlightedId]="hoveredId"
+                (shopHover)="onMapHover($event)"
+                (shopSelect)="onMapSelect($event)"
+              />
+            }
+          </div>
+
+          <!-- El @for con track por id re-crea la tarjeta al cambiar de barbería -->
+          @for (shop of (previewShop ? [previewShop] : []); track shop.id) {
+            <article class="map-preview" role="dialog" [attr.aria-label]="shop.name">
+
+              <button
+                type="button"
+                class="preview-close"
+                aria-label="Cerrar tarjeta"
+                (click)="closePreview()"
+              >×</button>
+
+              <div class="preview-media">
+                <img [src]="shop.image" [alt]="shop.name">
+              </div>
+
+              <div class="preview-body">
+                <div class="tag-list">
+                  @for (tag of shop.tags; track tag) {
+                    <span>{{ tag }}</span>
+                  }
+                </div>
+
+                <h3>{{ shop.name }}</h3>
+                <p>{{ shop.neighborhood || shop.city }}</p>
+
+                <dl class="preview-meta">
+                  <div>
+                    <dt>Desde</dt>
+                    <dd>{{ shop.priceLabel }}</dd>
+                  </div>
+                  <div>
+                    <dt>Distancia</dt>
+                    <dd>{{ shop.distanceLabel }}</dd>
+                  </div>
+                </dl>
+
+                <div class="preview-actions">
+                  <button type="button" class="preview-cta" (click)="goToShop(shop)">
+                    Ver barbería
+                  </button>
+                  <button type="button" class="preview-secondary" (click)="openModal(shop)">
+                    Vista rápida
+                  </button>
+                </div>
+              </div>
+
+            </article>
+          }
+
+        </div>
+      </div>
+
+
+      <!-- LISTADO -->
+      <div class="results-header">
+        <div>
+          <h2>Todas las barberías</h2>
+
+          <p>
+            @if (!loading) {
+              {{ total }}
+              {{ total === 1 ? 'barbería encontrada' : 'barberías encontradas' }}
+            } @else {
+              Buscando…
+            }
+          </p>
+        </div>
+
+        @if (search || neighborhood || activeFilters.size > 0) {
+          <button type="button" class="clear-button" (click)="clearFilters()">
+            Quitar filtros
+          </button>
+        }
+      </div>
+
+      <div class="filter-bar" role="group" aria-label="Filtrar por servicio">
+        @for (option of filterOptions; track option) {
+          <button
+            type="button"
+            class="chip"
+            [class.active]="activeFilters.has(option)"
+            [attr.aria-pressed]="activeFilters.has(option)"
+            (click)="toggleFilter(option)"
+          >
+            {{ option }}
+          </button>
+        }
+      </div>
+
+
+      @if (loading) {
+
+        <div class="loading-grid">
+          @for (item of [1, 2, 3]; track item) {
+            <div class="skeleton-card">
+              <div class="skeleton-image"></div>
+              <div class="skeleton-content">
+                <div class="skeleton-line large"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line small"></div>
+              </div>
+            </div>
+          }
+        </div>
+
+      } @else if (error) {
+
+        <div class="empty-state error-state">
+          <h3>No se pudieron cargar las barberías</h3>
+          <p>{{ error }} Revisa tu conexión e inténtalo otra vez.</p>
+          <button type="button" class="empty-primary-button" (click)="loadBarbershops()">
+            Reintentar
+          </button>
+        </div>
+
+      } @else if (visibleShops.length === 0) {
+
+        <div class="empty-state">
+          <h3>No hay barberías con esos filtros</h3>
+          <p>Cambia la zona o el nombre, o quita los filtros para ver todas.</p>
+          <button type="button" class="empty-primary-button" (click)="clearFilters()">
+            Quitar filtros
+          </button>
+        </div>
+
+      } @else {
+
+        <div class="shops-grid">
+          @for (shop of visibleShops; track shop.id; let i = $index) {
+
+            <div
+              class="shop-card-wrapper"
+              [class.is-active]="hoveredId === shop.id"
+              [style.--card-index]="i"
+              (mouseenter)="hoveredId = shop.id"
+              (mouseleave)="hoveredId = null"
+            >
+              <app-barbershop-card
+                [id]="shop.id"
+                [image]="shop.image"
+                [name]="shop.name"
+                [neighborhood]="shop.neighborhood || shop.city"
+                [price]="shop.priceLabel"
+                [distance]="shop.distanceLabel"
+                [tags]="shop.tags"
+              />
+
+              <button type="button" class="quick-view" (click)="openModal(shop)">
+                Vista rápida
+              </button>
+            </div>
+
+          }
+        </div>
+
+      }
+
+    </div>
+  </section>
+
+</main>
+
+
+<!-- MODAL VISTA RÁPIDA -->
+@if (modalShop; as shop) {
+  <div class="modal-backdrop" (click)="closeModal()">
+
+    <div
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="shop.name"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="modal-media">
+        <img [src]="shop.image" [alt]="shop.name">
+
+        <button
+          type="button"
+          class="modal-close"
+          aria-label="Cerrar"
+          (click)="closeModal()"
+        >×</button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="tag-list">
+          @for (tag of shop.tags; track tag) {
+            <span>{{ tag }}</span>
+          }
+        </div>
+
+        <h2>{{ shop.name }}</h2>
+        <p class="modal-location">{{ shop.neighborhood || shop.city }}</p>
+
+        <dl class="modal-stats">
+          <div>
+            <dt>Desde</dt>
+            <dd>{{ shop.priceLabel }}</dd>
+          </div>
+          <div>
+            <dt>Distancia</dt>
+            <dd>{{ shop.distanceLabel }}</dd>
+          </div>
+        </dl>
+
+        <div class="modal-actions">
+          <button type="button" class="modal-primary" (click)="goToShop(shop)">
+            Ver barbería y reservar
+          </button>
+          <button type="button" class="modal-secondary" (click)="closeModal()">
+            Seguir explorando
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+}
+
+
+<app-footer></app-footer>

@@ -1,0 +1,1024 @@
+<section class="barbershops-page">
+
+
+  <!-- ================================================= -->
+  <!-- ENCABEZADO -->
+  <!-- ================================================= -->
+
+  <header class="page-header">
+
+    <div>
+
+      <span class="eyebrow">
+        NETWORK MANAGEMENT
+      </span>
+
+      <h1>
+        Barberías
+      </h1>
+
+      <p>
+        Gestiona los establecimientos registrados
+        dentro del ecosistema BarberGo.
+      </p>
+
+    </div>
+
+
+    <div class="total-badge">
+
+      <span>
+        RESULTADOS
+      </span>
+
+      <strong>
+        {{ total }}
+      </strong>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ================================================= -->
+  <!-- FILTROS -->
+  <!-- ================================================= -->
+
+  <section class="toolbar">
+
+
+    <!-- BÚSQUEDA -->
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        ⌕
+      </span>
+
+      <input
+        type="search"
+        [value]="search"
+        placeholder="Buscar barbería, ciudad o dirección..."
+        autocomplete="off"
+        aria-label="Buscar barberías"
+        (input)="onSearch($event)"
+      >
+
+
+      @if (
+        search
+      ) {
+
+        <span class="searching-indicator">
+
+          {{
+            loading
+              ? 'Buscando...'
+              : 'Filtro activo'
+          }}
+
+        </span>
+
+      }
+
+    </div>
+
+
+
+    <!-- FILTROS DE ESTADO -->
+
+    <div class="filter-tabs">
+
+      <button
+        type="button"
+        [class.active]="
+          statusFilter === 'all'
+        "
+        (click)="
+          setFilter(
+            'all'
+          )
+        "
+      >
+        Todas
+      </button>
+
+
+      <button
+        type="button"
+        [class.active]="
+          statusFilter === 'active'
+        "
+        (click)="
+          setFilter(
+            'active'
+          )
+        "
+      >
+
+        <span class="filter-dot active">
+        </span>
+
+        Activas
+
+      </button>
+
+
+      <button
+        type="button"
+        [class.active]="
+          statusFilter === 'inactive'
+        "
+        (click)="
+          setFilter(
+            'inactive'
+          )
+        "
+      >
+
+        <span class="filter-dot inactive">
+        </span>
+
+        Inactivas
+
+      </button>
+
+    </div>
+
+
+  </section>
+
+
+
+  <!-- ================================================= -->
+  <!-- RESUMEN DE RESULTADOS -->
+  <!-- ================================================= -->
+
+  @if (
+    !loading
+    &&
+    !error
+  ) {
+
+    <div class="results-summary">
+
+      <div>
+
+        <span class="results-live-dot">
+        </span>
+
+        <span>
+
+          @if (
+            statusFilter === 'active'
+          ) {
+
+            Barberías activas
+
+          }
+
+          @else if (
+            statusFilter === 'inactive'
+          ) {
+
+            Barberías inactivas
+
+          }
+
+          @else {
+
+            Todas las barberías
+
+          }
+
+        </span>
+
+      </div>
+
+
+      <strong>
+
+        {{
+          barbershops.length
+        }}
+
+        @if (
+          barbershops.length === 1
+        ) {
+
+          mostrada
+
+        }
+
+        @else {
+
+          mostradas
+
+        }
+
+        de {{ total }}
+
+      </strong>
+
+    </div>
+
+  }
+
+
+
+  <!-- ================================================= -->
+  <!-- LOADING -->
+  <!-- ================================================= -->
+
+  @if (
+    loading
+  ) {
+
+    <div class="state-box loading-state">
+
+      <div class="loader">
+      </div>
+
+      <strong>
+        Consultando barberías...
+      </strong>
+
+      <p>
+        Estamos cargando la información
+        administrativa más reciente.
+      </p>
+
+    </div>
+
+  }
+
+
+
+  <!-- ================================================= -->
+  <!-- ERROR -->
+  <!-- ================================================= -->
+
+  @else if (
+    error
+  ) {
+
+    <div class="state-box error">
+
+      <span class="state-error-icon">
+        !
+      </span>
+
+      <strong>
+        No pudimos cargar las barberías
+      </strong>
+
+      <p>
+        {{ error }}
+      </p>
+
+      <button
+        type="button"
+        (click)="
+          loadBarbershops(
+            true
+          )
+        "
+      >
+        Reintentar
+      </button>
+
+    </div>
+
+  }
+
+
+
+  <!-- ================================================= -->
+  <!-- SIN RESULTADOS -->
+  <!-- ================================================= -->
+
+  @else if (
+    barbershops.length === 0
+  ) {
+
+    <div class="state-box">
+
+      <span class="empty-icon">
+        B
+      </span>
+
+      <strong>
+        No encontramos barberías
+      </strong>
+
+      <p>
+
+        @if (
+          search
+        ) {
+
+          No encontramos resultados para
+          “{{ search }}”.
+
+        }
+
+        @else {
+
+          No existen barberías para
+          el filtro seleccionado.
+
+        }
+
+      </p>
+
+    </div>
+
+  }
+
+
+
+  <!-- ================================================= -->
+  <!-- BARBERÍAS -->
+  <!-- ================================================= -->
+
+  @else {
+
+
+    <!-- ================================================= -->
+    <!-- GRID -->
+    <!-- ================================================= -->
+
+    <div class="barbershop-grid">
+
+
+      @for (
+        shop of barbershops;
+        track shop.id;
+        let index = $index
+      ) {
+
+        <article
+          class="shop-card"
+          [class.inactive]="
+            !shop.is_active
+          "
+          [style.animation-delay.ms]="
+            index * 45
+          "
+        >
+
+
+          <!-- ============================================= -->
+          <!-- CABECERA TARJETA -->
+          <!-- ============================================= -->
+
+          <div class="shop-top">
+
+
+            <div class="shop-avatar">
+
+              {{
+                getInitials(
+                  shop.name
+                )
+              }}
+
+            </div>
+
+
+
+            <div
+              class="shop-status"
+              [class.is-active]="
+                shop.is_active
+              "
+              [class.is-inactive]="
+                !shop.is_active
+              "
+            >
+
+              <span
+                class="status-dot"
+                [class.active]="
+                  shop.is_active
+                "
+              >
+              </span>
+
+
+              {{
+                shop.is_active
+                  ? 'Activa'
+                  : 'Inactiva'
+              }}
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- ============================================= -->
+          <!-- NOMBRE -->
+          <!-- ============================================= -->
+
+          <div class="shop-heading">
+
+            <h2>
+              {{ shop.name }}
+            </h2>
+
+            <p>
+
+              @if (
+                shop.neighborhood
+              ) {
+
+                {{ shop.neighborhood }}
+
+                @if (
+                  shop.city
+                ) {
+
+                  · {{ shop.city }}
+
+                }
+
+              }
+
+              @else if (
+                shop.city
+              ) {
+
+                {{ shop.city }}
+
+              }
+
+              @else {
+
+                Ubicación no registrada
+
+              }
+
+            </p>
+
+          </div>
+
+
+
+          <!-- ============================================= -->
+          <!-- OPERACIÓN -->
+          <!-- ============================================= -->
+
+          <div class="shop-stats">
+
+
+            <div>
+
+              <span>
+                RESERVAS
+              </span>
+
+              <strong>
+                {{
+                  shop.bookings_count
+                }}
+              </strong>
+
+            </div>
+
+
+
+            <div>
+
+              <span>
+                COMPLETADAS
+              </span>
+
+              <strong>
+                {{
+                  shop.completed_bookings
+                }}
+              </strong>
+
+            </div>
+
+
+
+            <div>
+
+              <span>
+                CANCELADAS
+              </span>
+
+              <strong>
+                {{
+                  shop.cancelled_bookings
+                }}
+              </strong>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- ============================================= -->
+          <!-- FINANCIERO -->
+          <!-- ============================================= -->
+
+          <div class="financial-stats">
+
+
+            <div>
+
+              <span>
+                VALOR RESERVADO
+              </span>
+
+              <strong>
+
+                {{
+                  formatCurrency(
+                    shop.reserved_value
+                  )
+                }}
+
+              </strong>
+
+            </div>
+
+
+
+            <div>
+
+              <span>
+                TICKET PROMEDIO
+              </span>
+
+              <strong>
+
+                {{
+                  formatCurrency(
+                    shop.average_ticket
+                  )
+                }}
+
+              </strong>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- ============================================= -->
+          <!-- CONTACTO -->
+          <!-- ============================================= -->
+
+          <div class="shop-contact">
+
+
+            <div>
+
+              <span class="contact-label">
+                CONTACTO
+              </span>
+
+
+              <strong>
+
+                {{
+                  shop.phone
+                  ||
+                  'Sin teléfono'
+                }}
+
+              </strong>
+
+
+              <small>
+
+                {{
+                  shop.email
+                  ||
+                  'Sin correo registrado'
+                }}
+
+              </small>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- ============================================= -->
+          <!-- INFORMACIÓN -->
+          <!-- ============================================= -->
+
+          <div class="shop-information">
+
+
+            <div>
+
+              <span>
+                Ubicación
+              </span>
+
+              <strong
+                [title]="
+                  shop.address
+                  ||
+                  'Sin dirección'
+                "
+              >
+
+                {{
+                  shop.address
+                  ||
+                  'Sin dirección'
+                }}
+
+              </strong>
+
+            </div>
+
+
+
+            <div>
+
+              <span>
+                Alta
+              </span>
+
+              <strong>
+
+                {{
+                  formatDate(
+                    shop.created_at
+                  )
+                }}
+
+              </strong>
+
+            </div>
+
+
+          </div>
+
+
+
+                    <!-- ============================================= -->
+          <!-- ACCIONES -->
+          <!-- ============================================= -->
+
+          <footer class="shop-actions">
+
+
+            <!-- ============================================= -->
+            <!-- ADMINISTRAR -->
+            <!-- ============================================= -->
+
+            <a
+              [routerLink]="[
+                '/admin/barberias',
+                shop.id
+              ]"
+              class="manage-button"
+            >
+
+              <span class="manage-button-icon">
+                ⚙
+              </span>
+
+              <span>
+                Administrar
+              </span>
+
+            </a>
+
+
+
+            <!-- ============================================= -->
+            <!-- FICHA PÚBLICA -->
+            <!-- ============================================= -->
+
+            <a
+              [routerLink]="[
+                '/barberias',
+                shop.id
+              ]"
+              target="_blank"
+              rel="noopener"
+              class="view-button"
+            >
+
+              <span>
+                Ver ficha
+              </span>
+
+              <span class="external-icon">
+                ↗
+              </span>
+
+            </a>
+
+
+
+            <!-- ============================================= -->
+            <!-- ACTIVAR / DESACTIVAR -->
+            <!-- ============================================= -->
+
+            <button
+              type="button"
+              class="status-button"
+
+              [class.activate]="
+                !shop.is_active
+              "
+
+              [disabled]="
+                updatingId !== null
+              "
+
+              (click)="
+                toggleStatus(
+                  shop
+                )
+              "
+            >
+
+
+              @if (
+                updatingId ===
+                shop.id
+              ) {
+
+                <span class="button-loader">
+                </span>
+
+                Actualizando...
+
+              }
+
+
+              @else if (
+                shop.is_active
+              ) {
+
+                <span>
+                  ×
+                </span>
+
+                Desactivar
+
+              }
+
+
+              @else {
+
+                <span>
+                  ✓
+                </span>
+
+                Activar
+
+              }
+
+
+            </button>
+
+
+          </footer>
+
+
+        </article>
+
+      }
+
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- PAGINACIÓN PROGRESIVA -->
+    <!-- ================================================= -->
+
+    <section class="load-more-area">
+
+
+      <!-- INFORMACIÓN -->
+
+      <div class="load-progress-info">
+
+        <div>
+
+          <strong>
+            {{ barbershops.length }}
+          </strong>
+
+          <span>
+
+            de {{ total }}
+
+            @if (
+              total === 1
+            ) {
+
+              barbería mostrada
+
+            }
+
+            @else {
+
+              barberías mostradas
+
+            }
+
+          </span>
+
+        </div>
+
+
+        @if (
+          hasMore
+        ) {
+
+          <span class="remaining-label">
+
+            {{
+              remainingCount
+            }}
+
+            @if (
+              remainingCount === 1
+            ) {
+
+              restante
+
+            }
+
+            @else {
+
+              restantes
+
+            }
+
+          </span>
+
+        }
+
+        @else {
+
+          <span class="all-loaded">
+
+            <span>
+              ✓
+            </span>
+
+            Todas cargadas
+
+          </span>
+
+        }
+
+      </div>
+
+
+
+      <!-- BARRA DE PROGRESO -->
+
+      <div
+        class="load-progress"
+        role="progressbar"
+        [attr.aria-valuenow]="
+          loadProgress
+        "
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+
+        <span
+          [style.width.%]="
+            loadProgress
+          "
+        >
+        </span>
+
+      </div>
+
+
+
+      <!-- BOTÓN CARGAR MÁS -->
+
+      @if (
+        hasMore
+      ) {
+
+        <button
+          type="button"
+          class="load-more-button"
+          [disabled]="
+            loadingMore
+          "
+          (click)="
+            loadMore()
+          "
+        >
+
+
+          @if (
+            loadingMore
+          ) {
+
+            <span class="load-more-spinner">
+            </span>
+
+
+            <span>
+
+              Cargando barberías...
+
+              <small>
+                Consultando nuevos resultados
+              </small>
+
+            </span>
+
+          }
+
+          @else {
+
+            <span class="load-more-icon">
+              ↓
+            </span>
+
+
+            <span>
+
+              Cargar más
+
+              <small>
+
+                Mostrar
+
+                @if (
+                  remainingCount >
+                  pageSize
+                ) {
+
+                  {{ pageSize }}
+
+                }
+
+                @else {
+
+                  {{ remainingCount }}
+
+                }
+
+                @if (
+                  (
+                    remainingCount >
+                    pageSize
+                      ? pageSize
+                      : remainingCount
+                  ) === 1
+                ) {
+
+                  barbería más
+
+                }
+
+                @else {
+
+                  barberías más
+
+                }
+
+              </small>
+
+            </span>
+
+          }
+
+
+        </button>
+
+      }
+
+
+    </section>
+
+
+  }
+
+
+</section>

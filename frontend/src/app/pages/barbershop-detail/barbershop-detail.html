@@ -1,0 +1,1662 @@
+<app-navbar></app-navbar>
+
+
+<main class="detail-page">
+
+
+  <!-- ================================================= -->
+  <!-- CARGANDO -->
+  <!-- ================================================= -->
+
+  @if (loading) {
+
+    <section class="state-section">
+
+      <div class="loader"></div>
+
+      <strong>
+        Cargando barbería...
+      </strong>
+
+    </section>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- ERROR -->
+  <!-- ================================================= -->
+
+  @else if (error) {
+
+    <section class="state-section">
+
+      <span class="state-icon">
+        ✦
+      </span>
+
+      <h1>
+        No encontramos esta barbería
+      </h1>
+
+      <p>
+        {{ error }}
+      </p>
+
+      <a
+        routerLink="/barberias"
+        class="back-button"
+      >
+        Volver a barberías
+      </a>
+
+    </section>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- CONTENIDO -->
+  <!-- ================================================= -->
+
+  @else if (barbershop) {
+
+
+    <!-- =============================================== -->
+    <!-- HERO -->
+    <!-- =============================================== -->
+
+    <section class="detail-hero">
+
+      <div class="container">
+
+        <a
+          routerLink="/barberias"
+          class="back-link"
+        >
+          ← Volver a barberías
+        </a>
+
+
+        <div class="hero-content">
+
+
+          <div class="hero-info">
+
+            <span class="eyebrow">
+              BARBERÍA
+            </span>
+
+
+            <h1>
+              {{ barbershop.name }}
+            </h1>
+
+
+            <p class="location">
+
+              {{
+                barbershop.neighborhood
+                || barbershop.city
+              }},
+
+              {{ barbershop.city }}
+
+            </p>
+
+
+            @if (barbershop.description) {
+
+              <p class="description">
+
+                {{ barbershop.description }}
+
+              </p>
+
+            }
+
+
+            <div class="tags">
+
+              @for (
+                tag of getTags();
+                track tag
+              ) {
+
+                <span>
+                  {{ tag }}
+                </span>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <div class="hero-image">
+
+            <img
+              src="/images/barbergo/barbershop-1.jpg"
+              [alt]="barbershop.name"
+            >
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =============================================== -->
+    <!-- INFORMACIÓN -->
+    <!-- =============================================== -->
+
+    <section class="information-section">
+
+      <div class="container">
+
+        <div class="information-grid">
+
+
+          <!-- UBICACIÓN -->
+
+          <article class="info-card">
+
+            <span class="info-label">
+              UBICACIÓN
+            </span>
+
+            <h3>
+              {{ barbershop.address }}
+            </h3>
+
+            <p>
+
+              {{
+                barbershop.neighborhood
+                || barbershop.city
+              }}
+
+            </p>
+
+          </article>
+
+
+          <!-- CONTACTO -->
+
+          <article class="info-card">
+
+            <span class="info-label">
+              CONTACTO
+            </span>
+
+            <h3>
+
+              {{
+                barbershop.phone
+                || 'No disponible'
+              }}
+
+            </h3>
+
+            <p>
+
+              {{
+                barbershop.email
+                || 'Sin correo registrado'
+              }}
+
+            </p>
+
+          </article>
+
+
+          <!-- RESERVAS -->
+
+          <article class="info-card">
+
+            <span class="info-label">
+              RESERVAS
+            </span>
+
+
+            @if (
+              barbershop.requires_manual_confirmation
+            ) {
+
+              <h3>
+                Confirmación requerida
+              </h3>
+
+              <p>
+                La barbería debe confirmar
+                tu reserva.
+              </p>
+
+            }
+
+            @else {
+
+              <h3>
+                Confirmación inmediata
+              </h3>
+
+              <p>
+                Reserva directamente según
+                disponibilidad.
+              </p>
+
+            }
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =============================================== -->
+    <!-- SERVICIOS -->
+    <!-- =============================================== -->
+
+    <section class="services-section">
+
+      <div class="container">
+
+
+        <div class="section-heading">
+
+          <span class="eyebrow dark">
+            SERVICIOS
+          </span>
+
+          <h2>
+            Elige tu experiencia.
+          </h2>
+
+          <p>
+            Selecciona el servicio que deseas
+            para continuar con la elección
+            del barbero y el horario.
+          </p>
+
+        </div>
+
+
+        @if (
+          services.length === 0
+        ) {
+
+          <div class="services-empty">
+
+            <span>
+              ✂
+            </span>
+
+            <h3>
+              No hay servicios disponibles
+            </h3>
+
+            <p>
+              Esta barbería todavía no tiene
+              servicios activos publicados.
+            </p>
+
+          </div>
+
+        }
+
+        @else {
+
+          <div class="services-grid">
+
+            @for (
+              service of services;
+              track service.id
+            ) {
+
+              <button
+                type="button"
+                class="service-card"
+
+                [class.selected]="
+                  isServiceSelected(
+                    service.id
+                  )
+                "
+
+                (click)="
+                  selectService(
+                    service
+                  )
+                "
+              >
+
+
+                <div class="service-top">
+
+
+                  <div>
+
+                    <div class="service-labels">
+
+                      @if (
+                        service.is_vip
+                      ) {
+
+                        <span
+                          class="service-badge vip"
+                        >
+                          VIP
+                        </span>
+
+                      }
+
+
+                      @if (
+                        service.home_service_allowed
+                      ) {
+
+                        <span
+                          class="service-badge"
+                        >
+                          Domicilio
+                        </span>
+
+                      }
+
+                    </div>
+
+
+                    <h3>
+                      {{ service.name }}
+                    </h3>
+
+
+                    @if (
+                      service.description
+                    ) {
+
+                      <p>
+                        {{ service.description }}
+                      </p>
+
+                    }
+
+                  </div>
+
+
+                  <div class="selection-circle">
+
+                    @if (
+                      isServiceSelected(
+                        service.id
+                      )
+                    ) {
+                      ✓
+                    }
+
+                  </div>
+
+                </div>
+
+
+                <div class="service-bottom">
+
+                  <span>
+
+                    {{
+                      getDuration(
+                        service.duration_minutes
+                      )
+                    }}
+
+                  </span>
+
+                  <strong>
+
+                    {{
+                      getPrice(
+                        service.price
+                      )
+                    }}
+
+                  </strong>
+
+                </div>
+
+              </button>
+
+            }
+
+          </div>
+
+
+          @if (
+            selectedServiceId !== null
+          ) {
+
+            <div class="continue-panel">
+
+              <div>
+
+                <span>
+                  SERVICIO SELECCIONADO
+                </span>
+
+                <strong>
+                  Ahora elige tu profesional.
+                </strong>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="continue-button"
+                (click)="goToBarbers()"
+              >
+
+                Elegir barbero
+
+                <span>
+                  →
+                </span>
+
+              </button>
+
+            </div>
+
+          }
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- =============================================== -->
+    <!-- BARBEROS -->
+    <!-- =============================================== -->
+
+    @if (
+      selectedServiceId !== null
+    ) {
+
+      <section
+        id="barbers-section"
+        class="barbers-section"
+      >
+
+        <div class="container">
+
+
+          <div class="section-heading">
+
+            <span class="eyebrow dark">
+              PROFESIONAL
+            </span>
+
+            <h2>
+              Elige tu barbero.
+            </h2>
+
+            <p>
+              Estos profesionales están
+              disponibles para el servicio
+              que seleccionaste.
+            </p>
+
+          </div>
+
+
+          @if (
+            compatibleBarbers.length === 0
+          ) {
+
+            <div class="services-empty">
+
+              <span>
+                ✦
+              </span>
+
+              <h3>
+                No hay barberos disponibles
+              </h3>
+
+              <p>
+                Actualmente ningún profesional
+                tiene asignado este servicio.
+              </p>
+
+            </div>
+
+          }
+
+          @else {
+
+            <div class="barbers-grid">
+
+              @for (
+                barber of compatibleBarbers;
+                track barber.id
+              ) {
+
+                <button
+                  type="button"
+                  class="barber-card"
+
+                  [class.selected]="
+                    isBarberSelected(
+                      barber.id
+                    )
+                  "
+
+                  (click)="
+                    selectBarber(
+                      barber
+                    )
+                  "
+                >
+
+
+                  <div class="barber-avatar">
+
+                    {{
+                      getBarberInitials(
+                        barber
+                      )
+                    }}
+
+                  </div>
+
+
+                  <div class="barber-information">
+
+                    <div class="barber-heading">
+
+                      <div>
+
+                        <h3>
+
+                          {{ barber.first_name }}
+                          {{ barber.last_name }}
+
+                        </h3>
+
+                        <span class="experience">
+
+                          {{
+                            getExperience(
+                              barber.years_experience
+                            )
+                          }}
+
+                        </span>
+
+                      </div>
+
+
+                      <div class="selection-circle">
+
+                        @if (
+                          isBarberSelected(
+                            barber.id
+                          )
+                        ) {
+                          ✓
+                        }
+
+                      </div>
+
+                    </div>
+
+
+                    @if (
+                      barber.bio
+                    ) {
+
+                      <p class="barber-bio">
+
+                        {{ barber.bio }}
+
+                      </p>
+
+                    }
+
+
+                    <div class="barber-tags">
+
+                      @if (
+                        barber.accepts_home_service
+                      ) {
+
+                        <span>
+                          Domicilio
+                        </span>
+
+                      }
+
+
+                      <span>
+                        Disponible para este servicio
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </button>
+
+              }
+
+            </div>
+
+
+            @if (
+              selectedBarberId !== null
+            ) {
+
+              <div class="continue-panel">
+
+                <div>
+
+                  <span>
+                    BARBERO SELECCIONADO
+                  </span>
+
+                  <strong>
+                    Ahora elige fecha y hora.
+                  </strong>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  class="continue-button"
+                  (click)="goToAvailability()"
+                >
+
+                  Elegir fecha y hora
+
+                  <span>
+                    →
+                  </span>
+
+                </button>
+
+              </div>
+
+            }
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- =============================================== -->
+    <!-- DISPONIBILIDAD -->
+    <!-- =============================================== -->
+
+    @if (
+      selectedServiceId !== null
+      &&
+      selectedBarberId !== null
+    ) {
+
+      <section
+        id="availability-section"
+        class="availability-section"
+      >
+
+        <div class="container">
+
+
+          <div class="section-heading">
+
+            <span class="eyebrow dark">
+              FECHA Y HORA
+            </span>
+
+            <h2>
+              Elige cuándo quieres venir.
+            </h2>
+
+            <p>
+              Consulta los horarios disponibles
+              para el profesional seleccionado.
+            </p>
+
+          </div>
+
+
+          <!-- FECHA -->
+
+          <div class="date-selector">
+
+            <label for="booking-date">
+              Fecha de la reserva
+            </label>
+
+            <input
+              id="booking-date"
+              type="date"
+
+              [min]="minDate"
+
+              [value]="selectedDate"
+
+              (change)="
+                onDateChange(
+                  $event
+                )
+              "
+            >
+
+          </div>
+
+
+          <!-- AVISO RESTAURACIÓN -->
+
+          @if (
+            reservationNotice
+          ) {
+
+            <div class="reservation-notice">
+
+              {{ reservationNotice }}
+
+            </div>
+
+          }
+
+
+          <!-- CARGANDO -->
+
+          @if (
+            loadingAvailability
+          ) {
+
+            <div class="availability-state">
+
+              <div class="loader"></div>
+
+              <strong>
+                Consultando disponibilidad...
+              </strong>
+
+            </div>
+
+          }
+
+
+          <!-- ERROR -->
+
+          @else if (
+            availabilityError
+          ) {
+
+            <div class="availability-state error">
+
+              <strong>
+                No pudimos cargar los horarios.
+              </strong>
+
+              <p>
+                {{ availabilityError }}
+              </p>
+
+            </div>
+
+          }
+
+
+          <!-- SIN FECHA -->
+
+          @else if (
+            !selectedDate
+          ) {
+
+            <div class="availability-state">
+
+              <strong>
+                Selecciona una fecha
+              </strong>
+
+              <p>
+                Los horarios disponibles aparecerán aquí.
+              </p>
+
+            </div>
+
+          }
+
+
+          <!-- SIN HORARIOS -->
+
+          @else if (
+            !availabilityAvailable
+            ||
+            availabilitySlots.length === 0
+          ) {
+
+            <div class="availability-state">
+
+              <strong>
+                No hay horarios disponibles
+              </strong>
+
+              <p>
+                Prueba seleccionando otra fecha.
+              </p>
+
+            </div>
+
+          }
+
+
+          <!-- HORARIOS -->
+
+          @else {
+
+            <div class="slots-heading">
+
+              <span>
+                HORARIOS DISPONIBLES
+              </span>
+
+              <strong>
+
+                {{ availabilitySlots.length }}
+
+                opciones
+
+              </strong>
+
+            </div>
+
+
+            <div class="slots-grid">
+
+              @for (
+                slot of availabilitySlots;
+                track slot.start_time
+              ) {
+
+                <button
+                  type="button"
+                  class="slot-button"
+
+                  [class.selected]="
+                    isSlotSelected(
+                      slot
+                    )
+                  "
+
+                  (click)="
+                    selectSlot(
+                      slot
+                    )
+                  "
+                >
+
+                  <strong>
+
+                    {{
+                      formatTime(
+                        slot.start_time
+                      )
+                    }}
+
+                  </strong>
+
+                  <span>
+
+                    hasta
+
+                    {{
+                      formatTime(
+                        slot.end_time
+                      )
+                    }}
+
+                  </span>
+
+                </button>
+
+              }
+
+            </div>
+
+
+            @if (
+              selectedSlot
+            ) {
+
+              <div class="continue-panel">
+
+                <div>
+
+                  <span>
+                    HORARIO SELECCIONADO
+                  </span>
+
+                  <strong>
+
+                    {{
+                      formatTime(
+                        selectedSlot.start_time
+                      )
+                    }}
+
+                    -
+
+                    {{
+                      formatTime(
+                        selectedSlot.end_time
+                      )
+                    }}
+
+                  </strong>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  class="continue-button"
+                  (click)="goToReview()"
+                >
+
+                  Revisar reserva
+
+                  <span>
+                    →
+                  </span>
+
+                </button>
+
+              </div>
+
+            }
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- =============================================== -->
+    <!-- REVISIÓN DE RESERVA -->
+    <!-- =============================================== -->
+
+    @if (
+      selectedService
+      &&
+      selectedBarber
+      &&
+      selectedDate
+      &&
+      selectedSlot
+    ) {
+
+      <section
+        id="review-section"
+        class="review-section"
+      >
+
+        <div class="container">
+
+
+          <div class="section-heading">
+
+            <span class="eyebrow dark">
+              TU RESERVA
+            </span>
+
+            <h2>
+              Revisa antes de confirmar.
+            </h2>
+
+            <p>
+              Verifica que el servicio,
+              profesional, fecha y horario
+              sean correctos.
+            </p>
+
+          </div>
+
+
+          <div class="review-layout">
+
+
+            <!-- ===================================== -->
+            <!-- DATOS -->
+            <!-- ===================================== -->
+
+            <div class="review-card">
+
+
+              <!-- BARBERÍA -->
+
+              <div class="review-row">
+
+                <div class="review-icon">
+                  B
+                </div>
+
+                <div class="review-information">
+
+                  <span>
+                    BARBERÍA
+                  </span>
+
+                  <strong>
+                    {{ barbershop.name }}
+                  </strong>
+
+                  <p>
+                    {{ barbershop.address }}
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <!-- SERVICIO -->
+
+              <div class="review-row">
+
+                <div class="review-icon">
+                  S
+                </div>
+
+                <div class="review-information">
+
+                  <span>
+                    SERVICIO
+                  </span>
+
+                  <strong>
+                    {{ selectedService.name }}
+                  </strong>
+
+                  <p>
+
+                    {{
+                      getDuration(
+                        selectedService.duration_minutes
+                      )
+                    }}
+
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <!-- BARBERO -->
+
+              <div class="review-row">
+
+                <div class="review-icon">
+                  P
+                </div>
+
+                <div class="review-information">
+
+                  <span>
+                    PROFESIONAL
+                  </span>
+
+                  <strong>
+
+                    {{ selectedBarber.first_name }}
+                    {{ selectedBarber.last_name }}
+
+                  </strong>
+
+                  <p>
+
+                    {{
+                      getExperience(
+                        selectedBarber.years_experience
+                      )
+                    }}
+
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <!-- FECHA -->
+
+              <div class="review-row">
+
+                <div class="review-icon">
+                  F
+                </div>
+
+                <div class="review-information">
+
+                  <span>
+                    FECHA
+                  </span>
+
+                  <strong class="capitalize">
+
+                    {{
+                      formatDate(
+                        selectedDate
+                      )
+                    }}
+
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <!-- HORARIO -->
+
+              <div class="review-row">
+
+                <div class="review-icon">
+                  H
+                </div>
+
+                <div class="review-information">
+
+                  <span>
+                    HORARIO
+                  </span>
+
+                  <strong>
+
+                    {{
+                      formatTime(
+                        selectedSlot.start_time
+                      )
+                    }}
+
+                    —
+
+                    {{
+                      formatTime(
+                        selectedSlot.end_time
+                      )
+                    }}
+
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- ===================================== -->
+            <!-- RESUMEN -->
+            <!-- ===================================== -->
+
+            <aside class="booking-summary">
+
+
+              <span class="summary-label">
+                RESUMEN
+              </span>
+
+
+              <h3>
+                {{ selectedService.name }}
+              </h3>
+
+
+              <div class="summary-line">
+
+                <span>
+                  Servicio
+                </span>
+
+                <strong>
+
+                  {{
+                    getPrice(
+                      selectedService.price
+                    )
+                  }}
+
+                </strong>
+
+              </div>
+
+
+              <div class="summary-line">
+
+                <span>
+                  Duración
+                </span>
+
+                <strong>
+
+                  {{
+                    getDuration(
+                      selectedService.duration_minutes
+                    )
+                  }}
+
+                </strong>
+
+              </div>
+
+
+              <div class="summary-line">
+
+                <span>
+                  Profesional
+                </span>
+
+                <strong>
+
+                  {{ selectedBarber.first_name }}
+
+                </strong>
+
+              </div>
+
+
+              <div class="summary-line">
+
+                <span>
+                  Fecha
+                </span>
+
+                <strong>
+
+                  {{
+                    formatDate(
+                      selectedDate
+                    )
+                  }}
+
+                </strong>
+
+              </div>
+
+
+              <div class="summary-line">
+
+                <span>
+                  Hora
+                </span>
+
+                <strong>
+
+                  {{
+                    formatTime(
+                      selectedSlot.start_time
+                    )
+                  }}
+
+                </strong>
+
+              </div>
+
+
+              <div class="summary-divider">
+              </div>
+
+
+              <div class="summary-total">
+
+                <span>
+                  TOTAL
+                </span>
+
+                <strong>
+
+                  {{
+                    getPrice(
+                      selectedService.price
+                    )
+                  }}
+
+                </strong>
+
+              </div>
+
+
+              <!-- ERROR CREANDO RESERVA -->
+
+              @if (
+                bookingError
+              ) {
+
+                <div class="booking-feedback error">
+
+                  {{ bookingError }}
+
+                </div>
+
+              }
+
+
+              <!-- CONFIRMAR -->
+
+              <button
+                type="button"
+                class="confirm-booking-button"
+
+                [disabled]="bookingLoading"
+
+                (click)="confirmBooking()"
+              >
+
+                @if (
+                  bookingLoading
+                ) {
+
+                  <span>
+                    Creando reserva...
+                  </span>
+
+                }
+
+                @else {
+
+                  <span>
+                    Confirmar reserva
+                  </span>
+
+                  <span>
+                    →
+                  </span>
+
+                }
+
+              </button>
+
+
+              <p class="summary-note">
+
+                La disponibilidad será validada
+                nuevamente antes de crear
+                la reserva.
+
+              </p>
+
+            </aside>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    }
+
+  }
+
+</main>
+
+
+<!-- ================================================= -->
+<!-- MODAL RESERVA EXITOSA -->
+<!-- ================================================= -->
+
+@if (
+  showBookingSuccessModal
+  &&
+  barbershop
+  &&
+  selectedService
+  &&
+  selectedBarber
+  &&
+  selectedSlot
+) {
+
+  <div class="booking-modal-backdrop">
+
+
+    <section
+      class="booking-success-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="booking-success-title"
+    >
+
+
+      <!-- ICONO -->
+
+      <div class="booking-success-icon">
+
+        <span>
+          ✓
+        </span>
+
+      </div>
+
+
+      <!-- ENCABEZADO -->
+
+      <span class="booking-success-eyebrow">
+        RESERVA REGISTRADA
+      </span>
+
+
+      <h2 id="booking-success-title">
+        ¡Todo listo!
+      </h2>
+
+
+      <p class="booking-success-description">
+
+        {{ bookingSuccess }}
+
+      </p>
+
+
+      <!-- NÚMERO DE RESERVA -->
+
+      @if (
+        createdBookingId
+      ) {
+
+        <div class="booking-number">
+
+          <span>
+            NÚMERO DE RESERVA
+          </span>
+
+          <strong>
+            #{{ createdBookingId }}
+          </strong>
+
+        </div>
+
+      }
+
+
+      <!-- DETALLES -->
+
+      <div class="booking-success-details">
+
+
+        <div class="booking-success-detail">
+
+          <span>
+            BARBERÍA
+          </span>
+
+          <strong>
+            {{ barbershop.name }}
+          </strong>
+
+        </div>
+
+
+        <div class="booking-success-detail">
+
+          <span>
+            SERVICIO
+          </span>
+
+          <strong>
+            {{ selectedService.name }}
+          </strong>
+
+        </div>
+
+
+        <div class="booking-success-detail">
+
+          <span>
+            PROFESIONAL
+          </span>
+
+          <strong>
+
+            {{ selectedBarber.first_name }}
+            {{ selectedBarber.last_name }}
+
+          </strong>
+
+        </div>
+
+
+        <div class="booking-success-detail">
+
+          <span>
+            FECHA
+          </span>
+
+          <strong class="capitalize">
+
+            {{
+              formatDate(
+                selectedDate
+              )
+            }}
+
+          </strong>
+
+        </div>
+
+
+        <div class="booking-success-detail">
+
+          <span>
+            HORARIO
+          </span>
+
+          <strong>
+
+            {{
+              formatTime(
+                selectedSlot.start_time
+              )
+            }}
+
+            —
+
+            {{
+              formatTime(
+                selectedSlot.end_time
+              )
+            }}
+
+          </strong>
+
+        </div>
+
+
+        <div class="booking-success-detail">
+
+          <span>
+            TOTAL
+          </span>
+
+          <strong>
+
+            {{
+              getPrice(
+                selectedService.price
+              )
+            }}
+
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACCIONES -->
+
+      <div class="booking-success-actions">
+
+
+        <button
+          type="button"
+          class="view-bookings-button"
+          (click)="goToMyBookings()"
+        >
+
+          <span>
+            Ver mis reservas
+          </span>
+
+          <span>
+            →
+          </span>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="continue-browsing-button"
+          (click)="closeBookingSuccessModal()"
+        >
+          Seguir explorando
+        </button>
+
+      </div>
+
+
+      <p class="booking-success-note">
+
+        Puedes consultar el estado de esta cita
+        en cualquier momento desde Mis reservas.
+
+      </p>
+
+    </section>
+
+  </div>
+
+}
+
+
+<app-footer></app-footer>

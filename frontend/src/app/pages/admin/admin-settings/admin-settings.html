@@ -1,0 +1,2298 @@
+<div class="settings-page">
+
+
+  <!-- ================================================= -->
+  <!-- CABECERA -->
+  <!-- ================================================= -->
+
+  <header class="page-header">
+
+    <div class="header-copy">
+
+      <span class="eyebrow">
+        BARBERGO ADMIN
+      </span>
+
+      <h1>
+        Configuración
+      </h1>
+
+      <p>
+        Personaliza la operación de cada barbería,
+        sus reservas, clientes, barberos y comunicaciones.
+      </p>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================================================= -->
+  <!-- CARGANDO BARBERÍAS -->
+  <!-- ================================================= -->
+
+  @if (loadingBarbershops) {
+
+    <section class="state-card">
+
+      <div class="loader">
+      </div>
+
+      <strong>
+        Cargando barberías
+      </strong>
+
+      <p>
+        Estamos preparando la configuración administrativa.
+      </p>
+
+    </section>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- ERROR BARBERÍAS -->
+  <!-- ================================================= -->
+
+  @else if (error) {
+
+    <section class="state-card error-state">
+
+      <div class="state-icon">
+        !
+      </div>
+
+      <strong>
+        No pudimos cargar las barberías
+      </strong>
+
+      <p>
+        {{ error }}
+      </p>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="loadBarbershops()"
+      >
+        Reintentar
+      </button>
+
+    </section>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- SIN BARBERÍAS -->
+  <!-- ================================================= -->
+
+  @else if (barbershops.length === 0) {
+
+    <section class="state-card">
+
+      <div class="state-icon">
+        B
+      </div>
+
+      <strong>
+        No existen barberías
+      </strong>
+
+      <p>
+        Debes registrar al menos una barbería antes
+        de administrar su configuración.
+      </p>
+
+    </section>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- CONTENIDO -->
+  <!-- ================================================= -->
+
+  @else {
+
+
+    <!-- =============================================== -->
+    <!-- BARBERÍA -->
+    <!-- =============================================== -->
+
+    <section class="barbershop-selector-card">
+
+      <div class="selector-copy">
+
+        <span>
+          NEGOCIO
+        </span>
+
+        <strong>
+          Barbería que estás configurando
+        </strong>
+
+        <p>
+          Cada negocio puede operar con reglas completamente
+          independientes dentro de BarberGo.
+        </p>
+
+      </div>
+
+
+      <div class="selector-control">
+
+        <label for="settings-barbershop">
+          Seleccionar barbería
+        </label>
+
+        <select
+          id="settings-barbershop"
+          [value]="selectedBarbershopId ?? ''"
+          [disabled]="
+            loadingSettings
+            ||
+            savingSetting
+            ||
+            savingAutoConfirm
+          "
+          (change)="onBarbershopChange($event)"
+        >
+
+          @for (
+            shop of barbershops;
+            track shop.id
+          ) {
+
+            <option
+              [value]="shop.id"
+            >
+
+              {{ shop.name }}
+
+              @if (!shop.is_active) {
+                — Inactiva
+              }
+
+            </option>
+
+          }
+
+        </select>
+
+      </div>
+
+    </section>
+
+
+    <!-- =============================================== -->
+    <!-- RESUMEN BARBERÍA -->
+    <!-- =============================================== -->
+
+    @if (selectedBarbershop) {
+
+      <section class="selected-shop-summary">
+
+        <div class="shop-avatar">
+
+          {{
+            selectedBarbershop.name
+              .slice(0, 1)
+              .toUpperCase()
+          }}
+
+        </div>
+
+
+        <div class="shop-summary-copy">
+
+          <span>
+            CONFIGURANDO
+          </span>
+
+          <strong>
+            {{ selectedBarbershop.name }}
+          </strong>
+
+          <p>
+
+            @if (selectedBarbershop.city) {
+              {{ selectedBarbershop.city }}
+            }
+
+            @if (
+              selectedBarbershop.city
+              &&
+              selectedBarbershop.neighborhood
+            ) {
+              ·
+            }
+
+            @if (selectedBarbershop.neighborhood) {
+              {{ selectedBarbershop.neighborhood }}
+            }
+
+          </p>
+
+        </div>
+
+
+        <div
+          class="shop-status"
+          [class.active]="
+            selectedBarbershop.is_active
+          "
+          [class.inactive]="
+            !selectedBarbershop.is_active
+          "
+        >
+
+          <span class="status-dot">
+          </span>
+
+          {{
+            selectedBarbershop.is_active
+              ? 'Activa'
+              : 'Inactiva'
+          }}
+
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- =============================================== -->
+    <!-- CARGANDO CONFIGURACIÓN -->
+    <!-- =============================================== -->
+
+    @if (loadingSettings) {
+
+      <section class="state-card">
+
+        <div class="loader">
+        </div>
+
+        <strong>
+          Cargando configuración
+        </strong>
+
+        <p>
+          Consultando las reglas actuales del negocio.
+        </p>
+
+      </section>
+
+    }
+
+
+    <!-- =============================================== -->
+    <!-- ERROR CONFIGURACIÓN -->
+    <!-- =============================================== -->
+
+    @else if (
+      settingsError
+      &&
+      !settings
+    ) {
+
+      <section class="state-card error-state">
+
+        <div class="state-icon">
+          !
+        </div>
+
+        <strong>
+          No pudimos cargar la configuración
+        </strong>
+
+        <p>
+          {{ settingsError }}
+        </p>
+
+        @if (
+          selectedBarbershopId !== null
+        ) {
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="
+              loadSettings(
+                selectedBarbershopId
+              )
+            "
+          >
+            Reintentar
+          </button>
+
+        }
+
+      </section>
+
+    }
+
+
+    <!-- =============================================== -->
+    <!-- CONFIGURACIÓN -->
+    <!-- =============================================== -->
+
+    @else if (settings) {
+
+
+      <!-- ============================================= -->
+      <!-- NAVEGACIÓN HORIZONTAL -->
+      <!-- ============================================= -->
+
+      <nav
+        class="settings-subnav"
+        aria-label="Secciones de configuración"
+      >
+
+        @for (
+          section of visibleSettingsSections;
+          track section.id;
+          let index = $index
+        ) {
+
+          <button
+            type="button"
+            class="settings-tab"
+            [class.active]="
+              isSectionActive(
+                section.id
+              )
+            "
+            (click)="
+              setActiveSection(
+                section.id
+              )
+            "
+          >
+
+            <span class="tab-index">
+
+              {{
+                index + 1 < 10
+                  ? '0' + (index + 1)
+                  : index + 1
+              }}
+
+            </span>
+
+
+            <span class="tab-copy">
+
+              <strong>
+                {{ section.label }}
+              </strong>
+
+              <small>
+                {{ section.description }}
+              </small>
+
+            </span>
+
+          </button>
+
+        }
+
+      </nav>
+
+
+      <!-- ============================================= -->
+      <!-- CABECERA DE SECCIÓN ACTIVA -->
+      <!-- ============================================= -->
+
+      <div class="active-section-header">
+
+        <div>
+
+          <span>
+            CONFIGURACIÓN
+          </span>
+
+          <h2>
+            {{ selectedSettingsSection.label }}
+          </h2>
+
+        </div>
+
+        <p>
+          {{ selectedSettingsSection.description }}
+        </p>
+
+      </div>
+
+
+      <!-- ============================================= -->
+      <!-- MENSAJES -->
+      <!-- ============================================= -->
+
+      @if (successMessage) {
+
+        <div class="feedback success">
+
+          <span>
+            ✓
+          </span>
+
+          <p>
+            {{ successMessage }}
+          </p>
+
+          <button
+            type="button"
+            aria-label="Cerrar mensaje"
+            (click)="clearFeedback()"
+          >
+            ×
+          </button>
+
+        </div>
+
+      }
+
+
+      @if (settingsError) {
+
+        <div class="feedback error">
+
+          <span>
+            !
+          </span>
+
+          <p>
+            {{ settingsError }}
+          </p>
+
+          <button
+            type="button"
+            aria-label="Cerrar mensaje"
+            (click)="clearFeedback()"
+          >
+            ×
+          </button>
+
+        </div>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- GENERAL -->
+      <!-- ================================================= -->
+
+      @if (
+        isSectionActive(
+          'general'
+        )
+      ) {
+
+        <section class="settings-section section-panel">
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              01
+            </div>
+
+            <div>
+
+              <span>
+                OPERACIÓN
+              </span>
+
+              <h2>
+                Configuración general
+              </h2>
+
+              <p>
+                Define las reglas operativas principales
+                de esta barbería.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="settings-list">
+
+
+            <!-- RESERVAS HABILITADAS -->
+
+            <article class="setting-row">
+
+              <div class="setting-copy">
+
+                <strong>
+                  Reservas habilitadas
+                </strong>
+
+                <p>
+                  Permite recibir nuevas reservas desde
+                  BarberGo para este negocio.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="switch"
+                [class.on]="
+                  settings.bookings_enabled
+                "
+                [attr.aria-pressed]="
+                  settings.bookings_enabled
+                "
+                [disabled]="savingSetting"
+                (click)="
+                  updateBooleanSetting(
+                    'bookings_enabled',
+                    !settings.bookings_enabled
+                  )
+                "
+              >
+
+                <span class="switch-track">
+
+                  <span class="switch-thumb">
+                  </span>
+
+                </span>
+
+                <strong>
+
+                  {{
+                    settings.bookings_enabled
+                      ? 'ON'
+                      : 'OFF'
+                  }}
+
+                </strong>
+
+              </button>
+
+            </article>
+
+
+            <!-- TOLERANCIA -->
+
+            <div class="settings-fields-grid">
+
+              <label class="setting-field">
+
+                <span>
+                  Tolerancia de llegada
+                </span>
+
+                <small>
+                  Tiempo máximo de tolerancia para
+                  la llegada del cliente.
+                </small>
+
+                <div class="number-input">
+
+                  <input
+                    type="number"
+                    min="0"
+                    max="120"
+                    step="5"
+                    [value]="
+                      settings.tolerance_minutes
+                    "
+                    [disabled]="savingSetting"
+                    (change)="
+                      updateNumberSetting(
+                        'tolerance_minutes',
+                        $any($event.target).valueAsNumber
+                      )
+                    "
+                  >
+
+                  <span>
+                    min
+                  </span>
+
+                </div>
+
+              </label>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- RESERVAS -->
+      <!-- ================================================= -->
+
+      @if (
+        isSectionActive(
+          'bookings'
+        )
+      ) {
+
+        <section class="settings-section section-panel">
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              02
+            </div>
+
+            <div>
+
+              <span>
+                RESERVAS
+              </span>
+
+              <h2>
+                Agenda y reglas de reserva
+              </h2>
+
+              <p>
+                Controla cómo los clientes pueden
+                reservar, cancelar y reprogramar.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="settings-list">
+
+
+            <!-- CONFIRMACIÓN AUTOMÁTICA -->
+
+            <article class="setting-row featured">
+
+              <div class="setting-copy">
+
+                <div class="setting-title-line">
+
+                  <strong>
+                    Confirmación automática
+                  </strong>
+
+                  <span class="recommended-badge">
+                    PRINCIPAL
+                  </span>
+
+                </div>
+
+                <p>
+
+                  @if (
+                    settings.auto_confirm_bookings
+                  ) {
+
+                    Las nuevas reservas se confirmarán
+                    automáticamente.
+
+                  }
+
+                  @else {
+
+                    Las nuevas reservas permanecerán
+                    pendientes hasta ser confirmadas.
+
+                  }
+
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="switch"
+                [class.on]="
+                  settings.auto_confirm_bookings
+                "
+                [attr.aria-pressed]="
+                  settings.auto_confirm_bookings
+                "
+                [disabled]="savingAutoConfirm"
+                (click)="
+                  toggleAutoConfirmation()
+                "
+              >
+
+                <span class="switch-track">
+
+                  <span class="switch-thumb">
+                  </span>
+
+                </span>
+
+                <strong>
+
+                  @if (savingAutoConfirm) {
+
+                    ...
+
+                  }
+
+                  @else {
+
+                    {{
+                      settings.auto_confirm_bookings
+                        ? 'ON'
+                        : 'OFF'
+                    }}
+
+                  }
+
+                </strong>
+
+              </button>
+
+            </article>
+
+
+            <!-- MISMO DÍA -->
+
+            <article class="setting-row">
+
+              <div class="setting-copy">
+
+                <strong>
+                  Reservas el mismo día
+                </strong>
+
+                <p>
+                  Permite reservar servicios para
+                  la fecha actual cuando exista disponibilidad.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="switch"
+                [class.on]="
+                  settings.allow_same_day_booking
+                "
+                [disabled]="savingSetting"
+                (click)="
+                  updateBooleanSetting(
+                    'allow_same_day_booking',
+                    !settings.allow_same_day_booking
+                  )
+                "
+              >
+
+                <span class="switch-track">
+                  <span class="switch-thumb"></span>
+                </span>
+
+                <strong>
+
+                  {{
+                    settings.allow_same_day_booking
+                      ? 'ON'
+                      : 'OFF'
+                  }}
+
+                </strong>
+
+              </button>
+
+            </article>
+
+
+            <!-- OVERBOOKING -->
+
+            <article class="setting-row">
+
+              <div class="setting-copy">
+
+                <strong>
+                  Permitir sobrecupo
+                </strong>
+
+                <p>
+                  Autoriza reservas adicionales sobre
+                  franjas previamente ocupadas.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="switch danger-switch"
+                [class.on]="
+                  settings.allow_overbooking
+                "
+                [disabled]="savingSetting"
+                (click)="
+                  updateBooleanSetting(
+                    'allow_overbooking',
+                    !settings.allow_overbooking
+                  )
+                "
+              >
+
+                <span class="switch-track">
+                  <span class="switch-thumb"></span>
+                </span>
+
+                <strong>
+
+                  {{
+                    settings.allow_overbooking
+                      ? 'ON'
+                      : 'OFF'
+                  }}
+
+                </strong>
+
+              </button>
+
+            </article>
+
+
+            <!-- PARÁMETROS DE AGENDA -->
+
+            <div class="settings-group-title">
+
+              <span>
+                DISPONIBILIDAD
+              </span>
+
+              <strong>
+                Parámetros de agenda
+              </strong>
+
+            </div>
+
+
+            <div class="settings-fields-grid">
+
+              <label class="setting-field">
+
+                <span>
+                  Anticipación mínima
+                </span>
+
+                <small>
+                  Tiempo mínimo antes de la cita.
+                </small>
+
+                <div class="number-input">
+
+                  <input
+                    type="number"
+                    min="0"
+                    max="10080"
+                    step="5"
+                    [value]="
+                      settings.min_booking_notice_minutes
+                    "
+                    [disabled]="savingSetting"
+                    (change)="
+                      updateNumberSetting(
+                        'min_booking_notice_minutes',
+                        $any($event.target).valueAsNumber
+                      )
+                    "
+                  >
+
+                  <span>
+                    min
+                  </span>
+
+                </div>
+
+              </label>
+
+
+              <label class="setting-field">
+
+                <span>
+                  Máxima anticipación
+                </span>
+
+                <small>
+                  Cuántos días hacia adelante
+                  puede reservarse.
+                </small>
+
+                <div class="number-input">
+
+                  <input
+                    type="number"
+                    min="1"
+                    max="365"
+                    step="1"
+                    [value]="
+                      settings.max_booking_days_ahead
+                    "
+                    [disabled]="savingSetting"
+                    (change)="
+                      updateNumberSetting(
+                        'max_booking_days_ahead',
+                        $any($event.target).valueAsNumber
+                      )
+                    "
+                  >
+
+                  <span>
+                    días
+                  </span>
+
+                </div>
+
+              </label>
+
+
+              <!-- INTERVALO ACTUALMENTE FIJO -->
+
+              <label class="setting-field">
+
+                <span>
+                  Intervalo de agenda
+                </span>
+
+                <small>
+                  Intervalo utilizado actualmente
+                  por el motor de disponibilidad.
+                </small>
+
+                <select
+                  [value]="
+                    settings.booking_interval_minutes
+                  "
+                  disabled
+                >
+
+                  <option [value]="15">
+                    15 minutos
+                  </option>
+
+                </select>
+
+              </label>
+
+
+              <label class="setting-field">
+
+                <span>
+                  Tiempo entre servicios
+                </span>
+
+                <small>
+                  Margen adicional después
+                  de una reserva.
+                </small>
+
+                <select
+                  [value]="
+                    settings.buffer_between_bookings_minutes
+                  "
+                  [disabled]="savingSetting"
+                  (change)="
+                    updateNumberSetting(
+                      'buffer_between_bookings_minutes',
+                      +$any($event.target).value
+                    )
+                  "
+                >
+
+                  <option [value]="0">
+                    Sin margen
+                  </option>
+
+                  <option [value]="5">
+                    5 minutos
+                  </option>
+
+                  <option [value]="10">
+                    10 minutos
+                  </option>
+
+                  <option [value]="15">
+                    15 minutos
+                  </option>
+
+                  <option [value]="20">
+                    20 minutos
+                  </option>
+
+                  <option [value]="30">
+                    30 minutos
+                  </option>
+
+                  <option [value]="45">
+                    45 minutos
+                  </option>
+
+                  <option [value]="60">
+                    60 minutos
+                  </option>
+
+                </select>
+
+              </label>
+
+            </div>
+
+
+            <!-- CANCELACIONES -->
+
+            <div class="settings-group-title">
+
+              <span>
+                CAMBIOS
+              </span>
+
+              <strong>
+                Cancelaciones y reprogramaciones
+              </strong>
+
+            </div>
+
+
+            <article class="setting-row">
+
+              <div class="setting-copy">
+
+                <strong>
+                  Cancelación por cliente
+                </strong>
+
+                <p>
+                  Permite al cliente cancelar su
+                  propia reserva.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="switch"
+                [class.on]="
+                  settings.allow_customer_cancellation
+                "
+                [disabled]="savingSetting"
+                (click)="
+                  updateBooleanSetting(
+                    'allow_customer_cancellation',
+                    !settings.allow_customer_cancellation
+                  )
+                "
+              >
+
+                <span class="switch-track">
+                  <span class="switch-thumb"></span>
+                </span>
+
+                <strong>
+
+                  {{
+                    settings.allow_customer_cancellation
+                      ? 'ON'
+                      : 'OFF'
+                  }}
+
+                </strong>
+
+              </button>
+
+            </article>
+
+
+            <article class="setting-row">
+
+              <div class="setting-copy">
+
+                <strong>
+                  Permitir reprogramación
+                </strong>
+
+                <p>
+                  Permite cambiar fecha u hora de
+                  una reserva existente.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="switch"
+                [class.on]="
+                  settings.allow_reschedule
+                "
+                [disabled]="savingSetting"
+                (click)="
+                  updateBooleanSetting(
+                    'allow_reschedule',
+                    !settings.allow_reschedule
+                  )
+                "
+              >
+
+                <span class="switch-track">
+                  <span class="switch-thumb"></span>
+                </span>
+
+                <strong>
+
+                  {{
+                    settings.allow_reschedule
+                      ? 'ON'
+                      : 'OFF'
+                  }}
+
+                </strong>
+
+              </button>
+
+            </article>
+
+
+            <div class="settings-fields-grid">
+
+              <label class="setting-field">
+
+                <span>
+                  Límite para cancelar
+                </span>
+
+                <small>
+                  Anticipación mínima requerida.
+                </small>
+
+                <div class="number-input">
+
+                  <input
+                    type="number"
+                    min="0"
+                    max="43200"
+                    step="30"
+                    [value]="
+                      settings.cancellation_limit_minutes
+                    "
+                    [disabled]="
+                      savingSetting
+                      ||
+                      !settings.allow_customer_cancellation
+                    "
+                    (change)="
+                      updateNumberSetting(
+                        'cancellation_limit_minutes',
+                        $any($event.target).valueAsNumber
+                      )
+                    "
+                  >
+
+                  <span>
+                    min
+                  </span>
+
+                </div>
+
+              </label>
+
+
+              <label class="setting-field">
+
+                <span>
+                  Límite para reprogramar
+                </span>
+
+                <small>
+                  Anticipación mínima requerida.
+                </small>
+
+                <div class="number-input">
+
+                  <input
+                    type="number"
+                    min="0"
+                    max="43200"
+                    step="30"
+                    [value]="
+                      settings.reschedule_limit_minutes
+                    "
+                    [disabled]="
+                      savingSetting
+                      ||
+                      !settings.allow_reschedule
+                    "
+                    (change)="
+                      updateNumberSetting(
+                        'reschedule_limit_minutes',
+                        $any($event.target).valueAsNumber
+                      )
+                    "
+                  >
+
+                  <span>
+                    min
+                  </span>
+
+                </div>
+
+              </label>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- CLIENTES -->
+      <!-- ================================================= -->
+
+      @if (
+        isSectionActive(
+          'customers'
+        )
+      ) {
+
+        <section class="settings-section section-panel">
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              03
+            </div>
+
+            <div>
+
+              <span>
+                CLIENTES
+              </span>
+
+              <h2>
+                Experiencia de reserva
+              </h2>
+
+              <p>
+                Define qué información requiere BarberGo
+                y cómo el cliente selecciona su profesional.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="settings-list">
+
+
+            <!-- CUENTA -->
+
+            <article class="setting-row">
+
+              <div class="setting-copy">
+
+                <strong>
+                  Cuenta obligatoria
+                </strong>
+
+                <p>
+                  El cliente debe iniciar sesión antes
+                  de completar una reserva.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="switch"
+                [class.on]="
+                  settings.require_customer_account
+                "
+                [disabled]="savingSetting"
+                (click)="
+                  updateBooleanSetting(
+                    'require_customer_account',
+                    !settings.require_customer_account
+                  )
+                "
+              >
+
+                <span class="switch-track">
+                  <span class="switch-thumb"></span>
+                </span>
+
+                <strong>
+
+                  {{
+                    settings.require_customer_account
+                      ? 'ON'
+                      : 'OFF'
+                  }}
+
+                </strong>
+
+              </button>
+
+            </article>
+
+
+            <!-- TELÉFONO -->
+
+            <article class="setting-row">
+
+              <div class="setting-copy">
+
+                <strong>
+                  Teléfono obligatorio
+                </strong>
+
+                <p>
+                  Exige un número de contacto antes
+                  de crear la reserva.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="switch"
+                [class.on]="
+                  settings.require_customer_phone
+                "
+                [disabled]="savingSetting"
+                (click)="
+                  updateBooleanSetting(
+                    'require_customer_phone',
+                    !settings.require_customer_phone
+                  )
+                "
+              >
+
+                <span class="switch-track">
+                  <span class="switch-thumb"></span>
+                </span>
+
+                <strong>
+
+                  {{
+                    settings.require_customer_phone
+                      ? 'ON'
+                      : 'OFF'
+                  }}
+
+                </strong>
+
+              </button>
+
+            </article>
+
+
+            <!-- NOTAS -->
+
+            <article class="setting-row">
+
+              <div class="setting-copy">
+
+                <strong>
+                  Notas del cliente
+                </strong>
+
+                <p>
+                  Permite agregar instrucciones o
+                  comentarios durante la reserva.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="switch"
+                [class.on]="
+                  settings.allow_customer_notes
+                "
+                [disabled]="savingSetting"
+                (click)="
+                  updateBooleanSetting(
+                    'allow_customer_notes',
+                    !settings.allow_customer_notes
+                  )
+                "
+              >
+
+                <span class="switch-track">
+                  <span class="switch-thumb"></span>
+                </span>
+
+                <strong>
+
+                  {{
+                    settings.allow_customer_notes
+                      ? 'ON'
+                      : 'OFF'
+                  }}
+
+                </strong>
+
+              </button>
+
+            </article>
+
+
+            <!-- SELECCIÓN BARBERO -->
+
+            <div class="settings-group-title">
+
+              <span>
+                PROFESIONAL
+              </span>
+
+              <strong>
+                Selección de barbero
+              </strong>
+
+            </div>
+
+
+            <article class="setting-row">
+
+              <div class="setting-copy">
+
+                <strong>
+                  Cliente puede elegir barbero
+                </strong>
+
+                <p>
+                  Muestra los profesionales disponibles
+                  durante el proceso de reserva.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="switch"
+                [class.on]="
+                  settings.customer_can_choose_barber
+                "
+                [disabled]="savingSetting"
+                (click)="
+                  updateBooleanSetting(
+                    'customer_can_choose_barber',
+                    !settings.customer_can_choose_barber
+                  )
+                "
+              >
+
+                <span class="switch-track">
+                  <span class="switch-thumb"></span>
+                </span>
+
+                <strong>
+
+                  {{
+                    settings.customer_can_choose_barber
+                      ? 'ON'
+                      : 'OFF'
+                  }}
+
+                </strong>
+
+              </button>
+
+            </article>
+
+
+            <article class="setting-row">
+
+              <div class="setting-copy">
+
+                <strong>
+                  Cualquier barbero disponible
+                </strong>
+
+                <p>
+                  Permite reservar sin seleccionar
+                  un profesional específico.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="switch"
+                [class.on]="
+                  settings.allow_any_available_barber
+                "
+                [disabled]="savingSetting"
+                (click)="
+                  updateBooleanSetting(
+                    'allow_any_available_barber',
+                    !settings.allow_any_available_barber
+                  )
+                "
+              >
+
+                <span class="switch-track">
+                  <span class="switch-thumb"></span>
+                </span>
+
+                <strong>
+
+                  {{
+                    settings.allow_any_available_barber
+                      ? 'ON'
+                      : 'OFF'
+                  }}
+
+                </strong>
+
+              </button>
+
+            </article>
+
+          </div>
+
+        </section>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- BARBEROS -->
+      <!-- ================================================= -->
+
+      @if (
+        isSectionActive(
+          'barbers'
+        )
+      ) {
+
+        <section class="settings-section section-panel">
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              04
+            </div>
+
+            <div>
+
+              <span>
+                BARBEROS
+              </span>
+
+              <h2>
+                Permisos operativos
+              </h2>
+
+              <p>
+                Controla las acciones que los profesionales
+                podrán realizar desde BarberGo.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="settings-list compact">
+
+            @for (
+              item of [
+                {
+                  key: 'barber_can_confirm_bookings',
+                  label: 'Confirmar reservas',
+                  description: 'Puede confirmar citas que se encuentren pendientes.'
+                },
+                {
+                  key: 'barber_can_cancel_bookings',
+                  label: 'Cancelar reservas',
+                  description: 'Puede cancelar reservas asignadas a su agenda.'
+                },
+                {
+                  key: 'barber_can_start_service',
+                  label: 'Iniciar servicio',
+                  description: 'Puede marcar una reserva como servicio en curso.'
+                },
+                {
+                  key: 'barber_can_complete_service',
+                  label: 'Completar servicio',
+                  description: 'Puede finalizar una reserva cuando termine el servicio.'
+                },
+                {
+                  key: 'barber_can_block_schedule',
+                  label: 'Bloquear agenda',
+                  description: 'Puede crear bloqueos temporales de disponibilidad.'
+                },
+                {
+                  key: 'barber_can_edit_schedule',
+                  label: 'Editar horario',
+                  description: 'Puede modificar su horario habitual de trabajo.'
+                }
+              ];
+              track item.key
+            ) {
+
+              <article class="setting-row">
+
+                <div class="setting-copy">
+
+                  <strong>
+                    {{ item.label }}
+                  </strong>
+
+                  <p>
+                    {{ item.description }}
+                  </p>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  class="switch"
+                  [class.on]="
+                    $any(settings)[item.key]
+                  "
+                  [disabled]="savingSetting"
+                  (click)="
+                    updateBooleanSetting(
+                      $any(item.key),
+                      !$any(settings)[item.key]
+                    )
+                  "
+                >
+
+                  <span class="switch-track">
+                    <span class="switch-thumb"></span>
+                  </span>
+
+                  <strong>
+
+                    {{
+                      $any(settings)[item.key]
+                        ? 'ON'
+                        : 'OFF'
+                    }}
+
+                  </strong>
+
+                </button>
+
+              </article>
+
+            }
+
+          </div>
+
+        </section>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- NOTIFICACIONES -->
+      <!-- ================================================= -->
+
+      @if (
+        isSectionActive(
+          'notifications'
+        )
+      ) {
+
+        <section class="settings-section section-panel">
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              05
+            </div>
+
+            <div>
+
+              <span>
+                COMUNICACIONES
+              </span>
+
+              <h2>
+                Notificaciones y recordatorios
+              </h2>
+
+              <p>
+                Define qué eventos generan avisos
+                para clientes y profesionales.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="settings-list compact">
+
+            @for (
+              item of [
+                {
+                  key: 'notify_barber_new_booking',
+                  label: 'Nueva reserva al barbero',
+                  description: 'Notifica al profesional cuando recibe una nueva reserva.'
+                },
+                {
+                  key: 'notify_barber_cancellation',
+                  label: 'Cancelación al barbero',
+                  description: 'Notifica cuando una reserva asignada es cancelada.'
+                },
+                {
+                  key: 'notify_customer_confirmation',
+                  label: 'Confirmación al cliente',
+                  description: 'Notifica al cliente cuando su reserva es confirmada.'
+                },
+                {
+                  key: 'notify_customer_cancellation',
+                  label: 'Cancelación al cliente',
+                  description: 'Notifica al cliente cuando una reserva es cancelada.'
+                },
+                {
+                  key: 'send_booking_reminders',
+                  label: 'Recordatorios de reserva',
+                  description: 'Envía un recordatorio antes de la hora programada.'
+                }
+              ];
+              track item.key
+            ) {
+
+              <article class="setting-row">
+
+                <div class="setting-copy">
+
+                  <strong>
+                    {{ item.label }}
+                  </strong>
+
+                  <p>
+                    {{ item.description }}
+                  </p>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  class="switch"
+                  [class.on]="
+                    $any(settings)[item.key]
+                  "
+                  [disabled]="savingSetting"
+                  (click)="
+                    updateBooleanSetting(
+                      $any(item.key),
+                      !$any(settings)[item.key]
+                    )
+                  "
+                >
+
+                  <span class="switch-track">
+                    <span class="switch-thumb"></span>
+                  </span>
+
+                  <strong>
+
+                    {{
+                      $any(settings)[item.key]
+                        ? 'ON'
+                        : 'OFF'
+                    }}
+
+                  </strong>
+
+                </button>
+
+              </article>
+
+            }
+
+
+            <!-- RECORDATORIO -->
+
+            <div class="settings-fields-grid">
+
+              <label class="setting-field">
+
+                <span>
+                  Anticipación del recordatorio
+                </span>
+
+                <small>
+                  Cuánto tiempo antes de la cita
+                  debe enviarse el aviso.
+                </small>
+
+                <div class="number-input">
+
+                  <input
+                    type="number"
+                    min="1"
+                    max="10080"
+                    step="15"
+                    [value]="
+                      settings.reminder_minutes_before
+                    "
+                    [disabled]="
+                      savingSetting
+                      ||
+                      !settings.send_booking_reminders
+                    "
+                    (change)="
+                      updateNumberSetting(
+                        'reminder_minutes_before',
+                        $any($event.target).valueAsNumber
+                      )
+                    "
+                  >
+
+                  <span>
+                    min
+                  </span>
+
+                </div>
+
+              </label>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- ADMINISTRADORES -->
+      <!-- ================================================= -->
+
+      @if (
+        isSectionActive(
+          'admins'
+        )
+        &&
+        canManageAdmins
+      ) {
+
+        <section class="settings-section section-panel">
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              06
+            </div>
+
+            <div>
+
+              <span>
+                ACCESOS
+              </span>
+
+              <h2>
+                Administradores de la barbería
+              </h2>
+
+              <p>
+                Gestiona qué usuarios pueden administrar
+                la configuración de este negocio.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="settings-list">
+
+
+            <!-- =========================================== -->
+            <!-- AGREGAR ADMINISTRADOR -->
+            <!-- =========================================== -->
+
+            <div class="settings-group-title">
+
+              <span>
+                NUEVO ACCESO
+              </span>
+
+              <strong>
+                Asignar administrador
+              </strong>
+
+            </div>
+
+
+            <article class="setting-row featured">
+
+              <div class="setting-copy">
+
+                <strong>
+                  Agregar administrador
+                </strong>
+
+                <p>
+                  Ingresa el identificador del usuario
+                  al que deseas otorgar acceso administrativo
+                  sobre esta barbería.
+                </p>
+
+              </div>
+
+
+              <div class="admin-assign-control">
+
+                <input
+                  #adminUserIdInput
+                  type="number"
+                  min="1"
+                  step="1"
+                  inputmode="numeric"
+                  placeholder="ID de usuario"
+                  [disabled]="
+                    savingAdmin
+                    ||
+                    loadingAdmins
+                  "
+                  (keydown.enter)="
+                    assignAdmin(
+                      adminUserIdInput.valueAsNumber
+                    )
+                  "
+                >
+
+
+                <button
+                  type="button"
+                  class="secondary-button"
+                  [disabled]="
+                    savingAdmin
+                    ||
+                    loadingAdmins
+                  "
+                  (click)="
+                    assignAdmin(
+                      adminUserIdInput.valueAsNumber
+                    );
+                    adminUserIdInput.value = ''
+                  "
+                >
+
+                  @if (savingAdmin) {
+
+                    Agregando...
+
+                  }
+
+                  @else {
+
+                    Agregar administrador
+
+                  }
+
+                </button>
+
+              </div>
+
+            </article>
+
+
+            <!-- =========================================== -->
+            <!-- MENSAJE DE ÉXITO -->
+            <!-- =========================================== -->
+
+            @if (adminSuccess) {
+
+              <div class="feedback success">
+
+                <span>
+                  ✓
+                </span>
+
+                <p>
+                  {{ adminSuccess }}
+                </p>
+
+                <button
+                  type="button"
+                  aria-label="Cerrar mensaje"
+                  (click)="clearFeedback()"
+                >
+                  ×
+                </button>
+
+              </div>
+
+            }
+
+
+            <!-- =========================================== -->
+            <!-- MENSAJE DE ERROR -->
+            <!-- =========================================== -->
+
+            @if (adminError) {
+
+              <div class="feedback error">
+
+                <span>
+                  !
+                </span>
+
+                <p>
+                  {{ adminError }}
+                </p>
+
+                <button
+                  type="button"
+                  aria-label="Cerrar mensaje"
+                  (click)="clearFeedback()"
+                >
+                  ×
+                </button>
+
+              </div>
+
+            }
+
+
+            <!-- =========================================== -->
+            <!-- LISTADO DE ADMINISTRADORES -->
+            <!-- =========================================== -->
+
+            <div class="settings-group-title">
+
+              <span>
+                USUARIOS AUTORIZADOS
+              </span>
+
+              <strong>
+                Administradores actuales
+              </strong>
+
+            </div>
+
+
+            @if (loadingAdmins) {
+
+              <div class="admin-list-state">
+
+                <div class="loader">
+                </div>
+
+                <span>
+                  Cargando administradores...
+                </span>
+
+              </div>
+
+            }
+
+            @else if (
+              admins.length === 0
+            ) {
+
+              <div class="admin-empty-state">
+
+                <strong>
+                  No hay administradores delegados
+                </strong>
+
+                <p>
+                  Actualmente esta barbería no tiene
+                  usuarios adicionales con permisos
+                  administrativos.
+                </p>
+
+              </div>
+
+            }
+
+            @else {
+
+              <div class="admin-list">
+
+                @for (
+                  admin of admins;
+                  track admin.id
+                ) {
+
+                  <article class="admin-card">
+
+                    <div class="admin-avatar">
+
+                      {{
+                        admin.first_name
+                          .slice(0, 1)
+                          .toUpperCase()
+                      }}
+
+                      {{
+                        admin.last_name
+                          .slice(0, 1)
+                          .toUpperCase()
+                      }}
+
+                    </div>
+
+
+                    <div class="admin-card-copy">
+
+                      <strong>
+                        {{ admin.first_name }}
+                        {{ admin.last_name }}
+                      </strong>
+
+                      <span>
+                        {{ admin.email }}
+                      </span>
+
+                      <small>
+                        Usuario #{{ admin.user_id }}
+                      </small>
+
+                    </div>
+
+
+                    <div class="admin-card-actions">
+
+                      <span class="admin-status-badge">
+                        Activo
+                      </span>
+
+
+                      <button
+                        type="button"
+                        class="admin-remove-button"
+                        [disabled]="
+                          removingAdminUserId !== null
+                          ||
+                          savingAdmin
+                        "
+                        (click)="
+                          removeAdmin(
+                            admin.user_id
+                          )
+                        "
+                      >
+
+                        @if (
+                          removingAdminUserId ===
+                            admin.user_id
+                        ) {
+
+                          Retirando...
+
+                        }
+
+                        @else {
+
+                          Retirar acceso
+
+                        }
+
+                      </button>
+
+                    </div>
+
+                  </article>
+
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+        </section>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- PIE -->
+      <!-- ================================================= -->
+
+      <section class="settings-footer-info">
+
+        <div>
+
+          <span>
+            Barbería
+          </span>
+
+          <strong>
+            {{ settings.barbershop_name }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Identificador
+          </span>
+
+          <strong>
+            #{{ settings.barbershop_id }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Última actualización
+          </span>
+
+          <strong>
+
+            @if (settings.updated_at) {
+
+              {{ settings.updated_at }}
+
+            }
+
+            @else {
+
+              Sin registro
+
+            }
+
+          </strong>
+
+        </div>
+
+      </section>
+
+    }
+
+  }
+
+</div>

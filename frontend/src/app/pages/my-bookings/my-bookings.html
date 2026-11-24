@@ -1,0 +1,976 @@
+<app-navbar></app-navbar>
+
+
+<main class="bookings-page">
+
+
+  <!-- ================================================= -->
+  <!-- HERO -->
+  <!-- ================================================= -->
+
+  <section class="bookings-hero">
+
+    <div class="container">
+
+      <span class="eyebrow">
+        TU CUENTA
+      </span>
+
+
+      <h1>
+        Mis reservas.
+      </h1>
+
+
+      <p>
+        Consulta tus próximas citas y
+        revisa el historial de servicios
+        reservados en BarberGo.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================================= -->
+  <!-- CARGANDO -->
+  <!-- ================================================= -->
+
+  @if (
+    loading
+  ) {
+
+    <section class="bookings-state">
+
+      <div class="loader">
+      </div>
+
+      <strong>
+        Cargando tus reservas...
+      </strong>
+
+    </section>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- ERROR -->
+  <!-- ================================================= -->
+
+  @else if (
+    error
+  ) {
+
+    <section class="bookings-state error">
+
+      <span class="state-icon">
+        !
+      </span>
+
+      <h2>
+        No pudimos cargar tus reservas.
+      </h2>
+
+      <p>
+        {{ error }}
+      </p>
+
+
+      <a
+        routerLink="/barberias"
+        class="primary-link"
+      >
+        Explorar barberías
+      </a>
+
+    </section>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- SIN RESERVAS -->
+  <!-- ================================================= -->
+
+  @else if (
+    bookings.length === 0
+  ) {
+
+    <section class="empty-bookings">
+
+      <div class="empty-icon">
+        ✦
+      </div>
+
+
+      <span>
+        AÚN NO TIENES CITAS
+      </span>
+
+
+      <h2>
+        Tu próxima experiencia
+        empieza aquí.
+      </h2>
+
+
+      <p>
+        Busca una barbería, elige tu
+        profesional y reserva el horario
+        que mejor se adapte a ti.
+      </p>
+
+
+      <a
+        routerLink="/barberias"
+        class="explore-button"
+      >
+
+        Explorar barberías
+
+        <span>
+          →
+        </span>
+
+      </a>
+
+    </section>
+
+  }
+
+
+  @else {
+
+
+    <!-- =============================================== -->
+    <!-- PRÓXIMAS RESERVAS -->
+    <!-- =============================================== -->
+
+    <section class="bookings-section">
+
+      <div class="container">
+
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="section-eyebrow">
+              PRÓXIMAS CITAS
+            </span>
+
+            <h2>
+              Lo que viene.
+            </h2>
+
+          </div>
+
+
+          <span class="booking-count">
+
+            {{ upcomingBookings.length }}
+
+            @if (
+              upcomingBookings.length === 1
+            ) {
+              reserva
+            }
+
+            @else {
+              reservas
+            }
+
+          </span>
+
+        </div>
+
+
+        @if (
+          upcomingBookings.length === 0
+        ) {
+
+          <div class="section-empty">
+
+            <p>
+              No tienes próximas citas activas.
+            </p>
+
+            <a
+              routerLink="/barberias"
+            >
+              Hacer una nueva reserva →
+            </a>
+
+          </div>
+
+        }
+
+        @else {
+
+          <div class="bookings-grid">
+
+            @for (
+              booking of upcomingBookings;
+              track booking.id
+            ) {
+
+              <article
+                class="booking-card featured"
+              >
+
+
+                <!-- CABECERA -->
+
+                <div class="booking-card-top">
+
+                  <div>
+
+                    <span class="booking-number">
+                      RESERVA #{{ booking.id }}
+                    </span>
+
+                    <span
+                      class="status-badge"
+                      [class]="
+                        'status-badge '
+                        +
+                        getStatusClass(
+                          booking.status_code
+                        )
+                      "
+                    >
+
+                      {{
+                        getStatusLabel(
+                          booking.status_code
+                        )
+                      }}
+
+                    </span>
+
+                  </div>
+
+
+                  <strong class="booking-price">
+
+                    {{
+                      getPrice(
+                        booking.service_price
+                      )
+                    }}
+
+                  </strong>
+
+                </div>
+
+
+                <!-- BARBERÍA -->
+
+                <div class="booking-main">
+
+                  <span class="booking-label">
+                    BARBERÍA
+                  </span>
+
+                  <h3>
+                    {{ booking.barbershop_name }}
+                  </h3>
+
+
+                  <a
+                    [routerLink]="[
+                      '/barberias',
+                      booking.barbershop_id
+                    ]"
+                    class="barbershop-link"
+                  >
+                    Ver barbería →
+                  </a>
+
+                </div>
+
+
+                <!-- DATOS -->
+
+                <div class="booking-information">
+
+
+                  <div class="booking-info">
+
+                    <span>
+                      SERVICIO
+                    </span>
+
+                    <strong>
+                      {{ booking.service_name }}
+                    </strong>
+
+                  </div>
+
+
+                  <div class="booking-info">
+
+                    <span>
+                      PROFESIONAL
+                    </span>
+
+                    <strong>
+                      {{ booking.barber_name }}
+                    </strong>
+
+                  </div>
+
+
+                  <div class="booking-info">
+
+                    <span>
+                      FECHA
+                    </span>
+
+                    <strong class="capitalize">
+
+                      {{
+                        formatDate(
+                          booking.start_at
+                        )
+                      }}
+
+                    </strong>
+
+                  </div>
+
+
+                  <div class="booking-info">
+
+                    <span>
+                      HORARIO
+                    </span>
+
+                    <strong>
+
+                      {{
+                        formatTime(
+                          booking.start_at
+                        )
+                      }}
+
+                      —
+
+                      {{
+                        formatTime(
+                          booking.end_at
+                        )
+                      }}
+
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <div class="booking-cancellation">
+
+
+  <div class="cancellation-policy">
+
+    <span class="cancellation-icon">
+      !
+    </span>
+
+
+    <div>
+
+      <strong>
+        Política de cancelación
+      </strong>
+
+
+      @if (
+        canCancelBooking(
+          booking
+        )
+      ) {
+
+        <p>
+
+          {{
+            getCancellationText(
+              booking
+            )
+          }}
+
+        </p>
+
+      }
+
+      @else {
+
+        <p class="blocked">
+
+          {{
+            getCancellationBlockedText(
+              booking
+            )
+          }}
+
+        </p>
+
+      }
+
+    </div>
+
+  </div>
+
+
+  <button
+    type="button"
+    class="cancel-booking-button"
+
+    [disabled]="
+      !canCancelBooking(
+        booking
+      )
+    "
+
+    (click)="
+      requestCancellation(
+        booking
+      )
+    "
+  >
+
+    <span class="cancel-icon">
+      ×
+    </span>
+
+    <span>
+      Cancelar reserva
+    </span>
+
+  </button>
+
+</div>
+
+              </article>
+
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- =============================================== -->
+    <!-- HISTORIAL -->
+    <!-- =============================================== -->
+
+    @if (
+      historyBookings.length > 0
+    ) {
+
+      <section class="bookings-section history-section">
+
+        <div class="container">
+
+
+          <div class="section-heading">
+
+            <div>
+
+              <span class="section-eyebrow">
+                HISTORIAL
+              </span>
+
+              <h2>
+                Tus reservas anteriores.
+              </h2>
+
+            </div>
+
+
+            <span class="booking-count">
+
+              {{ historyBookings.length }}
+
+            </span>
+
+          </div>
+
+
+          <div class="history-list">
+
+            @for (
+              booking of historyBookings;
+              track booking.id
+            ) {
+
+              <article class="history-card">
+
+
+                <div class="history-date">
+
+                  <span class="capitalize">
+
+                    {{
+                      formatDate(
+                        booking.start_at
+                      )
+                    }}
+
+                  </span>
+
+                  <strong>
+
+                    {{
+                      formatTime(
+                        booking.start_at
+                      )
+                    }}
+
+                  </strong>
+
+                </div>
+
+
+                <div class="history-main">
+
+                  <strong>
+                    {{ booking.service_name }}
+                  </strong>
+
+                  <span>
+
+                    {{ booking.barbershop_name }}
+
+                    ·
+
+                    {{ booking.barber_name }}
+
+                  </span>
+
+                </div>
+
+
+                <div class="history-status">
+
+                  <span
+                    [class]="
+                      'status-badge '
+                      +
+                      getStatusClass(
+                        booking.status_code
+                      )
+                    "
+                  >
+
+                    {{
+                      getStatusLabel(
+                        booking.status_code
+                      )
+                    }}
+
+                  </span>
+
+
+                  <strong>
+
+                    {{
+                      getPrice(
+                        booking.service_price
+                      )
+                    }}
+
+                  </strong>
+
+                </div>
+
+              </article>
+
+            }
+
+          </div>
+
+        </div>
+
+      </section>
+
+    }
+
+  }
+
+</main>
+
+
+
+
+
+<!-- ================================================= -->
+<!-- MODAL CANCELAR RESERVA -->
+<!-- ================================================= -->
+
+@if (
+  showCancellationModal
+  &&
+  selectedBookingForCancellation
+) {
+
+  <div class="cancel-modal-backdrop">
+
+    <section
+      class="cancel-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cancel-booking-title"
+    >
+
+
+      <!-- ============================================ -->
+      <!-- CANCELACIÓN EXITOSA -->
+      <!-- ============================================ -->
+
+      @if (
+        cancellationSuccess
+      ) {
+
+        <div class="cancel-success-icon">
+          ✓
+        </div>
+
+
+        <span class="cancel-modal-eyebrow">
+          RESERVA CANCELADA
+        </span>
+
+
+        <h2 id="cancel-booking-title">
+          Cancelación completada.
+        </h2>
+
+
+        <p class="cancel-modal-description">
+
+          {{ cancellationSuccess }}
+
+        </p>
+
+
+        <div class="cancelled-booking-summary">
+
+
+          <div>
+
+            <span>
+              RESERVA
+            </span>
+
+            <strong>
+              #{{ selectedBookingForCancellation.id }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              SERVICIO
+            </span>
+
+            <strong>
+              {{ selectedBookingForCancellation.service_name }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              BARBERÍA
+            </span>
+
+            <strong>
+              {{ selectedBookingForCancellation.barbershop_name }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="cancel-modal-close-success"
+          (click)="closeCancellationModal()"
+        >
+          Entendido
+        </button>
+
+      }
+
+
+      <!-- ============================================ -->
+      <!-- CONFIRMACIÓN -->
+      <!-- ============================================ -->
+
+      @else {
+
+        <div class="cancel-warning-icon">
+          !
+        </div>
+
+
+        <span class="cancel-modal-eyebrow">
+          CANCELAR RESERVA
+        </span>
+
+
+        <h2 id="cancel-booking-title">
+          ¿Quieres cancelar esta cita?
+        </h2>
+
+
+        <p class="cancel-modal-description">
+
+          Revisa los datos antes de continuar.
+          Esta acción cambiará el estado de la
+          reserva y no puede deshacerse.
+
+        </p>
+
+
+        <!-- ========================================== -->
+        <!-- INFORMACIÓN RESERVA -->
+        <!-- ========================================== -->
+
+        <div class="cancel-booking-summary">
+
+
+          <div class="cancel-summary-row">
+
+            <span>
+              RESERVA
+            </span>
+
+            <strong>
+              #{{ selectedBookingForCancellation.id }}
+            </strong>
+
+          </div>
+
+
+          <div class="cancel-summary-row">
+
+            <span>
+              BARBERÍA
+            </span>
+
+            <strong>
+              {{
+                selectedBookingForCancellation
+                  .barbershop_name
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="cancel-summary-row">
+
+            <span>
+              SERVICIO
+            </span>
+
+            <strong>
+              {{
+                selectedBookingForCancellation
+                  .service_name
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="cancel-summary-row">
+
+            <span>
+              PROFESIONAL
+            </span>
+
+            <strong>
+              {{
+                selectedBookingForCancellation
+                  .barber_name
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="cancel-summary-row">
+
+            <span>
+              FECHA
+            </span>
+
+            <strong class="capitalize">
+
+              {{
+                formatDate(
+                  selectedBookingForCancellation
+                    .start_at
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="cancel-summary-row">
+
+            <span>
+              HORARIO
+            </span>
+
+            <strong>
+
+              {{
+                formatTime(
+                  selectedBookingForCancellation
+                    .start_at
+                )
+              }}
+
+              —
+
+              {{
+                formatTime(
+                  selectedBookingForCancellation
+                    .end_at
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- POLÍTICA -->
+        <!-- ========================================== -->
+
+        <div class="cancel-policy-warning">
+
+          <span>
+            i
+          </span>
+
+
+          <p>
+
+            {{
+              getCancellationText(
+                selectedBookingForCancellation
+              )
+            }}
+
+          </p>
+
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- ERROR -->
+        <!-- ========================================== -->
+
+        @if (
+          cancellationError
+        ) {
+
+          <div class="cancel-modal-error">
+
+            {{ cancellationError }}
+
+          </div>
+
+        }
+
+
+        <!-- ========================================== -->
+        <!-- BOTONES -->
+        <!-- ========================================== -->
+
+        <div class="cancel-modal-actions">
+
+
+          <button
+            type="button"
+            class="keep-booking-button"
+
+            [disabled]="
+              cancellationLoading
+            "
+
+            (click)="
+              closeCancellationModal()
+            "
+          >
+            Mantener reserva
+          </button>
+
+
+          <button
+            type="button"
+            class="confirm-cancel-button"
+
+            [disabled]="
+              cancellationLoading
+            "
+
+            (click)="
+              confirmCancellation()
+            "
+          >
+
+            @if (
+              cancellationLoading
+            ) {
+
+              <span>
+                Cancelando...
+              </span>
+
+            }
+
+            @else {
+
+              <span>
+                Sí, cancelar reserva
+              </span>
+
+            }
+
+          </button>
+
+        </div>
+
+      }
+
+    </section>
+
+  </div>
+
+}
+
+
+<app-footer></app-footer>

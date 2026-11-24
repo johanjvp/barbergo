@@ -1,0 +1,679 @@
+<section class="calendar-shell">
+
+  <!-- ================================================= -->
+  <!-- CABECERA -->
+  <!-- ================================================= -->
+
+  <header class="calendar-header">
+
+    <div>
+
+      <span class="calendar-eyebrow">
+        AGENDA SEMANAL
+      </span>
+
+      <h3>
+        {{ barberName }}
+      </h3>
+
+      <p>
+        Horario laboral, descansos, bloqueos y reservas programadas.
+      </p>
+
+    </div>
+
+
+    <div class="calendar-navigation">
+
+      <button
+        type="button"
+        (click)="previousWeek.emit()"
+      >
+        ←
+      </button>
+
+
+      <button
+        type="button"
+        class="today-button"
+        (click)="currentWeek.emit()"
+      >
+        Hoy
+      </button>
+
+
+      <button
+        type="button"
+        (click)="nextWeek.emit()"
+      >
+        →
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================================================= -->
+  <!-- ESTADO AGENDA -->
+  <!-- ================================================= -->
+
+  @if (loadingAgenda) {
+
+    <div class="calendar-agenda-state">
+
+      <span class="calendar-agenda-loader">
+      </span>
+
+      <span>
+        Cargando horario del barbero...
+      </span>
+
+    </div>
+
+  }
+
+
+  @if (agendaError) {
+
+    <div class="calendar-agenda-state error">
+
+      <strong>
+        No fue posible cargar el horario
+      </strong>
+
+      <span>
+        {{ agendaError }}
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- LEYENDA -->
+  <!-- ================================================= -->
+
+  @if (
+    agenda
+  ) {
+
+    <div class="calendar-legend">
+
+      <div>
+
+        <span class="legend-dot working">
+        </span>
+
+        Jornada laboral
+
+      </div>
+
+
+      <div>
+
+        <span class="legend-dot break">
+        </span>
+
+        Descanso
+
+      </div>
+
+
+      <div>
+
+        <span class="legend-dot blocked">
+        </span>
+
+        Bloqueado
+
+      </div>
+
+
+      <div>
+
+        <span class="legend-dot booking">
+        </span>
+
+        Reserva
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- CALENDARIO -->
+  <!-- ================================================= -->
+
+  <div class="calendar-scroll">
+
+    <div class="calendar-grid">
+
+      <!-- ================================================= -->
+      <!-- ESQUINA -->
+      <!-- ================================================= -->
+
+      <div class="calendar-corner">
+        HORA
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- DÍAS -->
+      <!-- ================================================= -->
+
+      @for (
+        day of days;
+        track day.isoDate
+      ) {
+
+        <div
+          class="calendar-day-header"
+          [class.today]="day.isToday"
+          [class.closed]="
+            agenda
+            &&
+            !isBarbershopOpen(day)
+          "
+        >
+
+          <span>
+            {{ day.dayName }}
+          </span>
+
+          <strong>
+            {{ day.dayNumber }}
+          </strong>
+
+          <small>
+            {{ day.monthName }}
+          </small>
+
+
+          @if (
+            agenda
+          ) {
+
+            @if (
+              !isBarbershopOpen(day)
+            ) {
+
+              <em class="day-status closed">
+                Cerrado
+              </em>
+
+            }
+
+            @else if (
+              !isBarberWorking(day)
+            ) {
+
+              <em class="day-status off">
+                No trabaja
+              </em>
+
+            }
+
+            @else {
+
+              @if (
+                getAgendaDay(day);
+                as agendaDay
+              ) {
+
+                <em class="day-status working">
+
+                  {{
+                    formatAgendaTime(
+                      agendaDay.start_time
+                    )
+                  }}
+
+                  –
+
+                  {{
+                    formatAgendaTime(
+                      agendaDay.end_time
+                    )
+                  }}
+
+                </em>
+
+              }
+
+            }
+
+          }
+
+        </div>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- HORAS -->
+      <!-- ================================================= -->
+
+      <div
+        class="calendar-time-column"
+        [style.height.px]="calendarHeight"
+      >
+
+        @for (
+          hour of hours;
+          track hour
+        ) {
+
+          <div
+            class="time-label"
+            [style.height.px]="hourHeight"
+          >
+
+            {{ formatHour(hour) }}
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- COLUMNAS DÍAS -->
+      <!-- ================================================= -->
+
+      @for (
+        day of days;
+        track day.isoDate
+      ) {
+
+        <div
+          class="calendar-day-column"
+          [class.today]="day.isToday"
+          [class.barbershop-closed]="
+            agenda
+            &&
+            !isBarbershopOpen(day)
+          "
+          [class.barber-off]="
+            agenda
+            &&
+            isBarbershopOpen(day)
+            &&
+            !isBarberWorking(day)
+          "
+          [style.height.px]="calendarHeight"
+        >
+
+          <!-- ============================================= -->
+          <!-- LÍNEAS HORARIAS -->
+          <!-- ============================================= -->
+
+          @for (
+            hour of hours;
+            track hour
+          ) {
+
+            <div
+              class="calendar-hour-line"
+              [style.height.px]="hourHeight"
+            >
+            </div>
+
+          }
+
+
+          <!-- ============================================= -->
+          <!-- FONDO: BARBERÍA CERRADA -->
+          <!-- ============================================= -->
+
+          @if (
+            agenda
+            &&
+            !isBarbershopOpen(day)
+          ) {
+
+            <div
+              class="calendar-closed-layer"
+              [style.height.px]="calendarHeight"
+            >
+
+              <span>
+                BARBERÍA CERRADA
+              </span>
+
+            </div>
+
+          }
+
+
+          <!-- ============================================= -->
+          <!-- FONDO: BARBERO NO TRABAJA -->
+          <!-- ============================================= -->
+
+          @if (
+            agenda
+            &&
+            isBarbershopOpen(day)
+            &&
+            !isBarberWorking(day)
+          ) {
+
+            <div
+              class="calendar-off-layer"
+              [style.height.px]="calendarHeight"
+            >
+
+              <span>
+                BARBERO NO DISPONIBLE
+              </span>
+
+            </div>
+
+          }
+
+
+          <!-- ============================================= -->
+          <!-- JORNADA LABORAL -->
+          <!-- ============================================= -->
+
+          @if (
+            agenda
+            &&
+            isBarberWorking(day)
+          ) {
+
+            @if (
+              getAgendaDay(day);
+              as agendaDay
+            ) {
+
+              <div
+                class="calendar-working-range"
+                [style.top.px]="
+                  getWorkingTop(
+                    day
+                  )
+                "
+                [style.height.px]="
+                  getWorkingHeight(
+                    day
+                  )
+                "
+              >
+
+                <span class="working-range-label">
+
+                  Jornada
+
+                  {{
+                    formatAgendaTime(
+                      agendaDay.start_time
+                    )
+                  }}
+
+                  –
+
+                  {{
+                    formatAgendaTime(
+                      agendaDay.end_time
+                    )
+                  }}
+
+                </span>
+
+              </div>
+
+            }
+
+          }
+
+
+          <!-- ============================================= -->
+          <!-- DESCANSOS -->
+          <!-- ============================================= -->
+
+          @for (
+            breakItem of getBreaksForDay(day);
+            track breakItem.id
+          ) {
+
+            <div
+              class="calendar-break"
+              [style.top.px]="
+                getBreakTop(
+                  breakItem
+                )
+              "
+              [style.height.px]="
+                getBreakHeight(
+                  breakItem
+                )
+              "
+            >
+
+              <strong>
+                {{ breakItem.name }}
+              </strong>
+
+
+              <span>
+
+                {{
+                  formatAgendaTime(
+                    breakItem.start_time
+                  )
+                }}
+
+                –
+
+                {{
+                  formatAgendaTime(
+                    breakItem.end_time
+                  )
+                }}
+
+              </span>
+
+            </div>
+
+          }
+
+
+          <!-- ============================================= -->
+          <!-- BLOQUEOS -->
+          <!-- ============================================= -->
+
+          @for (
+            block of getBlocksForDay(day);
+            track block.id
+          ) {
+
+            <div
+              class="calendar-block"
+              [style.top.px]="
+                getBlockTop(
+                  block,
+                  day
+                )
+              "
+              [style.height.px]="
+                getBlockHeight(
+                  block,
+                  day
+                )
+              "
+            >
+
+              <strong>
+                Bloqueado
+              </strong>
+
+
+              <span>
+
+                {{
+                  formatBlockTime(
+                    block.start_at
+                  )
+                }}
+
+                –
+
+                {{
+                  formatBlockTime(
+                    block.end_at
+                  )
+                }}
+
+              </span>
+
+
+              @if (
+                block.reason
+              ) {
+
+                <small>
+                  {{ block.reason }}
+                </small>
+
+              }
+
+            </div>
+
+          }
+
+
+          <!-- ============================================= -->
+          <!-- RESERVAS -->
+          <!-- ============================================= -->
+
+          @for (
+            booking of getBookingsForDay(day);
+            track booking.id
+          ) {
+
+            <button
+              type="button"
+              class="calendar-booking"
+              [class]="
+                'calendar-booking '
+                +
+                statusClass(
+                  booking.status_code
+                )
+              "
+              [style.top.px]="
+                getBookingTop(
+                  booking
+                )
+              "
+              [style.height.px]="
+                getBookingHeight(
+                  booking
+                )
+              "
+              (click)="
+                openBooking(
+                  booking
+                )
+              "
+            >
+
+              <span class="booking-calendar-time">
+
+                {{
+                  formatBookingTime(
+                    booking.start_at
+                  )
+                }}
+
+              </span>
+
+
+              <strong>
+
+                {{ booking.client_full_name }}
+
+              </strong>
+
+
+              <small>
+
+                {{ booking.service_name }}
+
+              </small>
+
+
+              <!-- ===================================== -->
+              <!-- TOOLTIP -->
+              <!-- ===================================== -->
+
+              <span class="booking-hover-card">
+
+                <span class="hover-time">
+
+                  {{
+                    formatBookingTime(
+                      booking.start_at
+                    )
+                  }}
+
+                  –
+
+                  {{
+                    formatBookingTime(
+                      booking.end_at
+                    )
+                  }}
+
+                </span>
+
+
+                <strong>
+                  {{ booking.client_full_name }}
+                </strong>
+
+
+                <span>
+                  {{ booking.service_name }}
+                </span>
+
+
+                <span>
+                  {{ booking.barbershop_name }}
+                </span>
+
+
+                <b>
+                  {{
+                    formatCurrency(
+                      booking.service_price
+                    )
+                  }}
+                </b>
+
+
+                <em>
+                  Haz clic para ver la reserva
+                </em>
+
+              </span>
+
+            </button>
+
+          }
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</section>

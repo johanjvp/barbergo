@@ -1,0 +1,186 @@
+<aside class="admin-sidebar">
+
+  <!-- =============================================== -->
+  <!-- LOGO -->
+  <!-- =============================================== -->
+
+  <div class="sidebar-brand">
+
+    <a
+      routerLink="/admin"
+      class="brand"
+    >
+
+      <span class="brand-name">
+        BarberGo
+      </span>
+
+      <span class="brand-label">
+        ADMIN
+      </span>
+
+    </a>
+
+  </div>
+
+
+  <!-- =============================================== -->
+  <!-- NAVEGACIÓN -->
+  <!-- =============================================== -->
+
+  <nav class="sidebar-navigation">
+
+
+    <span class="navigation-label">
+      GENERAL
+    </span>
+
+
+    <!-- DASHBOARD -->
+
+    <a
+      routerLink="/admin"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{
+        exact: true
+      }"
+      class="navigation-item"
+    >
+
+      <span class="navigation-icon">
+        ◫
+      </span>
+
+      <span>
+        Dashboard
+      </span>
+
+    </a>
+
+
+    <!-- BARBERÍAS -->
+
+    <a
+  routerLink="/admin/barberias"
+  routerLinkActive="active"
+  class="nav-item"
+>
+  <span class="nav-icon">
+    B
+  </span>
+
+  <span class="nav-label">
+    Barberías
+  </span>
+</a>
+
+
+    <!-- USUARIOS -->
+
+    <a
+  routerLink="/admin/usuarios"
+  routerLinkActive="active"
+  class="nav-item"
+>
+
+  <span class="nav-icon">
+    U
+  </span>
+
+  <span class="nav-label">
+    Usuarios
+  </span>
+
+</a>
+
+
+    <!-- RESERVAS -->
+
+<a
+  routerLink="/admin/reservas"
+  routerLinkActive="active"
+  class="nav-item"
+>
+
+  <span class="nav-icon">
+    R
+  </span>
+
+  <span class="nav-label">
+    Reservas
+  </span>
+
+</a>
+
+
+    <span class="navigation-label second">
+      INTELIGENCIA
+    </span>
+
+
+    <!-- ANALÍTICA -->
+
+    <button
+      type="button"
+      class="navigation-item disabled"
+    >
+
+      <span class="navigation-icon">
+        ↗
+      </span>
+
+      <span>
+        Analítica
+      </span>
+
+      <span class="coming-soon">
+        PRONTO
+      </span>
+
+    </button>
+
+
+    <!-- CONFIGURACIÓN -->
+
+    <a
+  routerLink="/admin/configuracion"
+  routerLinkActive="active"
+  class="nav-item"
+>
+  <span class="nav-icon">
+    ⚙
+  </span>
+
+  <span class="nav-label">
+    Configuración
+  </span>
+</a>
+
+  </nav>
+
+
+  <!-- =============================================== -->
+  <!-- USUARIO ADMIN -->
+  <!-- =============================================== -->
+
+  <div class="sidebar-user">
+
+    <div class="admin-avatar">
+      A
+    </div>
+
+    <div class="admin-information">
+
+      <strong>
+        Administrador
+      </strong>
+
+      <span>
+        PLATFORM_ADMIN
+      </span>
+
+    </div>
+
+  </div>
+
+</aside>

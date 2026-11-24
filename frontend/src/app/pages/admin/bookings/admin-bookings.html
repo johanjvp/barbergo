@@ -1,0 +1,2325 @@
+<section class="bookings-page">
+
+  <!-- ================================================= -->
+  <!-- HEADER -->
+  <!-- ================================================= -->
+
+  <header class="page-header">
+
+    <div>
+
+      <span class="eyebrow">
+        BOOKING MANAGEMENT
+      </span>
+
+      <h1>
+        Reservas
+      </h1>
+
+      <p>
+        Consulta y supervisa las reservas realizadas
+        en BarberGo, su estado, valor y operación.
+      </p>
+
+    </div>
+
+
+    <div class="results-badge">
+
+      <span>
+        RESULTADOS
+      </span>
+
+      <strong>
+        {{ total }}
+      </strong>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================================================= -->
+  <!-- KPI PRINCIPALES -->
+  <!-- ================================================= -->
+
+  <section class="summary-grid">
+
+    <article class="summary-card blue">
+
+      <div class="summary-icon">
+        R
+      </div>
+
+      <span>
+        RESERVAS
+      </span>
+
+      <strong>
+        {{ summary.total }}
+      </strong>
+
+      <small>
+        {{ summary.today }} programadas para hoy
+      </small>
+
+    </article>
+
+
+    <article class="summary-card orange">
+
+      <div class="summary-icon">
+        P
+      </div>
+
+      <span>
+        PENDIENTES
+      </span>
+
+      <strong>
+        {{ summary.pending }}
+      </strong>
+
+      <small>
+        Por confirmar
+      </small>
+
+    </article>
+
+
+    <article class="summary-card violet">
+
+      <div class="summary-icon">
+        C
+      </div>
+
+      <span>
+        CONFIRMADAS
+      </span>
+
+      <strong>
+        {{ summary.confirmed }}
+      </strong>
+
+      <small>
+        Próximas reservas confirmadas
+      </small>
+
+    </article>
+
+
+    <article class="summary-card green">
+
+      <div class="summary-icon">
+        $
+      </div>
+
+      <span>
+        VALOR RESERVADO
+      </span>
+
+      <strong>
+        {{
+          formatCurrency(
+            summary.reserved_value
+          )
+        }}
+      </strong>
+
+      <small>
+        Operación vigente
+      </small>
+
+    </article>
+
+  </section>
+
+
+  <!-- ================================================= -->
+  <!-- KPI SECUNDARIOS -->
+  <!-- ================================================= -->
+
+  <section class="secondary-summary">
+
+    <div>
+
+      <span class="secondary-dot in-progress">
+      </span>
+
+      <div>
+
+        <span>
+          EN PROGRESO
+        </span>
+
+        <strong>
+          {{ summary.in_progress }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <span class="secondary-dot completed">
+      </span>
+
+      <div>
+
+        <span>
+          COMPLETADAS
+        </span>
+
+        <strong>
+          {{ summary.completed }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <span class="secondary-dot cancelled">
+      </span>
+
+      <div>
+
+        <span>
+          CANCELADAS
+        </span>
+
+        <strong>
+          {{ summary.cancelled }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <span class="secondary-dot rejected">
+      </span>
+
+      <div>
+
+        <span>
+          RECHAZADAS
+        </span>
+
+        <strong>
+          {{ summary.rejected }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <span class="secondary-dot no-show">
+      </span>
+
+      <div>
+
+        <span>
+          NO SHOW
+        </span>
+
+        <strong>
+          {{ summary.no_show }}
+        </strong>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================================= -->
+  <!-- AGENDA POR BARBERÍA Y BARBERO -->
+  <!-- ================================================= -->
+
+  <section class="agenda-management">
+
+    <header class="agenda-management-header">
+
+      <div>
+
+        <span class="agenda-eyebrow">
+          AGENDA OPERATIVA
+        </span>
+
+        <h2>
+          Agenda por barbería
+        </h2>
+
+        <p>
+          Selecciona una barbería y luego un barbero
+          para consultar su agenda semanal.
+        </p>
+
+      </div>
+
+    </header>
+
+
+    <!-- =============================================== -->
+    <!-- SELECTOR DE BARBERÍA -->
+    <!-- =============================================== -->
+
+    <div class="agenda-shop-selector">
+
+      <label>
+
+        <span>
+          BARBERÍA
+        </span>
+
+        <select
+          [value]="barbershopId ?? ''"
+          [disabled]="loadingBarbershops"
+          (change)="onBarbershopChange($event)"
+        >
+
+          <option value="">
+            Todas las barberías
+          </option>
+
+
+          @for (
+            shop of barbershops;
+            track shop.id
+          ) {
+
+            <option
+              [value]="shop.id"
+            >
+
+              {{ shop.name }}
+
+              @if (shop.city) {
+
+                — {{ shop.city }}
+
+              }
+
+            </option>
+
+          }
+
+        </select>
+
+      </label>
+
+    </div>
+
+
+    <!-- =============================================== -->
+    <!-- BARBEROS -->
+    <!-- =============================================== -->
+
+    @if (
+      barbershopId !== null
+    ) {
+
+      <section class="barber-navigation">
+
+        <header class="barber-navigation-heading">
+
+          <span>
+            PROFESIONALES
+          </span>
+
+          <strong>
+            Selecciona un barbero
+          </strong>
+
+        </header>
+
+
+        @if (
+          loadingBarbers
+        ) {
+
+          <div class="barbers-loading">
+
+            <span class="loader-small">
+            </span>
+
+            Cargando profesionales...
+
+          </div>
+
+        }
+
+
+        @else if (
+          barbers.length === 0
+        ) {
+
+          <div class="barbers-loading">
+
+            No existen barberos activos
+            asociados a esta barbería.
+
+          </div>
+
+        }
+
+
+        @else {
+
+          <div class="barber-tabs">
+
+            <button
+              type="button"
+              class="barber-tab"
+              [class.active]="
+                barberId === null
+              "
+              (click)="
+                selectBarber(
+                  null
+                )
+              "
+            >
+
+              <span class="barber-tab-avatar">
+                T
+              </span>
+
+              <span class="barber-tab-copy">
+
+                <strong>
+                  Todos
+                </strong>
+
+                <small>
+                  Agenda general
+                </small>
+
+              </span>
+
+            </button>
+
+
+            @for (
+              barber of barbers;
+              track barber.id
+            ) {
+
+              <button
+                type="button"
+                class="barber-tab"
+                [class.active]="
+                  barberId === barber.id
+                "
+                (click)="
+                  selectBarber(
+                    barber.id
+                  )
+                "
+              >
+
+                <span class="barber-tab-avatar">
+
+                  {{
+                    barber.first_name
+                      .charAt(0)
+                      .toUpperCase()
+                  }}
+
+                  {{
+                    barber.last_name
+                      .charAt(0)
+                      .toUpperCase()
+                  }}
+
+                </span>
+
+
+                <span class="barber-tab-copy">
+
+                  <strong>
+
+                    {{ barber.first_name }}
+                    {{ barber.last_name }}
+
+                  </strong>
+
+                  <small>
+                    Barbero #{{ barber.id }}
+                  </small>
+
+                </span>
+
+              </button>
+
+            }
+
+          </div>
+
+        }
+
+      </section>
+
+    }
+
+  </section>
+
+
+  <!-- ================================================= -->
+  <!-- BÚSQUEDA -->
+  <!-- ================================================= -->
+
+  <section class="toolbar">
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        ⌕
+      </span>
+
+      <input
+        type="search"
+        [value]="search"
+        placeholder="Buscar cliente, barbería, barbero, correo o servicio..."
+        autocomplete="off"
+        aria-label="Buscar reservas"
+        (input)="onSearch($event)"
+      >
+
+    </div>
+
+
+    <div class="date-filters">
+
+      <label>
+
+        <span>
+          DESDE
+        </span>
+
+        <input
+          type="date"
+          [value]="dateFrom"
+          (change)="onDateFromChange($event)"
+        >
+
+      </label>
+
+
+      <label>
+
+        <span>
+          HASTA
+        </span>
+
+        <input
+          type="date"
+          [value]="dateTo"
+          (change)="onDateToChange($event)"
+        >
+
+      </label>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================================= -->
+  <!-- FILTROS DE ESTADO -->
+  <!-- ================================================= -->
+
+  <section class="status-filter">
+
+    <button
+      type="button"
+      [class.active]="statusFilter === 'all'"
+      (click)="setStatusFilter('all')"
+    >
+      Todas
+    </button>
+
+
+    <button
+      type="button"
+      class="pending"
+      [class.active]="statusFilter === 'PENDING'"
+      (click)="setStatusFilter('PENDING')"
+    >
+      Pendientes
+    </button>
+
+
+    <button
+      type="button"
+      class="confirmed"
+      [class.active]="statusFilter === 'CONFIRMED'"
+      (click)="setStatusFilter('CONFIRMED')"
+    >
+      Confirmadas
+    </button>
+
+
+    <button
+      type="button"
+      class="in-progress"
+      [class.active]="statusFilter === 'IN_PROGRESS'"
+      (click)="setStatusFilter('IN_PROGRESS')"
+    >
+      En progreso
+    </button>
+
+
+    <button
+      type="button"
+      class="completed"
+      [class.active]="statusFilter === 'COMPLETED'"
+      (click)="setStatusFilter('COMPLETED')"
+    >
+      Completadas
+    </button>
+
+
+    <button
+      type="button"
+      class="cancelled"
+      [class.active]="
+        statusFilter === 'CANCELLED_BY_CUSTOMER'
+      "
+      (click)="
+        setStatusFilter(
+          'CANCELLED_BY_CUSTOMER'
+        )
+      "
+    >
+      Canc. cliente
+    </button>
+
+
+    <button
+      type="button"
+      class="cancelled"
+      [class.active]="
+        statusFilter === 'CANCELLED_BY_BARBER'
+      "
+      (click)="
+        setStatusFilter(
+          'CANCELLED_BY_BARBER'
+        )
+      "
+    >
+      Canc. barbero
+    </button>
+
+
+    <button
+      type="button"
+      class="cancelled"
+      [class.active]="
+        statusFilter === 'CANCELLED_BY_ADMIN'
+      "
+      (click)="
+        setStatusFilter(
+          'CANCELLED_BY_ADMIN'
+        )
+      "
+    >
+      Canc. admin
+    </button>
+
+
+    <button
+      type="button"
+      class="rejected"
+      [class.active]="statusFilter === 'REJECTED'"
+      (click)="setStatusFilter('REJECTED')"
+    >
+      Rechazadas
+    </button>
+
+
+    <button
+      type="button"
+      class="no-show"
+      [class.active]="statusFilter === 'NO_SHOW'"
+      (click)="setStatusFilter('NO_SHOW')"
+    >
+      No show
+    </button>
+
+  </section>
+
+
+  <!-- ================================================= -->
+  <!-- FILTROS ACTIVOS -->
+  <!-- ================================================= -->
+
+  @if (
+    search
+    ||
+    statusFilter !== 'all'
+    ||
+    barbershopId !== null
+    ||
+    barberId !== null
+    ||
+    dateFrom
+    ||
+    dateTo
+  ) {
+
+    <section class="active-filters">
+
+      <div>
+
+        <span class="filter-indicator">
+          F
+        </span>
+
+        <span>
+          Filtros aplicados
+        </span>
+
+      </div>
+
+
+      <button
+        type="button"
+        (click)="clearFilters()"
+      >
+        Limpiar filtros
+      </button>
+
+    </section>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- LOADING -->
+  <!-- ================================================= -->
+
+  @if (loading) {
+
+    <div class="state-box">
+
+      <div class="loader">
+      </div>
+
+      <strong>
+        Consultando reservas...
+      </strong>
+
+      <p>
+        Cargando la operación de BarberGo.
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- ERROR -->
+  <!-- ================================================= -->
+
+  @else if (error) {
+
+    <div class="state-box error">
+
+      <span class="error-icon">
+        !
+      </span>
+
+      <strong>
+        No pudimos cargar las reservas
+      </strong>
+
+      <p>
+        {{ error }}
+      </p>
+
+      <button
+        type="button"
+        (click)="loadBookings(true)"
+      >
+        Reintentar
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- SIN RESULTADOS -->
+  <!-- ================================================= -->
+
+  @else if (
+    bookings.length === 0
+    &&
+    barberId === null
+  ) {
+
+    <div class="state-box">
+
+      <span class="empty-icon">
+        R
+      </span>
+
+      <strong>
+        No encontramos reservas
+      </strong>
+
+      <p>
+
+        @if (
+          search
+          ||
+          statusFilter !== 'all'
+          ||
+          barbershopId !== null
+          ||
+          dateFrom
+          ||
+          dateTo
+        ) {
+
+          No existen reservas que coincidan
+          con los filtros seleccionados.
+
+        }
+
+        @else {
+
+          Todavía no existen reservas registradas.
+
+        }
+
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- RESULTADOS -->
+  <!-- ================================================= -->
+
+  @else {
+
+    <!-- ================================================= -->
+    <!-- CALENDARIO SEMANAL -->
+    <!-- ================================================= -->
+
+    @if (
+      barberId !== null
+    ) {
+
+      <app-admin-booking-calendar
+  [bookings]="bookings"
+  [barberName]="selectedBarberName"
+  [weekStart]="weekStart"
+
+  [agenda]="weeklyAgenda"
+  [loadingAgenda]="loadingAgenda"
+  [agendaError]="agendaError"
+
+  (bookingSelected)="openBooking($event)"
+  (previousWeek)="goToPreviousWeek()"
+  (nextWeek)="goToNextWeek()"
+  (currentWeek)="goToCurrentWeek()"
+>
+</app-admin-booking-calendar>
+
+    }
+
+
+    <!-- ================================================= -->
+    <!-- LISTADO GENERAL -->
+    <!-- ================================================= -->
+
+    @else {
+
+      <section class="bookings-list">
+
+        @for (
+          booking of bookings;
+          track booking.id;
+          let index = $index
+        ) {
+
+          <article
+            class="booking-card"
+            [style.animation-delay.ms]="
+              index * 30
+            "
+          >
+
+            <div
+              [class]="
+                'booking-status-line '
+                +
+                statusClass(
+                  booking.status_code
+                )
+              "
+            >
+            </div>
+
+
+            <header class="booking-card-header">
+
+              <div class="booking-reference">
+
+                <span>
+                  RESERVA
+                </span>
+
+                <strong>
+                  #{{ booking.id }}
+                </strong>
+
+              </div>
+
+
+              <span
+                [class]="
+                  'status-badge '
+                  +
+                  statusClass(
+                    booking.status_code
+                  )
+                "
+              >
+
+                <span>
+                </span>
+
+                {{
+                  statusLabel(
+                    booking.status_code
+                  )
+                }}
+
+              </span>
+
+            </header>
+
+
+            <section class="client-block">
+
+              <div class="client-avatar">
+
+                {{
+                  getClientInitials(
+                    booking
+                  )
+                }}
+
+              </div>
+
+
+              <div class="client-information">
+
+                <span>
+                  CLIENTE
+                </span>
+
+                <strong>
+                  {{ booking.client_full_name }}
+                </strong>
+
+                <small>
+                  {{ booking.client_email }}
+                </small>
+
+              </div>
+
+            </section>
+
+
+            <section class="booking-schedule">
+
+              <div>
+
+                <span>
+                  FECHA
+                </span>
+
+                <strong>
+
+                  {{
+                    formatDate(
+                      booking.start_at
+                    )
+                  }}
+
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  HORA
+                </span>
+
+                <strong>
+
+                  {{
+                    formatTime(
+                      booking.start_at
+                    )
+                  }}
+
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  DURACIÓN
+                </span>
+
+                <strong>
+
+                  {{
+                    getDurationMinutes(
+                      booking
+                    )
+                  }}
+
+                  min
+
+                </strong>
+
+              </div>
+
+            </section>
+
+
+            <section class="booking-operation">
+
+              <div>
+
+                <span>
+                  BARBERÍA
+                </span>
+
+                <strong>
+                  {{ booking.barbershop_name }}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  BARBERO
+                </span>
+
+                <strong>
+                  {{ booking.barber_full_name }}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  SERVICIO
+                </span>
+
+                <strong>
+                  {{ booking.service_name }}
+                </strong>
+
+              </div>
+
+            </section>
+
+
+            <section class="booking-value">
+
+              <div>
+
+                <span>
+                  VALOR DE LA RESERVA
+                </span>
+
+                <strong>
+
+                  {{
+                    formatCurrency(
+                      booking.service_price
+                    )
+                  }}
+
+                </strong>
+
+              </div>
+
+
+              <span class="booking-created">
+
+                Creada
+
+                {{
+                  formatDate(
+                    booking.created_at
+                  )
+                }}
+
+              </span>
+
+            </section>
+
+
+            <button
+              type="button"
+              class="details-button"
+              (click)="openBooking(booking)"
+            >
+
+              Ver reserva
+
+              <span>
+                →
+              </span>
+
+            </button>
+
+          </article>
+
+        }
+
+      </section>
+
+
+      <!-- ================================================= -->
+      <!-- PAGINACIÓN -->
+      <!-- ================================================= -->
+
+      <section class="load-more-area">
+
+        <div class="load-progress-info">
+
+          <div>
+
+            <strong>
+              {{ bookings.length }}
+            </strong>
+
+            <span>
+
+              de {{ total }}
+
+              @if (
+                total === 1
+              ) {
+
+                reserva mostrada
+
+              }
+
+              @else {
+
+                reservas mostradas
+
+              }
+
+            </span>
+
+          </div>
+
+
+          @if (
+            hasMore
+          ) {
+
+            <span class="remaining-label">
+
+              {{ remainingCount }}
+
+              @if (
+                remainingCount === 1
+              ) {
+
+                restante
+
+              }
+
+              @else {
+
+                restantes
+
+              }
+
+            </span>
+
+          }
+
+          @else {
+
+            <span class="all-loaded">
+
+              <span>
+                ✓
+              </span>
+
+              Todas cargadas
+
+            </span>
+
+          }
+
+        </div>
+
+
+        <div
+          class="load-progress"
+          role="progressbar"
+          [attr.aria-valuenow]="loadProgress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+
+          <span
+            [style.width.%]="loadProgress"
+          >
+          </span>
+
+        </div>
+
+
+        @if (
+          hasMore
+        ) {
+
+          <button
+            type="button"
+            class="load-more-button"
+            [disabled]="loadingMore"
+            (click)="loadMore()"
+          >
+
+            @if (
+              loadingMore
+            ) {
+
+              <span class="load-more-spinner">
+              </span>
+
+              <span>
+
+                Cargando reservas...
+
+                <small>
+                  Consultando nuevos resultados
+                </small>
+
+              </span>
+
+            }
+
+            @else {
+
+              <span class="load-more-icon">
+                ↓
+              </span>
+
+              <span>
+
+                Cargar más
+
+                <small>
+
+                  Mostrar
+
+                  @if (
+                    remainingCount >
+                    pageSize
+                  ) {
+
+                    {{ pageSize }}
+
+                  }
+
+                  @else {
+
+                    {{ remainingCount }}
+
+                  }
+
+                  @if (
+                    (
+                      remainingCount >
+                      pageSize
+                        ? pageSize
+                        : remainingCount
+                    ) === 1
+                  ) {
+
+                    reserva más
+
+                  }
+
+                  @else {
+
+                    reservas más
+
+                  }
+
+                </small>
+
+              </span>
+
+            }
+
+          </button>
+
+        }
+
+      </section>
+
+    }
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- DRAWER RESERVA -->
+  <!-- ================================================= -->
+
+  @if (
+    selectedBooking
+  ) {
+
+    <div
+      class="drawer-backdrop"
+      (click)="closeBooking()"
+    >
+
+      <aside
+        class="booking-drawer"
+        (click)="$event.stopPropagation()"
+      >
+
+        <button
+          type="button"
+          class="drawer-close"
+          aria-label="Cerrar detalle"
+          (click)="closeBooking()"
+        >
+          ×
+        </button>
+
+
+        <!-- ================================================= -->
+        <!-- CABECERA -->
+        <!-- ================================================= -->
+
+        <header class="drawer-header">
+
+          <div class="drawer-booking-icon">
+            R
+          </div>
+
+
+          <div class="drawer-heading">
+
+            <span class="drawer-eyebrow">
+              DETALLE ADMINISTRATIVO
+            </span>
+
+            <h2>
+              Reserva #{{ selectedBooking.id }}
+            </h2>
+
+
+            <span
+              [class]="
+                'status-badge '
+                +
+                statusClass(
+                  selectedBooking.status_code
+                )
+              "
+            >
+
+              <span>
+              </span>
+
+              {{
+                statusLabel(
+                  selectedBooking.status_code
+                )
+              }}
+
+            </span>
+
+          </div>
+
+        </header>
+
+
+        <!-- ================================================= -->
+        <!-- FECHA Y HORA -->
+        <!-- ================================================= -->
+
+        <section class="drawer-highlight">
+
+          <div>
+
+            <span>
+              FECHA
+            </span>
+
+            <strong>
+
+              {{
+                formatDate(
+                  selectedBooking.start_at
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              INICIO
+            </span>
+
+            <strong>
+
+              {{
+                formatTime(
+                  selectedBooking.start_at
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              FIN
+            </span>
+
+            <strong>
+
+              {{
+                formatTime(
+                  selectedBooking.end_at
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- CLIENTE -->
+        <!-- ================================================= -->
+
+        <section class="drawer-section">
+
+          <span class="section-label">
+            CLIENTE
+          </span>
+
+
+          <div class="drawer-person">
+
+            <div class="drawer-avatar">
+
+              {{
+                getClientInitials(
+                  selectedBooking
+                )
+              }}
+
+            </div>
+
+
+            <div>
+
+              <strong>
+
+                {{
+                  selectedBooking
+                    .client_full_name
+                }}
+
+              </strong>
+
+              <span>
+
+                {{
+                  selectedBooking
+                    .client_email
+                }}
+
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              Teléfono
+            </span>
+
+            <strong>
+
+              {{
+                selectedBooking
+                  .client_phone
+                ||
+                'No registrado'
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              ID cliente
+            </span>
+
+            <strong>
+
+              {{
+                selectedBooking
+                  .client_user_id
+              }}
+
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- OPERACIÓN -->
+        <!-- ================================================= -->
+
+        <section class="drawer-section">
+
+          <span class="section-label">
+            OPERACIÓN
+          </span>
+
+
+          <div class="detail-row">
+
+            <span>
+              Barbería
+            </span>
+
+            <strong>
+
+              {{
+                selectedBooking
+                  .barbershop_name
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              Barbero
+            </span>
+
+            <strong>
+
+              {{
+                selectedBooking
+                  .barber_full_name
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              Servicio
+            </span>
+
+            <strong>
+
+              {{
+                selectedBooking
+                  .service_name
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              Duración
+            </span>
+
+            <strong>
+
+              {{
+                getDurationMinutes(
+                  selectedBooking
+                )
+              }}
+
+              minutos
+
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- INFORMACIÓN ECONÓMICA -->
+        <!-- ================================================= -->
+
+        <section class="drawer-section">
+
+          <span class="section-label">
+            INFORMACIÓN ECONÓMICA
+          </span>
+
+
+          <div class="drawer-price">
+
+            <span>
+              VALOR DE LA RESERVA
+            </span>
+
+            <strong>
+
+              {{
+                formatCurrency(
+                  selectedBooking
+                    .service_price
+                )
+              }}
+
+            </strong>
+
+            <small>
+              Precio registrado al momento
+              de la reserva
+            </small>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- NOTAS -->
+        <!-- ================================================= -->
+
+        <section class="drawer-section">
+
+          <span class="section-label">
+            NOTAS
+          </span>
+
+
+          <div class="notes-block">
+
+            <span>
+              Nota del cliente
+            </span>
+
+            <p>
+
+              {{
+                selectedBooking
+                  .customer_notes
+                ||
+                'Sin observaciones del cliente.'
+              }}
+
+            </p>
+
+          </div>
+
+
+          <div class="notes-block">
+
+            <span>
+              Nota del barbero
+            </span>
+
+            <p>
+
+              {{
+                selectedBooking
+                  .barber_notes
+                ||
+                'Sin observaciones del barbero.'
+              }}
+
+            </p>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- REGISTRO -->
+        <!-- ================================================= -->
+
+        <section class="drawer-section">
+
+          <span class="section-label">
+            REGISTRO
+          </span>
+
+
+          <div class="detail-row">
+
+            <span>
+              Estado
+            </span>
+
+            <strong>
+
+              {{
+                selectedBooking
+                  .status_name
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              Código
+            </span>
+
+            <strong>
+
+              {{
+                selectedBooking
+                  .status_code
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              Creada
+            </span>
+
+            <strong>
+
+              {{
+                formatDate(
+                  selectedBooking
+                    .created_at
+                )
+              }}
+
+              ·
+
+              {{
+                formatTime(
+                  selectedBooking
+                    .created_at
+                )
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              Última actualización
+            </span>
+
+            <strong>
+
+              @if (
+                selectedBooking.updated_at
+              ) {
+
+                {{
+                  formatDate(
+                    selectedBooking
+                      .updated_at
+                  )
+                }}
+
+                ·
+
+                {{
+                  formatTime(
+                    selectedBooking
+                      .updated_at
+                  )
+                }}
+
+              }
+
+              @else {
+
+                —
+
+              }
+
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- ACCIONES ADMINISTRATIVAS -->
+        <!-- ================================================= -->
+
+        <section class="drawer-section drawer-actions-section">
+
+          <span class="section-label">
+            ACCIONES ADMINISTRATIVAS
+          </span>
+
+
+          @if (
+            confirmSuccess
+          ) {
+
+            <div class="booking-action-message success">
+
+              <span>
+                ✓
+              </span>
+
+              <p>
+                {{ confirmSuccess }}
+              </p>
+
+            </div>
+
+          }
+
+
+          @if (
+            confirmError
+          ) {
+
+            <div class="booking-action-message error">
+
+              <span>
+                !
+              </span>
+
+              <p>
+                {{ confirmError }}
+              </p>
+
+            </div>
+
+          }
+
+
+          @if (
+            completeSuccess
+          ) {
+
+            <div class="booking-action-message success">
+
+              <span>
+                ✓
+              </span>
+
+              <p>
+                {{ completeSuccess }}
+              </p>
+
+            </div>
+
+          }
+
+
+          @if (
+            completeError
+          ) {
+
+            <div class="booking-action-message error">
+
+              <span>
+                !
+              </span>
+
+              <p>
+                {{ completeError }}
+              </p>
+
+            </div>
+
+          }
+
+
+          @if (
+            cancelSuccess
+          ) {
+
+            <div class="booking-action-message success">
+
+              <span>
+                ✓
+              </span>
+
+              <p>
+                {{ cancelSuccess }}
+              </p>
+
+            </div>
+
+          }
+
+
+          @if (
+            cancelError
+          ) {
+
+            <div class="booking-action-message error">
+
+              <span>
+                !
+              </span>
+
+              <p>
+                {{ cancelError }}
+              </p>
+
+            </div>
+
+          }
+
+
+          <!-- ================================================= -->
+          <!-- CONFIRMAR -->
+          <!-- ================================================= -->
+
+          @if (
+            canConfirmBooking(
+              selectedBooking
+            )
+          ) {
+
+            <div class="confirm-booking-box">
+
+              <div class="confirm-booking-copy">
+
+                <strong>
+                  Confirmar esta reserva
+                </strong>
+
+                <p>
+                  La reserva se encuentra pendiente.
+                  Al confirmarla quedará oficialmente
+                  aceptada y pasará al estado
+                  "Confirmada".
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="confirm-booking-button"
+                [disabled]="
+                  isConfirmingBooking(
+                    selectedBooking.id
+                  )
+                  ||
+                  isCancellingBooking(
+                    selectedBooking.id
+                  )
+                  ||
+                  isCompletingBooking(
+                    selectedBooking.id
+                  )
+                "
+                (click)="
+                  confirmBooking(
+                    selectedBooking
+                  )
+                "
+              >
+
+                @if (
+                  isConfirmingBooking(
+                    selectedBooking.id
+                  )
+                ) {
+
+                  <span class="confirm-spinner">
+                  </span>
+
+                  Confirmando...
+
+                }
+
+                @else {
+
+                  <span>
+                    ✓
+                  </span>
+
+                  Confirmar reserva
+
+                }
+
+              </button>
+
+            </div>
+
+          }
+
+
+          <!-- ================================================= -->
+          <!-- COMPLETAR -->
+          <!-- ================================================= -->
+
+          @if (
+            canCompleteBooking(
+              selectedBooking
+            )
+          ) {
+
+            <div class="complete-booking-box">
+
+              <div class="complete-booking-copy">
+
+                <strong>
+                  Completar servicio
+                </strong>
+
+                <p>
+                  Utiliza esta acción únicamente cuando
+                  el servicio reservado haya sido
+                  realizado y finalizado.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="complete-booking-button"
+                [disabled]="
+                  isCompletingBooking(
+                    selectedBooking.id
+                  )
+                  ||
+                  isConfirmingBooking(
+                    selectedBooking.id
+                  )
+                  ||
+                  isCancellingBooking(
+                    selectedBooking.id
+                  )
+                "
+                (click)="
+                  completeBooking(
+                    selectedBooking
+                  )
+                "
+              >
+
+                @if (
+                  isCompletingBooking(
+                    selectedBooking.id
+                  )
+                ) {
+
+                  <span class="complete-spinner">
+                  </span>
+
+                  Completando...
+
+                }
+
+                @else {
+
+                  <span>
+                    ✓
+                  </span>
+
+                  Completar servicio
+
+                }
+
+              </button>
+
+            </div>
+
+          }
+
+
+          <!-- ================================================= -->
+          <!-- CANCELAR -->
+          <!-- ================================================= -->
+
+          @if (
+            canCancelBooking(
+              selectedBooking
+            )
+          ) {
+
+            <div class="cancel-booking-box">
+
+              <div class="cancel-booking-copy">
+
+                <strong>
+                  Cancelar esta reserva
+                </strong>
+
+                <p>
+                  Esta acción cambiará el estado
+                  de la reserva a
+                  "Cancelada por administrador".
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="cancel-booking-button"
+                [disabled]="
+                  isCancellingBooking(
+                    selectedBooking.id
+                  )
+                  ||
+                  isConfirmingBooking(
+                    selectedBooking.id
+                  )
+                  ||
+                  isCompletingBooking(
+                    selectedBooking.id
+                  )
+                "
+                (click)="
+                  cancelBooking(
+                    selectedBooking
+                  )
+                "
+              >
+
+                @if (
+                  isCancellingBooking(
+                    selectedBooking.id
+                  )
+                ) {
+
+                  <span class="cancel-spinner">
+                  </span>
+
+                  Cancelando...
+
+                }
+
+                @else {
+
+                  <span>
+                    ×
+                  </span>
+
+                  Cancelar reserva
+
+                }
+
+              </button>
+
+            </div>
+
+          }
+
+
+          <!-- ================================================= -->
+          <!-- SIN ACCIONES -->
+          <!-- ================================================= -->
+
+          @if (
+            !canConfirmBooking(
+              selectedBooking
+            )
+            &&
+            !canCancelBooking(
+              selectedBooking
+            )
+            &&
+            !canCompleteBooking(
+              selectedBooking
+            )
+          ) {
+
+            <div class="booking-action-unavailable">
+
+              @if (
+                selectedBooking.status_code ===
+                  'CANCELLED_BY_ADMIN'
+              ) {
+
+                Esta reserva ya fue cancelada
+                por un administrador.
+
+              }
+
+              @else if (
+                selectedBooking.status_code ===
+                  'CANCELLED_BY_CUSTOMER'
+              ) {
+
+                Esta reserva ya fue cancelada
+                por el cliente.
+
+              }
+
+              @else if (
+                selectedBooking.status_code ===
+                  'CANCELLED_BY_BARBER'
+              ) {
+
+                Esta reserva ya fue cancelada
+                por el barbero.
+
+              }
+
+              @else if (
+                selectedBooking.status_code ===
+                  'IN_PROGRESS'
+              ) {
+
+                Esta reserva se encuentra
+                en progreso.
+
+              }
+
+              @else if (
+                selectedBooking.status_code ===
+                  'COMPLETED'
+              ) {
+
+                Esta reserva ya fue completada.
+
+              }
+
+              @else if (
+                selectedBooking.status_code ===
+                  'REJECTED'
+              ) {
+
+                Esta reserva fue rechazada.
+
+              }
+
+              @else if (
+                selectedBooking.status_code ===
+                  'NO_SHOW'
+              ) {
+
+                Esta reserva fue registrada
+                como no asistida.
+
+              }
+
+              @else {
+
+                No existen acciones administrativas
+                disponibles para el estado actual
+                de esta reserva.
+
+              }
+
+            </div>
+
+          }
+
+        </section>
+
+
+        <div class="drawer-information">
+
+          <span>
+            i
+          </span>
+
+          <p>
+            Esta vista permite consultar y administrar
+            el estado de las reservas registradas
+            en BarberGo.
+          </p>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+  }
+
+</section>

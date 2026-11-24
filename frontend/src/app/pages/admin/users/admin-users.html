@@ -1,0 +1,1364 @@
+<section class="users-page">
+
+  <!-- ================================================= -->
+  <!-- HEADER -->
+  <!-- ================================================= -->
+
+  <header class="page-header">
+
+    <div>
+
+      <span class="eyebrow">
+        COMMUNITY MANAGEMENT
+      </span>
+
+      <h1>
+        Usuarios
+      </h1>
+
+      <p>
+        Consulta la comunidad de BarberGo,
+        sus roles, actividad y comportamiento.
+      </p>
+
+    </div>
+
+
+    <div class="results-badge">
+
+      <span>
+        RESULTADOS
+      </span>
+
+      <strong>
+        {{ total }}
+      </strong>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================================================= -->
+  <!-- KPI -->
+  <!-- ================================================= -->
+
+  <section class="summary-grid">
+
+    <article class="summary-card blue">
+
+      <div class="summary-icon">
+        U
+      </div>
+
+      <span>
+        USUARIOS
+      </span>
+
+      <strong>
+        {{ summary.total }}
+      </strong>
+
+      <small>
+        +{{ summary.new_this_month }} este mes
+      </small>
+
+    </article>
+
+
+    <article class="summary-card green">
+
+      <div class="summary-icon">
+        C
+      </div>
+
+      <span>
+        CLIENTES
+      </span>
+
+      <strong>
+        {{ summary.clients }}
+      </strong>
+
+      <small>
+        Comunidad de clientes
+      </small>
+
+    </article>
+
+
+    <article class="summary-card violet">
+
+      <div class="summary-icon">
+        B
+      </div>
+
+      <span>
+        BARBEROS
+      </span>
+
+      <strong>
+        {{ summary.barbers }}
+      </strong>
+
+      <small>
+        Profesionales registrados
+      </small>
+
+    </article>
+
+
+    <article class="summary-card orange">
+
+      <div class="summary-icon">
+        A
+      </div>
+
+      <span>
+        DUEÑOS / ADMINS
+      </span>
+
+      <strong>
+        {{ summary.barbershop_admins }}
+      </strong>
+
+      <small>
+        Administradores de negocio
+      </small>
+
+    </article>
+
+  </section>
+
+
+  <!-- ================================================= -->
+  <!-- TOOLBAR -->
+  <!-- ================================================= -->
+
+  <section class="toolbar">
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        ⌕
+      </span>
+
+      <input
+        type="search"
+        [value]="search"
+        placeholder="Buscar nombre, correo o teléfono..."
+        autocomplete="off"
+        aria-label="Buscar usuarios"
+        (input)="onSearch($event)"
+      >
+
+    </div>
+
+
+    <div class="status-filter">
+
+      <button
+        type="button"
+        [class.active]="statusFilter === 'all'"
+        (click)="setStatusFilter('all')"
+      >
+        Todos
+      </button>
+
+      <button
+        type="button"
+        [class.active]="statusFilter === 'active'"
+        (click)="setStatusFilter('active')"
+      >
+        Activos
+      </button>
+
+      <button
+        type="button"
+        [class.active]="statusFilter === 'inactive'"
+        (click)="setStatusFilter('inactive')"
+      >
+        Inactivos
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================================= -->
+  <!-- FILTRO DE ROLES -->
+  <!-- ================================================= -->
+
+  <section class="role-filter">
+
+    <button
+      type="button"
+      [class.active]="roleFilter === 'all'"
+      (click)="setRoleFilter('all')"
+    >
+      Todos los roles
+    </button>
+
+
+    <button
+      type="button"
+      class="client"
+      [class.active]="roleFilter === 'CLIENT'"
+      (click)="setRoleFilter('CLIENT')"
+    >
+      Clientes
+    </button>
+
+
+    <button
+      type="button"
+      class="barber"
+      [class.active]="roleFilter === 'BARBER'"
+      (click)="setRoleFilter('BARBER')"
+    >
+      Barberos
+    </button>
+
+
+    <button
+      type="button"
+      class="owner"
+      [class.active]="roleFilter === 'BARBERSHOP_ADMIN'"
+      (click)="setRoleFilter('BARBERSHOP_ADMIN')"
+    >
+      Dueños / Admin
+    </button>
+
+
+    <button
+      type="button"
+      class="platform"
+      [class.active]="roleFilter === 'PLATFORM_ADMIN'"
+      (click)="setRoleFilter('PLATFORM_ADMIN')"
+    >
+      Platform Admin
+    </button>
+
+  </section>
+
+
+  <!-- ================================================= -->
+  <!-- LOADING -->
+  <!-- ================================================= -->
+
+  @if (loading) {
+
+    <div class="state-box">
+
+      <div class="loader">
+      </div>
+
+      <strong>
+        Consultando usuarios...
+      </strong>
+
+      <p>
+        Cargando la comunidad BarberGo.
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- ERROR -->
+  <!-- ================================================= -->
+
+  @else if (error) {
+
+    <div class="state-box error">
+
+      <span class="error-icon">
+        !
+      </span>
+
+      <strong>
+        No pudimos cargar usuarios
+      </strong>
+
+      <p>
+        {{ error }}
+      </p>
+
+      <button
+        type="button"
+        (click)="loadUsers(true)"
+      >
+        Reintentar
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- SIN RESULTADOS -->
+  <!-- ================================================= -->
+
+  @else if (users.length === 0) {
+
+    <div class="state-box">
+
+      <span class="empty-icon">
+        U
+      </span>
+
+      <strong>
+        No encontramos usuarios
+      </strong>
+
+      <p>
+
+        @if (search) {
+
+          No encontramos resultados para
+          “{{ search }}”.
+
+        }
+
+        @else {
+
+          Cambia los filtros o intenta
+          otra búsqueda.
+
+        }
+
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- RESULTADOS -->
+  <!-- ================================================= -->
+
+  @else {
+
+    <!-- ================================================= -->
+    <!-- GRID -->
+    <!-- ================================================= -->
+
+    <div class="users-grid">
+
+      @for (
+        user of users;
+        track user.id;
+        let index = $index
+      ) {
+
+        <article
+          class="user-card"
+          [class.inactive]="!user.is_active"
+          [style.animation-delay.ms]="index * 35"
+        >
+
+          <!-- =========================================== -->
+          <!-- CABECERA -->
+          <!-- =========================================== -->
+
+          <header class="user-card-header">
+
+            <div
+              [class]="
+                'avatar '
+                +
+                roleClass(
+                  getPrimaryRole(user)
+                )
+              "
+            >
+              {{ getInitials(user) }}
+            </div>
+
+
+            <div class="user-status">
+
+              <span
+                [class.active]="user.is_active"
+              >
+              </span>
+
+              {{
+                user.is_active
+                  ? 'Activo'
+                  : 'Inactivo'
+              }}
+
+            </div>
+
+          </header>
+
+
+          <!-- =========================================== -->
+          <!-- IDENTIDAD -->
+          <!-- =========================================== -->
+
+          <div class="user-main">
+
+            <h2>
+              {{ user.full_name }}
+            </h2>
+
+            <p>
+              {{ user.email }}
+            </p>
+
+
+            <div class="role-list">
+
+              @for (
+                role of user.roles;
+                track role
+              ) {
+
+                <span
+                  [class]="
+                    'role-pill '
+                    +
+                    roleClass(role)
+                  "
+                >
+                  {{ roleLabel(role) }}
+                </span>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- =========================================== -->
+          <!-- ACTIVIDAD -->
+          <!-- =========================================== -->
+
+          <div class="user-stats">
+
+            <div>
+
+              <span>
+                RESERVAS
+              </span>
+
+              <strong>
+                {{ user.bookings_count }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                COMPLETADAS
+              </span>
+
+              <strong>
+                {{ user.completed_bookings }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                CANCELADAS
+              </span>
+
+              <strong>
+                {{ user.cancelled_bookings }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- =========================================== -->
+          <!-- VALOR -->
+          <!-- =========================================== -->
+
+          <div class="user-value">
+
+            <span>
+              VALOR RESERVADO
+            </span>
+
+            <strong>
+              {{
+                formatCurrency(
+                  user.booked_value
+                )
+              }}
+            </strong>
+
+          </div>
+
+
+          <!-- =========================================== -->
+          <!-- FECHAS -->
+          <!-- =========================================== -->
+
+          <div class="user-meta">
+
+            <div>
+
+              <span>
+                Última reserva
+              </span>
+
+              <strong>
+                {{
+                  formatDate(
+                    user.last_booking_at
+                  )
+                }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Registro
+              </span>
+
+              <strong>
+                {{
+                  formatDate(
+                    user.created_at
+                  )
+                }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- =========================================== -->
+          <!-- DETALLE -->
+          <!-- =========================================== -->
+
+          <button
+            type="button"
+            class="details-button"
+            (click)="openUser(user)"
+          >
+
+            Ver usuario
+
+            <span>
+              →
+            </span>
+
+          </button>
+
+        </article>
+
+      }
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- PAGINACIÓN PROGRESIVA -->
+    <!-- ================================================= -->
+
+    <section class="load-more-area">
+
+      <!-- INFORMACIÓN -->
+
+      <div class="load-progress-info">
+
+        <div>
+
+          <strong>
+            {{ users.length }}
+          </strong>
+
+          <span>
+
+            de {{ total }}
+
+            @if (total === 1) {
+
+              usuario mostrado
+
+            }
+
+            @else {
+
+              usuarios mostrados
+
+            }
+
+          </span>
+
+        </div>
+
+
+        @if (hasMore) {
+
+          <span class="remaining-label">
+
+            {{ remainingCount }}
+
+            @if (remainingCount === 1) {
+
+              restante
+
+            }
+
+            @else {
+
+              restantes
+
+            }
+
+          </span>
+
+        }
+
+        @else {
+
+          <span class="all-loaded">
+
+            <span>
+              ✓
+            </span>
+
+            Todos cargados
+
+          </span>
+
+        }
+
+      </div>
+
+
+      <!-- BARRA DE PROGRESO -->
+
+      <div
+        class="load-progress"
+        role="progressbar"
+        [attr.aria-valuenow]="loadProgress"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+
+        <span
+          [style.width.%]="loadProgress"
+        >
+        </span>
+
+      </div>
+
+
+      <!-- BOTÓN CARGAR MÁS -->
+
+      @if (hasMore) {
+
+        <button
+          type="button"
+          class="load-more-button"
+          [disabled]="loadingMore"
+          (click)="loadMore()"
+        >
+
+          @if (loadingMore) {
+
+            <span class="load-more-spinner">
+            </span>
+
+
+            <span>
+
+              Cargando usuarios...
+
+              <small>
+                Consultando nuevos resultados
+              </small>
+
+            </span>
+
+          }
+
+          @else {
+
+            <span class="load-more-icon">
+              ↓
+            </span>
+
+
+            <span>
+
+              Cargar más
+
+              <small>
+
+                Mostrar
+
+                @if (
+                  remainingCount >
+                  pageSize
+                ) {
+
+                  {{ pageSize }}
+
+                }
+
+                @else {
+
+                  {{ remainingCount }}
+
+                }
+
+                @if (
+                  (
+                    remainingCount >
+                    pageSize
+                      ? pageSize
+                      : remainingCount
+                  ) === 1
+                ) {
+
+                  usuario más
+
+                }
+
+                @else {
+
+                  usuarios más
+
+                }
+
+              </small>
+
+            </span>
+
+          }
+
+        </button>
+
+      }
+
+    </section>
+
+  }
+
+
+  <!-- ================================================= -->
+  <!-- DRAWER USUARIO -->
+  <!-- ================================================= -->
+
+  @if (selectedUser) {
+
+    <div
+      class="drawer-backdrop"
+      (click)="closeUser()"
+    >
+
+      <aside
+        class="user-drawer"
+        (click)="$event.stopPropagation()"
+      >
+
+        <!-- CERRAR -->
+
+        <button
+          type="button"
+          class="drawer-close"
+          aria-label="Cerrar detalle"
+          (click)="closeUser()"
+        >
+          ×
+        </button>
+
+
+        <!-- ============================================= -->
+<!-- CABECERA PERFIL -->
+<!-- ============================================= -->
+
+<div class="drawer-profile-header">
+
+
+  <!-- AVATAR -->
+
+  <div
+    [class]="
+      'drawer-avatar '
+      +
+      roleClass(
+        getPrimaryRole(
+          selectedUser
+        )
+      )
+    "
+  >
+
+    {{ getInitials(selectedUser) }}
+
+  </div>
+
+
+
+  <!-- INFORMACIÓN PRINCIPAL -->
+
+  <div class="drawer-profile-info">
+
+
+    <span class="drawer-eyebrow">
+      PERFIL ADMINISTRATIVO
+    </span>
+
+
+    <h2>
+      {{ selectedUser.full_name }}
+    </h2>
+
+
+    <p class="drawer-email">
+      {{ selectedUser.email }}
+    </p>
+
+
+    <div class="drawer-roles">
+
+      @for (
+        role of selectedUser.roles;
+        track role
+      ) {
+
+        <span
+          [class]="
+            'role-pill '
+            +
+            roleClass(role)
+          "
+        >
+
+          {{ roleLabel(role) }}
+
+        </span>
+
+      }
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+        <!-- ============================================= -->
+        <!-- CONTACTO -->
+        <!-- ============================================= -->
+
+        <section class="drawer-section">
+
+          <span class="section-label">
+            CONTACTO
+          </span>
+
+
+          <div class="detail-row">
+
+            <span>
+              Teléfono
+            </span>
+
+            <strong>
+              {{
+                selectedUser.phone
+                ||
+                'No registrado'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              Email verificado
+            </span>
+
+            <strong
+              [class.verified]="
+                selectedUser.email_verified
+              "
+            >
+              {{
+                selectedUser.email_verified
+                  ? 'Sí'
+                  : 'No'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              Teléfono verificado
+            </span>
+
+            <strong
+              [class.verified]="
+                selectedUser.phone_verified
+              "
+            >
+              {{
+                selectedUser.phone_verified
+                  ? 'Sí'
+                  : 'No'
+              }}
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- ============================================= -->
+        <!-- ACTIVIDAD -->
+        <!-- ============================================= -->
+
+        <section class="drawer-section">
+
+          <span class="section-label">
+            ACTIVIDAD
+          </span>
+
+
+          <div class="drawer-stat-grid">
+
+            <div>
+
+              <span>
+                Reservas
+              </span>
+
+              <strong>
+                {{ selectedUser.bookings_count }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Completadas
+              </span>
+
+              <strong>
+                {{ selectedUser.completed_bookings }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Canceladas
+              </span>
+
+              <strong>
+                {{ selectedUser.cancelled_bookings }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Valor reservado
+              </span>
+
+              <strong>
+                {{
+                  formatCurrency(
+                    selectedUser.booked_value
+                  )
+                }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ============================================= -->
+        <!-- CUENTA -->
+        <!-- ============================================= -->
+
+        <section class="drawer-section">
+
+          <span class="section-label">
+            CUENTA
+          </span>
+
+
+          <div class="detail-row">
+
+            <span>
+              Estado
+            </span>
+
+            <strong>
+              {{
+                selectedUser.is_active
+                  ? 'Activa'
+                  : 'Inactiva'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              Registro
+            </span>
+
+            <strong>
+              {{
+                formatDate(
+                  selectedUser.created_at
+                )
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-row">
+
+            <span>
+              Última reserva
+            </span>
+
+            <strong>
+              {{
+                formatDate(
+                  selectedUser.last_booking_at
+                )
+              }}
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- AVISO -->
+
+        <!-- ================================================= -->
+<!-- ADMINISTRACIÓN DE CUENTA -->
+<!-- ================================================= -->
+
+<section class="account-management">
+
+  <div class="account-management-heading">
+
+    <div>
+
+      <span class="section-label">
+        ADMINISTRACIÓN
+      </span>
+
+      <h3>
+        Estado de la cuenta
+      </h3>
+
+    </div>
+
+
+    <span
+      class="account-status-badge"
+      [class.active]="
+        selectedUser.is_active
+      "
+    >
+
+      <span>
+      </span>
+
+      {{
+        selectedUser.is_active
+          ? 'Cuenta activa'
+          : 'Cuenta inhabilitada'
+      }}
+
+    </span>
+
+  </div>
+
+
+  <p class="account-management-description">
+
+    @if (
+      selectedUser.is_active
+    ) {
+
+      Al inhabilitar esta cuenta,
+      el usuario dejará de poder
+      acceder a BarberGo.
+
+    }
+
+    @else {
+
+      La cuenta está actualmente
+      bloqueada. Puedes reactivarla
+      para restaurar su acceso.
+
+    }
+
+  </p>
+
+
+  @if (
+    statusActionError
+  ) {
+
+    <div class="account-action-error">
+
+      <span>
+        !
+      </span>
+
+      <p>
+        {{ statusActionError }}
+      </p>
+
+    </div>
+
+  }
+
+
+  @if (
+    !statusConfirmOpen
+  ) {
+
+    <button
+      type="button"
+
+      class="account-status-button"
+
+      [class.disable]="
+        selectedUser.is_active
+      "
+
+      [class.enable]="
+        !selectedUser.is_active
+      "
+
+      (click)="
+        requestStatusChange()
+      "
+    >
+
+      <span class="account-button-icon">
+
+        {{
+          selectedUser.is_active
+            ? '×'
+            : '✓'
+        }}
+
+      </span>
+
+
+      <span>
+
+        <strong>
+
+          {{
+            selectedUser.is_active
+              ? 'Inhabilitar usuario'
+              : 'Reactivar usuario'
+          }}
+
+        </strong>
+
+
+        <small>
+
+          {{
+            selectedUser.is_active
+              ? 'Bloquear acceso a la plataforma'
+              : 'Restaurar acceso a la plataforma'
+          }}
+
+        </small>
+
+      </span>
+
+
+      <span class="account-button-arrow">
+        →
+      </span>
+
+    </button>
+
+  }
+
+
+  @else {
+
+    <div
+      class="status-confirmation"
+      [class.enable]="
+        !selectedUser.is_active
+      "
+    >
+
+      <div class="confirmation-icon">
+
+        {{
+          selectedUser.is_active
+            ? '!'
+            : '✓'
+        }}
+
+      </div>
+
+
+      <div class="confirmation-copy">
+
+        <strong>
+
+          {{
+            selectedUser.is_active
+              ? '¿Inhabilitar esta cuenta?'
+              : '¿Reactivar esta cuenta?'
+          }}
+
+        </strong>
+
+
+        <p>
+
+          @if (
+            selectedUser.is_active
+          ) {
+
+            {{ selectedUser.full_name }}
+            perderá el acceso a BarberGo.
+            Sus datos e historial no serán
+            eliminados.
+
+          }
+
+          @else {
+
+            {{ selectedUser.full_name }}
+            recuperará el acceso normal
+            a BarberGo.
+
+          }
+
+        </p>
+
+      </div>
+
+
+      <div class="confirmation-actions">
+
+        <button
+          type="button"
+          class="confirmation-cancel"
+
+          [disabled]="
+            updatingUserId !== null
+          "
+
+          (click)="
+            cancelStatusChange()
+          "
+        >
+          Cancelar
+        </button>
+
+
+        <button
+          type="button"
+
+          class="confirmation-accept"
+
+          [class.enable]="
+            !selectedUser.is_active
+          "
+
+          [disabled]="
+            updatingUserId !== null
+          "
+
+          (click)="
+            confirmStatusChange()
+          "
+        >
+
+          @if (
+            updatingUserId ===
+            selectedUser.id
+          ) {
+
+            <span class="action-spinner">
+            </span>
+
+            Procesando...
+
+          }
+
+          @else {
+
+            {{
+              selectedUser.is_active
+                ? 'Sí, inhabilitar'
+                : 'Sí, reactivar'
+            }}
+
+          }
+
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</section>
+
+      </aside>
+
+    </div>
+
+  }
+
+</section>

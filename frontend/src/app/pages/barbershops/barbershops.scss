@@ -1,0 +1,1266 @@
+/*
+  Dirección de diseño: porcelana de barbería + tinta azul-verdosa.
+  El poste de barbero (rojo / blanco / azul) es el único elemento
+  llamativo; el resto es silencioso. El rojo solo aparece donde hay
+  significado: el poste, la barbería activa y los errores.
+
+  Tipografías (añadir en src/index.html):
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+*/
+
+:host {
+  display: block;
+
+  --porcelain: #eef1f1;
+  --paper: #ffffff;
+  --ink: #0e1a22;
+  --steel: #5b6a74;
+  --hair: #d3dadc;
+  --red: #c8302b;
+  --blue: #23407a;
+
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  --font-body: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --r-panel: 12px;
+  --r-media: 6px;
+  --r-control: 8px;
+
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+
+
+.barbershops-page {
+  background: var(--porcelain);
+}
+
+
+.container {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  margin: 0;
+}
+
+
+button {
+  font-family: inherit;
+}
+
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+
+/* ======================================= */
+/* HERO + POSTE */
+/* ======================================= */
+
+.page-header {
+  padding-top: 80px;
+  border-bottom: 1px solid var(--hair);
+}
+
+
+.hero-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+
+.hero-copy {
+  padding-bottom: 72px;
+
+  h1 {
+    max-width: 11ch;
+
+    font-size: clamp(64px, 10vw, 132px);
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    max-width: 44ch;
+    margin: 28px 0 0;
+
+    color: var(--steel);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+}
+
+
+// El poste "apoya" sobre la línea inferior del hero.
+.pole {
+  position: relative;
+  flex: none;
+
+  width: 56px;
+  height: 300px;
+  margin-right: 40px;
+
+  overflow: hidden;
+  border-radius: 28px 28px 3px 3px;
+
+  background: #fff;
+
+  // Franjas diagonales. La capa es más alta que el poste para
+  // poder desplazarla sin que se vea el borde.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -80px 0;
+
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--red) 0 12px,
+      #ffffff 12px 24px,
+      var(--blue) 24px 36px,
+      #ffffff 36px 48px
+    );
+  }
+
+  // Tapas cromadas y volumen cilíndrico
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+
+    background:
+      linear-gradient(#e3e8ea, #a9b3b9) top / 100% 20px no-repeat,
+      linear-gradient(#a9b3b9, #e3e8ea) bottom / 100% 18px no-repeat,
+      linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.55),
+        rgba(255, 255, 255, 0) 32%,
+        rgba(14, 26, 34, 0) 62%,
+        rgba(14, 26, 34, 0.3)
+      );
+  }
+
+  // 67.88px = 48px de periodo / cos(45°): el bucle es continuo.
+  &.is-spinning::before {
+    animation: pole 0.9s linear infinite;
+  }
+}
+
+
+/* ======================================= */
+/* BUSCADOR */
+/* ======================================= */
+
+.search-section {
+  padding-top: 40px;
+}
+
+
+.search-panel {
+  display: grid;
+  grid-template-columns: 1fr 1px 0.8fr auto;
+  align-items: center;
+
+  padding: 8px;
+
+  border: 1px solid var(--hair);
+  border-radius: var(--r-panel);
+  background: var(--paper);
+
+  transition: border-color 0.2s ease;
+
+  &:focus-within {
+    border-color: var(--ink);
+  }
+}
+
+
+.search-field {
+  padding: 8px 20px;
+
+  label {
+    display: block;
+    margin-bottom: 3px;
+
+    color: var(--steel);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  input {
+    width: 100%;
+
+    border: 0;
+    outline: 0;
+    background: transparent;
+
+    color: var(--ink);
+    font: inherit;
+    font-size: 16px;
+    font-weight: 500;
+
+    &::placeholder {
+      color: #a0acb3;
+      font-weight: 400;
+    }
+
+    // el foco ya se indica en el contenedor
+    &:focus-visible {
+      outline: 0;
+    }
+  }
+}
+
+
+.separator {
+  width: 1px;
+  height: 36px;
+  background: var(--hair);
+}
+
+
+.search-button {
+  height: 52px;
+  min-width: 128px;
+  padding: 0 28px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  border: 0;
+  border-radius: var(--r-control);
+
+  background: var(--ink);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: #1d303c;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    cursor: progress;
+    opacity: 0.85;
+  }
+}
+
+
+.button-loader {
+  width: 14px;
+  height: 14px;
+
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+
+  animation: spin 0.7s linear infinite;
+}
+
+
+.active-filters {
+  margin-top: 16px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+  > span {
+    margin-right: 4px;
+    color: var(--steel);
+    font-size: 13px;
+  }
+}
+
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 6px 10px 6px 14px;
+
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition: border-color 0.2s ease;
+
+  span {
+    color: var(--steel);
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  &:hover {
+    border-color: var(--ink);
+  }
+}
+
+
+.clear-all-button {
+  padding: 6px 4px;
+
+  border: 0;
+  background: transparent;
+
+  color: var(--steel);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ink);
+  }
+}
+
+
+/* ======================================= */
+/* RESULTADOS */
+/* ======================================= */
+
+.results {
+  min-height: 600px;
+  padding: 88px 0 128px;
+}
+
+
+/* ======================================= */
+/* MAPA */
+/* ======================================= */
+
+.map-heading {
+  margin-bottom: 24px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+
+  h2 {
+    font-size: clamp(36px, 4.5vw, 52px);
+    line-height: 1;
+  }
+
+  p {
+    max-width: 46ch;
+    margin: 10px 0 0;
+
+    color: var(--steel);
+    line-height: 1.55;
+  }
+}
+
+
+.map-counter {
+  color: var(--steel);
+  font-size: 14px;
+
+  strong {
+    margin-right: 4px;
+
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 800;
+    vertical-align: -3px;
+  }
+}
+
+
+.map-shell {
+  position: relative;
+  margin-bottom: 96px;
+  overflow: hidden;
+
+  border: 1px solid var(--hair);
+  border-radius: var(--r-panel);
+  background: var(--paper);
+}
+
+
+// Franja de barbero: solo se ve mientras carga
+.load-bar {
+  position: absolute;
+  z-index: 1300;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--red) 0 8px,
+    #ffffff 8px 16px,
+    var(--blue) 16px 24px,
+    #ffffff 24px 32px
+  );
+
+  background-size: 45.25px 100%;
+
+  &.is-active {
+    opacity: 1;
+    animation: bar 0.6s linear infinite;
+  }
+}
+
+
+// isolation: la tarjeta flotante queda por encima de los controles del mapa
+.map-stage {
+  position: relative;
+  isolation: isolate;
+}
+
+
+.map-section {
+  min-height: 520px;
+}
+
+
+.map-loading {
+  min-height: 520px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  color: var(--steel);
+  font-size: 14px;
+
+  strong {
+    font-weight: 500;
+  }
+}
+
+
+.location-loader {
+  width: 26px;
+  height: 26px;
+
+  border: 2px solid var(--hair);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+}
+
+
+/* ======================================= */
+/* TARJETA FLOTANTE DEL MAPA */
+/* ======================================= */
+
+.map-preview {
+  position: absolute;
+  z-index: 1200;
+  left: 20px;
+  bottom: 20px;
+
+  width: 300px;
+  padding: 8px 8px 16px;
+
+  border: 1px solid var(--hair);
+  border-radius: var(--r-panel);
+  background: var(--paper);
+  box-shadow: 0 24px 48px -16px rgba(14, 26, 34, 0.35);
+
+  animation: pop 0.18s ease-out both;
+}
+
+
+.preview-media {
+  height: 140px;
+  overflow: hidden;
+  border-radius: var(--r-media);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+
+.preview-close,
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+
+  width: 30px;
+  height: 30px;
+
+  display: grid;
+  place-items: center;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background: var(--ink);
+    color: #fff;
+  }
+}
+
+
+.preview-body {
+  padding: 14px 10px 0;
+
+  h3 {
+    margin: 12px 0 2px;
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  p {
+    margin: 0;
+    color: var(--steel);
+    font-size: 14px;
+  }
+}
+
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  span {
+    padding: 2px 9px;
+
+    border: 1px solid var(--hair);
+    border-radius: 999px;
+
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
+
+
+.preview-meta,
+.modal-stats {
+  margin: 16px 0;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+
+  > div {
+    padding: 10px 0;
+
+    &:last-child {
+      padding-left: 16px;
+      border-left: 1px solid var(--hair);
+    }
+  }
+
+  dt {
+    color: var(--steel);
+    font-size: 12px;
+  }
+
+  dd {
+    margin: 2px 0 0;
+
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+}
+
+
+.preview-actions,
+.modal-actions {
+  display: grid;
+  gap: 6px;
+}
+
+
+.preview-cta,
+.modal-primary {
+  width: 100%;
+  height: 46px;
+
+  border: 0;
+  border-radius: var(--r-control);
+
+  background: var(--ink);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.15s ease;
+
+  &:hover {
+    background: #1d303c;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+
+.preview-secondary,
+.modal-secondary {
+  width: 100%;
+  height: 38px;
+
+  border: 0;
+  border-radius: var(--r-control);
+
+  background: transparent;
+  color: var(--steel);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition: color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    background: var(--porcelain);
+    color: var(--ink);
+  }
+}
+
+
+/* ======================================= */
+/* ENCABEZADO DEL LISTADO + FILTROS */
+/* ======================================= */
+
+.results-header {
+  margin-bottom: 20px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+
+  h2 {
+    font-size: clamp(36px, 4.5vw, 52px);
+    line-height: 1;
+  }
+
+  p {
+    min-height: 22px;
+    margin: 10px 0 0;
+    color: var(--steel);
+  }
+}
+
+
+.clear-button {
+  padding: 6px 0;
+
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--red);
+    border-color: var(--red);
+  }
+}
+
+
+.filter-bar {
+  margin-bottom: 32px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+.chip {
+  padding: 8px 18px;
+
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    border-color: var(--ink);
+  }
+
+  &.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+}
+
+
+/* ======================================= */
+/* GRID DE TARJETAS */
+/* ======================================= */
+
+.shops-grid,
+.loading-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+
+.shop-card-wrapper {
+  position: relative;
+
+  animation: fade 0.4s ease both;
+  transition: transform 0.25s ease;
+
+  // Anillo rojo: la barbería que está activa en el mapa (y al revés).
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+
+    border: 2px solid var(--red);
+    border-radius: 16px;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+
+    .quick-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &.is-active::after {
+    opacity: 1;
+  }
+}
+
+
+.quick-view {
+  position: absolute;
+  z-index: 3;
+  top: 14px;
+  right: 14px;
+
+  padding: 7px 14px;
+
+  border: 0;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  &:focus-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ======================================= */
+/* MODAL */
+/* ======================================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+
+  display: grid;
+  place-items: center;
+
+  padding: 20px;
+
+  background: rgba(14, 26, 34, 0.55);
+  backdrop-filter: blur(4px);
+
+  animation: fade 0.2s ease both;
+}
+
+
+.modal {
+  position: relative;
+
+  width: min(560px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 10px 10px 30px;
+
+  border-radius: var(--r-panel);
+  background: var(--paper);
+  box-shadow: 0 40px 90px -20px rgba(14, 26, 34, 0.5);
+
+  animation: pop 0.22s ease-out both;
+}
+
+
+.modal-media {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  border-radius: var(--r-media);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+
+.modal-close {
+  top: 12px;
+  right: 12px;
+}
+
+
+.modal-body {
+  padding: 24px 22px 0;
+
+  h2 {
+    margin: 14px 0 2px;
+    font-size: 48px;
+    line-height: 0.95;
+  }
+}
+
+
+.modal-location {
+  margin: 0;
+  color: var(--steel);
+}
+
+
+.modal-stats {
+  margin: 22px 0;
+
+  dd {
+    font-size: 30px;
+  }
+}
+
+
+/* ======================================= */
+/* SKELETON */
+/* ======================================= */
+
+.skeleton-card {
+  min-height: 420px;
+  padding: 10px 10px 24px;
+
+  border: 1px solid var(--hair);
+  border-radius: var(--r-panel);
+  background: var(--paper);
+}
+
+
+.skeleton-image {
+  height: 250px;
+  margin-bottom: 22px;
+
+  border-radius: var(--r-media);
+
+  background: linear-gradient(90deg, #e4e9ea 25%, #f1f4f4 50%, #e4e9ea 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+
+.skeleton-line {
+  width: 60%;
+  height: 12px;
+  margin: 12px 12px;
+
+  border-radius: 20px;
+  background: #e4e9ea;
+
+  &.large {
+    width: 75%;
+    height: 18px;
+  }
+
+  &.small {
+    width: 40%;
+  }
+}
+
+
+/* ======================================= */
+/* VACÍO / ERROR */
+/* ======================================= */
+
+.empty-state {
+  min-height: 320px;
+  padding: 48px 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border-top: 1px solid var(--hair);
+
+  h3 {
+    margin-bottom: 10px;
+    font-size: 40px;
+    line-height: 1;
+  }
+
+  p {
+    max-width: 42ch;
+    margin: 0 0 24px;
+
+    color: var(--steel);
+    line-height: 1.55;
+  }
+}
+
+
+.error-state h3 {
+  color: var(--red);
+}
+
+
+.empty-primary-button {
+  height: 46px;
+  padding: 0 26px;
+
+  border: 0;
+  border-radius: var(--r-control);
+
+  background: var(--ink);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.15s ease;
+
+  &:hover {
+    background: #1d303c;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+
+/* ======================================= */
+/* MAPA: LEAFLET Y MARCADORES (estilo) */
+/* ======================================= */
+
+:host ::ng-deep {
+
+  // Mapa en escala de grises: los marcadores son lo único con color
+  .leaflet-tile-pane {
+    filter: grayscale(1) contrast(0.92) brightness(1.05);
+  }
+
+  .leaflet-container {
+    background: var(--porcelain);
+    font-family: var(--font-body);
+  }
+
+  .leaflet-control-zoom {
+    border: 0 !important;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px -8px rgba(14, 26, 34, 0.35) !important;
+
+    a {
+      width: 36px;
+      height: 36px;
+      line-height: 36px;
+
+      color: var(--ink);
+      border-bottom-color: var(--hair);
+
+      &:hover {
+        background: var(--porcelain);
+      }
+    }
+  }
+
+  .leaflet-control-attribution {
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 10px;
+  }
+
+  // Pin de barbería
+  .barbergo-marker {
+    width: 38px;
+    height: 38px;
+    margin: -2px 3px 0;
+
+    display: grid;
+    place-items: center;
+
+    border: 3px solid #fff;
+    border-radius: 50% 50% 50% 0;
+
+    background: var(--ink);
+    box-shadow: 0 8px 16px -4px rgba(14, 26, 34, 0.5);
+    transform: rotate(-45deg);
+
+    transition: background 0.2s ease, scale 0.2s ease;
+
+    span {
+      color: #fff;
+      font-size: 15px;
+      line-height: 1;
+      transform: rotate(45deg);
+    }
+
+    &.is-active {
+      background: var(--red);
+      scale: 1.18;
+    }
+  }
+}
+
+
+/* ======================================= */
+/* ANIMACIONES */
+/* ======================================= */
+
+@keyframes pole {
+  to { transform: translateY(67.88px); }
+}
+
+
+@keyframes bar {
+  to { background-position: 45.25px 0; }
+}
+
+
+@keyframes fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ======================================= */
+/* RESPONSIVE */
+/* ======================================= */
+
+@media (max-width: 950px) {
+
+  .shops-grid,
+  .loading-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pole {
+    margin-right: 0;
+    height: 240px;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .container {
+    width: calc(100% - 28px);
+  }
+
+  .page-header {
+    padding-top: 56px;
+  }
+
+  .hero-copy {
+    padding-bottom: 48px;
+  }
+
+  .pole {
+    display: none;
+  }
+
+  .search-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .separator {
+    width: 100%;
+    height: 1px;
+  }
+
+  .search-button {
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .map-heading,
+  .results-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .map-section,
+  .map-loading {
+    min-height: 420px;
+  }
+
+  .map-shell {
+    margin-bottom: 64px;
+  }
+
+  .shops-grid,
+  .loading-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .map-preview {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    width: auto;
+  }
+
+  .preview-media {
+    height: 110px;
+  }
+
+  // En móvil no existe hover: el botón siempre visible
+  .quick-view {
+    opacity: 1;
+    transform: none;
+  }
+
+  // El modal se comporta como panel inferior
+  .modal-backdrop {
+    place-items: end center;
+    padding: 0;
+  }
+
+  .modal {
+    width: 100%;
+    max-height: 94vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .modal-media {
+    height: 200px;
+  }
+
+  .modal-body h2 {
+    font-size: 40px;
+  }
+
+}
+
+
+/* ======================================= */
+/* ACCESIBILIDAD */
+/* ======================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+}

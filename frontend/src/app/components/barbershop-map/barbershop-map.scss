@@ -1,0 +1,635 @@
+:host {
+  display: block;
+}
+
+
+/* ======================================= */
+/* CONTENEDOR */
+/* ======================================= */
+
+.map-card {
+  overflow: hidden;
+
+  border: 1px solid #e1e1df;
+
+  border-radius: 22px;
+
+  background: white;
+
+  box-shadow:
+    0 20px 55px
+    rgba(0, 0, 0, 0.07);
+}
+
+
+/* ======================================= */
+/* HEADER */
+/* ======================================= */
+
+.map-header {
+  padding: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 40px;
+}
+
+
+.eyebrow {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #999999;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+}
+
+
+.map-title h2 {
+  margin: 0;
+
+  font-size: 28px;
+
+  letter-spacing: -1px;
+}
+
+
+.map-title p {
+  max-width: 580px;
+
+  margin: 8px 0 0;
+
+  color: #777777;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* ======================================= */
+/* BOTONES */
+/* ======================================= */
+
+.map-actions {
+  display: flex;
+
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+
+.map-actions button {
+  height: 44px;
+
+  padding: 0 16px;
+
+  border-radius: 9px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.secondary-button {
+  border: 1px solid #dededb;
+
+  background: white;
+
+  color: #333333;
+}
+
+
+.location-button {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  border: 1px solid #111111;
+
+  background: #111111;
+
+  color: white;
+}
+
+
+.location-button:hover:not(:disabled),
+.secondary-button:hover {
+  transform: translateY(-2px);
+}
+
+
+.location-button:hover:not(:disabled) {
+  background: #292929;
+}
+
+
+.location-button:disabled {
+  opacity: 0.4;
+
+  cursor: default;
+}
+
+
+/* ======================================= */
+/* UBICACIÓN */
+/* ======================================= */
+
+.location-state,
+.location-warning {
+  margin:
+    0 30px
+    15px;
+
+  padding: 11px 14px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  border-radius: 9px;
+
+  background: #f5f5f3;
+
+  color: #666666;
+
+  font-size: 12px;
+}
+
+
+.location-loader {
+  width: 13px;
+  height: 13px;
+
+  border:
+    2px solid #d2d2d0;
+
+  border-top-color:
+    #111111;
+
+  border-radius: 50%;
+
+  animation:
+    spin 0.8s linear
+    infinite;
+}
+
+
+@keyframes spin {
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+
+}
+
+
+/* ======================================= */
+/* MAPA */
+/* ======================================= */
+
+.map-wrapper {
+  position: relative;
+
+  margin:
+    0 14px
+    14px;
+
+  overflow: hidden;
+
+  border-radius: 17px;
+
+  background: #eeeeec;
+}
+
+
+.leaflet-map {
+  width: 100%;
+  height: 500px;
+
+  z-index: 1;
+}
+
+
+/* ======================================= */
+/* PANEL FLOTANTE */
+/* ======================================= */
+
+.map-floating-info {
+  position: absolute;
+
+  z-index: 500;
+
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+
+  padding:
+    12px 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.5);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.88);
+
+  backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.08);
+}
+
+
+.map-legend {
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+}
+
+
+.map-legend > div {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: #666666;
+
+  font-size: 11px;
+}
+
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+}
+
+
+.legend-dot.shop {
+  background: #111111;
+}
+
+
+.legend-dot.user {
+  background: #3478f6;
+}
+
+
+.shop-counter {
+  display: flex;
+  align-items: baseline;
+
+  gap: 5px;
+}
+
+
+.shop-counter strong {
+  font-size: 16px;
+}
+
+
+.shop-counter span {
+  color: #777777;
+
+  font-size: 11px;
+}
+
+
+/* ======================================= */
+/* MARCADORES LEAFLET */
+/* ======================================= */
+
+:host ::ng-deep
+.barbergo-marker-wrapper {
+  background: transparent;
+
+  border: none;
+}
+
+
+:host ::ng-deep
+.barbergo-marker {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    3px solid white;
+
+  border-radius:
+    50% 50% 50% 8px;
+
+  background: #111111;
+
+  box-shadow:
+    0 8px 22px
+    rgba(0, 0, 0, 0.3);
+
+  transform:
+    rotate(-45deg);
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+
+:host ::ng-deep
+.barbergo-marker span {
+  color: white;
+
+  font-size: 15px;
+
+  transform:
+    rotate(45deg);
+}
+
+
+:host ::ng-deep
+.barbergo-marker:hover {
+  transform:
+    rotate(-45deg)
+    scale(1.12);
+
+  box-shadow:
+    0 12px 28px
+    rgba(0, 0, 0, 0.38);
+}
+
+
+/* ======================================= */
+/* MARCADOR USUARIO */
+/* ======================================= */
+
+:host ::ng-deep
+.user-marker-wrapper {
+  background: transparent;
+
+  border: none;
+}
+
+
+:host ::ng-deep
+.user-marker {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: white;
+
+  box-shadow:
+    0 5px 18px
+    rgba(0, 0, 0, 0.3);
+}
+
+
+:host ::ng-deep
+.user-marker-dot {
+  width: 14px;
+  height: 14px;
+
+  border-radius: 50%;
+
+  background: #3478f6;
+
+  animation:
+    userPulse 2s
+    infinite;
+}
+
+
+@keyframes userPulse {
+
+  0% {
+    box-shadow:
+      0 0 0 0
+      rgba(
+        52,
+        120,
+        246,
+        0.45
+      );
+  }
+
+  70% {
+    box-shadow:
+      0 0 0 13px
+      rgba(
+        52,
+        120,
+        246,
+        0
+      );
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 0
+      rgba(
+        52,
+        120,
+        246,
+        0
+      );
+  }
+
+}
+
+
+/* ======================================= */
+/* POPUPS */
+/* ======================================= */
+
+:host ::ng-deep
+.barbergo-popup
+.leaflet-popup-content-wrapper {
+  border-radius: 13px;
+
+  box-shadow:
+    0 15px 40px
+    rgba(0, 0, 0, 0.16);
+}
+
+
+:host ::ng-deep
+.barbergo-popup
+.leaflet-popup-content {
+  margin: 17px;
+
+  min-width: 190px;
+}
+
+
+:host ::ng-deep
+.map-popup {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+:host ::ng-deep
+.map-popup-label {
+  margin-bottom: 5px;
+
+  color: #999999;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+
+:host ::ng-deep
+.map-popup-name {
+  color: #111111;
+
+  font-size: 16px;
+}
+
+
+:host ::ng-deep
+.map-popup-location {
+  margin-top: 4px;
+
+  color: #777777;
+
+  font-size: 12px;
+}
+
+
+:host ::ng-deep
+.map-popup-price {
+  margin-top: 14px;
+
+  padding-top: 12px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-top:
+    1px solid #eeeeec;
+
+  color: #888888;
+
+  font-size: 11px;
+}
+
+
+:host ::ng-deep
+.map-popup-price strong {
+  color: #111111;
+}
+
+
+/* ======================================= */
+/* RESPONSIVE */
+/* ======================================= */
+
+@media (
+  max-width: 750px
+) {
+
+  .map-header {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+
+  .map-actions {
+    width: 100%;
+  }
+
+
+  .map-actions button {
+    flex: 1;
+
+    justify-content: center;
+  }
+
+
+  .leaflet-map {
+    height: 440px;
+  }
+
+}
+
+
+@media (
+  max-width: 520px
+) {
+
+  .map-header {
+    padding:
+      23px;
+  }
+
+
+  .map-actions {
+    flex-direction:
+      column;
+  }
+
+
+  .map-floating-info {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+
+  .leaflet-map {
+    height: 400px;
+  }
+
+}
+
+

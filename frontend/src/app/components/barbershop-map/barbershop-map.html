@@ -1,0 +1,132 @@
+<section class="map-card">
+
+  <div class="map-header">
+
+    <div class="map-title">
+
+      <span class="eyebrow">
+        EXPLORA EL MAPA
+      </span>
+
+      <h2>
+        Barberías cerca de ti
+      </h2>
+
+      <p>
+        Descubre barberías en diferentes
+        zonas de Barranquilla y encuentra
+        la que mejor se adapte a tu ubicación.
+      </p>
+
+    </div>
+
+
+    <div class="map-actions">
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="showAllBarbershops()"
+      >
+        Ver todas
+      </button>
+
+
+      <button
+        type="button"
+        class="location-button"
+        [disabled]="!userLocated"
+        (click)="centerOnUser()"
+      >
+
+        <span>
+          ◎
+        </span>
+
+        Mi ubicación
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  @if (locating) {
+
+    <div class="location-state">
+
+      <span class="location-loader"></span>
+
+      Buscando tu ubicación...
+
+    </div>
+
+  }
+
+
+  @if (locationError) {
+
+    <div class="location-warning">
+
+      {{ locationError }}
+
+    </div>
+
+  }
+
+
+  <div class="map-wrapper">
+
+    <div
+      #mapContainer
+      class="leaflet-map"
+    ></div>
+
+
+    <div class="map-floating-info">
+
+      <div class="map-legend">
+
+        <div>
+
+          <span
+            class="legend-dot shop"
+          ></span>
+
+          Barberías
+
+        </div>
+
+
+        <div>
+
+          <span
+            class="legend-dot user"
+          ></span>
+
+          Tu ubicación
+
+        </div>
+
+      </div>
+
+
+      <div class="shop-counter">
+
+        <strong>
+          {{ shops.length }}
+        </strong>
+
+        <span>
+          barberías
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+

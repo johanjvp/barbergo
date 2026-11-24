@@ -1,0 +1,442 @@
+<app-navbar></app-navbar>
+
+
+<main>
+
+  <!-- ===================================== -->
+  <!-- HERO -->
+  <!-- ===================================== -->
+
+  <section class="hero">
+
+    <div class="container hero-grid">
+
+      <div class="hero-content">
+
+        <span class="eyebrow">
+          TU ESTILO, A TU MANERA
+        </span>
+
+        <h1>
+          Encuentra tu
+          <span>próximo corte.</span>
+        </h1>
+
+        <p class="hero-description">
+          Descubre barberías, compara servicios,
+          elige tu barbero favorito y reserva
+          el horario que mejor se adapte a ti.
+        </p>
+
+
+        <!-- BUSCADOR -->
+
+        <div class="search-box">
+
+          <div class="search-field">
+
+            <label>
+              ¿Qué buscas?
+            </label>
+
+            <input
+              type="text"
+              placeholder="Corte, barba, barbería..."
+            >
+
+          </div>
+
+
+          <div class="divider"></div>
+
+
+          <div class="search-field">
+
+            <label>
+              Ubicación
+            </label>
+
+            <input
+              type="text"
+              placeholder="Barrio o zona"
+            >
+
+          </div>
+
+
+          <button class="search-button">
+            Buscar
+          </button>
+
+        </div>
+
+
+        <div class="quick-info">
+
+          <span>
+            ✓ Reserva en minutos
+          </span>
+
+          <span>
+            ✓ Elige tu barbero
+          </span>
+
+          <span>
+            ✓ Consulta disponibilidad
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- TARJETA DERECHA -->
+
+      <div class="visual-card">
+
+        <div class="card-top">
+
+          <span>
+            BarberGo
+          </span>
+
+          <div class="status">
+            Disponible
+          </div>
+
+        </div>
+
+
+        <div class="visual-content">
+
+          <span class="small-text">
+            TU PRÓXIMA CITA
+          </span>
+
+          <h2>
+            El corte que quieres,
+            cuando lo quieres.
+          </h2>
+
+
+          <div class="steps">
+
+            <div class="step">
+
+              <span>
+                01
+              </span>
+
+              <strong>
+                Elige servicio
+              </strong>
+
+            </div>
+
+
+            <div class="step">
+
+              <span>
+                02
+              </span>
+
+              <strong>
+                Elige barbero
+              </strong>
+
+            </div>
+
+
+            <div class="step">
+
+              <span>
+                03
+              </span>
+
+              <strong>
+                Reserva horario
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================== -->
+<!-- BARBERÍAS DESTACADAS -->
+<!-- ===================================== -->
+
+<section class="featured">
+
+  <div class="container">
+
+    <div class="featured-header">
+
+      <div>
+
+        <span class="section-label">
+          CERCA DE TI
+        </span>
+
+        <h2>
+          Barberías que vale
+          la pena conocer.
+        </h2>
+
+      </div>
+
+
+      <button class="see-all">
+
+        Ver todas
+
+        <span>
+          →
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <div class="shops-grid">
+
+      @for (
+        shop of featuredBarbershops;
+        track shop.name
+      ) {
+
+        <app-barbershop-card
+
+          [image]="shop.image"
+
+          [name]="shop.name"
+
+          [neighborhood]="shop.neighborhood"
+
+          [price]="shop.price"
+
+          [distance]="shop.distance"
+
+          [tags]="shop.tags"
+
+        />
+
+      }
+
+    </div>
+
+  </div>
+
+</section>
+
+
+  <!-- ===================================== -->
+  <!-- BENEFICIOS -->
+  <!-- ===================================== -->
+
+  <section class="benefits">
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span>
+          ¿POR QUÉ BARBERGO?
+        </span>
+
+        <h2>
+          Reservar una barbería
+          debería ser fácil.
+        </h2>
+
+      </div>
+
+
+      <div class="benefit-grid">
+
+        <article>
+
+          <div class="number">
+            01
+          </div>
+
+          <h3>
+            Descubre
+          </h3>
+
+          <p>
+            Encuentra barberías cercanas
+            y explora diferentes opciones
+            desde un solo lugar.
+          </p>
+
+        </article>
+
+
+        <article>
+
+          <div class="number">
+            02
+          </div>
+
+          <h3>
+            Compara
+          </h3>
+
+          <p>
+            Consulta servicios, precios,
+            ubicación y barberos antes
+            de reservar.
+          </p>
+
+        </article>
+
+
+        <article>
+
+          <div class="number">
+            03
+          </div>
+
+          <h3>
+            Reserva
+          </h3>
+
+          <p>
+            Escoge el servicio, el barbero,
+            la fecha y el horario disponible.
+          </p>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ===================================== -->
+<!-- EXPERIENCE -->
+<!-- ===================================== -->
+
+<section class="experience">
+
+  <div class="container experience-grid">
+
+
+    <div class="experience-image">
+
+      <img
+        src="/images/barbergo/hero-barber.jpg"
+        alt="Experiencia BarberGo"
+      >
+
+      <div class="experience-badge">
+
+        <strong>
+          Tu estilo
+        </strong>
+
+        <span>
+          empieza aquí
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="experience-content">
+
+      <span class="section-label light">
+        MÁS QUE UNA RESERVA
+      </span>
+
+
+      <h2>
+        Encuentra al barbero
+        que entiende tu estilo.
+      </h2>
+
+
+      <p>
+        BarberGo conecta personas con
+        barberías y profesionales para
+        hacer que reservar un buen corte
+        sea tan sencillo como elegir
+        cuándo y dónde.
+      </p>
+
+
+      <div class="experience-points">
+
+        <div>
+
+          <strong>
+            01
+          </strong>
+
+          <span>
+            Explora barberías
+          </span>
+
+        </div>
+
+
+        <div>
+
+          <strong>
+            02
+          </strong>
+
+          <span>
+            Encuentra tu barbero
+          </span>
+
+        </div>
+
+
+        <div>
+
+          <strong>
+            03
+          </strong>
+
+          <span>
+            Reserva en segundos
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <button class="explore-button">
+
+        Explorar barberías
+
+        <span>
+          →
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<app-footer></app-footer>

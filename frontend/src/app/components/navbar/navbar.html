@@ -1,0 +1,252 @@
+<header class="navbar">
+
+  <div class="navbar-container">
+
+
+    <!-- ====================================== -->
+    <!-- MARCA -->
+    <!-- ====================================== -->
+
+    <a
+      class="brand"
+      routerLink="/"
+      aria-label="Ir al inicio de BarberGo"
+    >
+
+      <span class="brand-mark">
+        B
+      </span>
+
+      <span class="brand-text">
+        BarberGo
+      </span>
+
+    </a>
+
+
+    <!-- ====================================== -->
+    <!-- NAVEGACIÓN -->
+    <!-- ====================================== -->
+
+    <nav
+      class="navigation"
+      aria-label="Navegación principal"
+    >
+
+      <a
+        routerLink="/"
+        class="nav-link"
+      >
+        Inicio
+      </a>
+
+
+      <a
+        routerLink="/barberias"
+        class="nav-link"
+      >
+        Barberías
+      </a>
+
+
+      @if (currentUser) {
+
+  @if (isBarber) {
+
+    <a
+      routerLink="/barber"
+      class="nav-link"
+    >
+      Mi agenda
+    </a>
+
+  }
+
+  @else {
+
+    <a
+      routerLink="/mis-reservas"
+      class="nav-link"
+    >
+      Mis reservas
+    </a>
+
+  }
+
+}
+
+    </nav>
+
+
+    <!-- ====================================== -->
+    <!-- ACCIONES -->
+    <!-- ====================================== -->
+
+    <div class="actions">
+
+
+      <!-- ==================================== -->
+      <!-- CARGANDO SESIÓN -->
+      <!-- ==================================== -->
+
+      @if (loadingSession) {
+
+        <div
+          class="session-loading"
+          aria-label="Validando sesión"
+        >
+
+          <span class="session-loading-dot">
+          </span>
+
+        </div>
+
+      }
+
+
+      <!-- ==================================== -->
+      <!-- USUARIO LOGUEADO -->
+      <!-- ==================================== -->
+
+      @else if (currentUser) {
+
+
+        <!-- ================================== -->
+        <!-- ACCESO ADMINISTRATIVO -->
+        <!-- ================================== -->
+
+        @if (hasAdminAccess) {
+
+  <button
+    type="button"
+    class="admin-panel-button"
+    (click)="goToAdminPanel()"
+    title="Panel administrativo"
+    aria-label="Ir al panel administrativo"
+  >
+
+    <svg
+      class="admin-panel-icon"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+
+      <rect
+        x="3"
+        y="3"
+        width="7"
+        height="7"
+        rx="1.5"
+      ></rect>
+
+      <rect
+        x="14"
+        y="3"
+        width="7"
+        height="7"
+        rx="1.5"
+      ></rect>
+
+      <rect
+        x="3"
+        y="14"
+        width="7"
+        height="7"
+        rx="1.5"
+      ></rect>
+
+      <rect
+        x="14"
+        y="14"
+        width="7"
+        height="7"
+        rx="1.5"
+      ></rect>
+
+    </svg>
+
+  </button>
+
+}
+
+
+        <!-- ================================== -->
+        <!-- USUARIO -->
+        <!-- ================================== -->
+
+        <div class="user-session">
+
+
+          <div class="user-avatar">
+
+            {{ userInitials }}
+
+          </div>
+
+
+          <div class="user-information">
+
+            <span>
+              MI CUENTA
+            </span>
+
+            <strong>
+              {{ userFullName }}
+            </strong>
+
+          </div>
+
+
+          <div class="user-divider">
+          </div>
+
+
+          <button
+            type="button"
+            class="logout-button"
+            (click)="logout()"
+          >
+
+            <span>
+              Cerrar sesión
+            </span>
+
+          </button>
+
+        </div>
+
+      }
+
+
+      <!-- ==================================== -->
+      <!-- SIN SESIÓN -->
+      <!-- ==================================== -->
+
+      @else {
+
+        <div class="guest-actions">
+
+          <a
+            class="login-button"
+            routerLink="/login"
+          >
+            Iniciar sesión
+          </a>
+
+
+          <a
+            class="register-button"
+            routerLink="/registro"
+          >
+            Crear cuenta
+          </a>
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</header>

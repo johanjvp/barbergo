@@ -1,0 +1,3104 @@
+:host {
+  display: block;
+
+  --sidebar-bg: #090a0d;
+  --sidebar-surface: #111318;
+  --sidebar-surface-hover: #171922;
+
+  --violet: #8b5cf6;
+  --violet-light: #a78bfa;
+
+  --blue: #3b82f6;
+  --blue-light: #60a5fa;
+
+  --cyan: #06b6d4;
+
+  --green: #10b981;
+
+  --text: #ffffff;
+  --text-soft: #a1a1aa;
+  --text-muted: #666a73;
+
+  --border: rgba(
+    255,
+    255,
+    255,
+    0.07
+  );
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.admin-sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 250px;
+
+  overflow: hidden;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      180deg,
+      #090a0d 0%,
+      #0b0c10 55%,
+      #08090c 100%
+    );
+
+  border-right:
+    1px solid var(--border);
+
+  box-shadow:
+    8px 0 35px
+    rgba(
+      0,
+      0,
+      0,
+      0.14
+    );
+}
+
+
+/* =====================================================
+   DECORACIÓN AMBIENTAL
+===================================================== */
+
+.admin-sidebar::before {
+  content: '';
+
+  position: absolute;
+
+  width: 210px;
+  height: 210px;
+
+  top: 100px;
+  left: -130px;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        139,
+        92,
+        246,
+        0.10
+      ),
+      transparent 70%
+    );
+
+  animation:
+    sidebarAmbient
+    8s
+    ease-in-out
+    infinite;
+}
+
+
+.admin-sidebar::after {
+  content: '';
+
+  position: absolute;
+
+  width: 190px;
+  height: 190px;
+
+  right: -140px;
+  bottom: 120px;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        59,
+        130,
+        246,
+        0.09
+      ),
+      transparent 70%
+    );
+
+  animation:
+    sidebarAmbientReverse
+    9s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes sidebarAmbient {
+
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(25px);
+  }
+
+}
+
+
+@keyframes sidebarAmbientReverse {
+
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(-20px);
+  }
+
+}
+
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+.sidebar-brand {
+  position: relative;
+  z-index: 2;
+
+  height: 82px;
+
+  display: flex;
+  align-items: center;
+
+  flex: 0 0 auto;
+
+  padding:
+    0 22px;
+
+  border-bottom:
+    1px solid var(--border);
+}
+
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  color: #ffffff;
+
+  text-decoration: none;
+}
+
+
+.brand-name {
+  font-size: 21px;
+
+  font-weight: 850;
+
+  letter-spacing:
+    -0.9px;
+}
+
+
+.brand-label {
+  position: relative;
+
+  overflow: hidden;
+
+  padding:
+    4px 7px;
+
+  border-radius: 6px;
+
+  color: #111318;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #e9e9ee
+    );
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing:
+    0.12em;
+
+  box-shadow:
+    0 4px 12px
+    rgba(
+      255,
+      255,
+      255,
+      0.10
+    );
+}
+
+
+.brand-label::after {
+  content: '';
+
+  position: absolute;
+
+  top: -20px;
+  left: -20px;
+
+  width: 12px;
+  height: 50px;
+
+  transform:
+    rotate(25deg);
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.8
+    );
+
+  animation:
+    brandShine
+    5s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes brandShine {
+
+  0%,
+  70% {
+    left: -25px;
+  }
+
+  90%,
+  100% {
+    left: 80px;
+  }
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.sidebar-navigation {
+  position: relative;
+  z-index: 2;
+
+  flex: 1;
+
+  padding:
+    24px 13px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+.sidebar-navigation::-webkit-scrollbar {
+  width: 4px;
+}
+
+
+.sidebar-navigation::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.10
+    );
+}
+
+
+/* =====================================================
+   LABELS
+===================================================== */
+
+.navigation-label {
+  display: block;
+
+  margin:
+    0 11px 10px;
+
+  color:
+    #555a64;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  letter-spacing:
+    0.16em;
+}
+
+
+.navigation-label.second {
+  margin-top:
+    29px;
+}
+
+
+/* =====================================================
+   BASE COMÚN
+   Barberías + futuros botones
+===================================================== */
+
+.navigation-item,
+.nav-item {
+  position: relative;
+
+  width: 100%;
+
+  min-height: 47px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  margin-bottom:
+    5px;
+
+  padding:
+    0 11px;
+
+  overflow: hidden;
+
+  box-sizing:
+    border-box;
+
+  border:
+    1px solid transparent;
+
+  border-radius:
+    12px;
+
+  color:
+    var(--text-soft);
+
+  background:
+    transparent;
+
+  font:
+    inherit;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+  text-align:
+    left;
+
+  text-decoration:
+    none;
+
+  cursor:
+    pointer;
+
+  transition:
+    transform 0.22s ease,
+    color 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+
+/* =====================================================
+   BRILLO DESLIZANTE
+===================================================== */
+
+.navigation-item::after,
+.nav-item::after {
+  content: '';
+
+  position: absolute;
+
+  top: -15px;
+  left: -50px;
+
+  width: 25px;
+  height: 80px;
+
+  transform:
+    rotate(25deg);
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    );
+}
+
+
+/* =====================================================
+   HOVER GENERAL
+===================================================== */
+
+.navigation-item:hover:not(.disabled):not(.active),
+.nav-item:hover:not(.active) {
+  transform:
+    translateX(4px);
+
+  color:
+    #ffffff;
+
+  border-color:
+    rgba(
+      139,
+      92,
+      246,
+      0.18
+    );
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        139,
+        92,
+        246,
+        0.11
+      ),
+      rgba(
+        59,
+        130,
+        246,
+        0.08
+      )
+    );
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+}
+
+
+.navigation-item:hover:not(.disabled):not(.active)::after,
+.nav-item:hover:not(.active)::after {
+  opacity: 1;
+
+  animation:
+    navigationShine
+    0.7s
+    ease;
+}
+
+
+@keyframes navigationShine {
+
+  from {
+    left: -50px;
+  }
+
+  to {
+    left: 260px;
+  }
+
+}
+
+
+/* =====================================================
+   ICONOS BASE
+===================================================== */
+
+.navigation-icon,
+.nav-icon {
+  position: relative;
+
+  width: 31px;
+  height: 31px;
+
+  display: grid;
+  place-items: center;
+
+  flex:
+    0 0 auto;
+
+  border-radius:
+    9px;
+
+  color:
+    #858992;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.045
+    );
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  transition:
+    transform 0.22s ease,
+    color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+
+/* =====================================================
+   ICON HOVER
+===================================================== */
+
+.navigation-item:hover:not(.disabled):not(.active)
+.navigation-icon,
+.nav-item:hover:not(.active)
+.nav-icon {
+  transform:
+    scale(1.07)
+    rotate(-3deg);
+
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        139,
+        92,
+        246,
+        0.80
+      ),
+      rgba(
+        59,
+        130,
+        246,
+        0.85
+      )
+    );
+
+  box-shadow:
+    0 6px 16px
+    rgba(
+      99,
+      102,
+      241,
+      0.25
+    );
+}
+
+
+/* =====================================================
+   LABEL
+===================================================== */
+
+.nav-label {
+  min-width: 0;
+
+  flex: 1;
+
+  text-align: left;
+}
+
+
+/* =====================================================
+   DASHBOARD GENERAL
+   SE MANTIENE DISTINTO
+===================================================== */
+
+.navigation-item.active {
+  transform: none;
+
+  color:
+    #111318;
+
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.65
+    );
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f0f1f5
+    );
+
+  box-shadow:
+    0 8px 22px
+    rgba(
+      0,
+      0,
+      0,
+      0.22
+    );
+}
+
+
+.navigation-item.active
+.navigation-icon {
+  color:
+    #111318;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 5px 13px
+    rgba(
+      0,
+      0,
+      0,
+      0.12
+    );
+}
+
+
+/* =====================================================
+   BARBERÍAS ACTIVO
+===================================================== */
+
+.nav-item.active {
+  transform:
+    translateX(3px);
+
+  color:
+    #ffffff;
+
+  border-color:
+    rgba(
+      139,
+      92,
+      246,
+      0.25
+    );
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        124,
+        58,
+        237,
+        0.24
+      ),
+      rgba(
+        37,
+        99,
+        235,
+        0.18
+      )
+    );
+
+  box-shadow:
+    inset 3px 0 0
+    var(--violet),
+    0 9px 22px
+    rgba(
+      0,
+      0,
+      0,
+      0.18
+    );
+}
+
+
+.nav-item.active::before {
+  content: '';
+
+  position: absolute;
+
+  width: 80px;
+  height: 80px;
+
+  right: -45px;
+  top: -40px;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  background:
+    rgba(
+      139,
+      92,
+      246,
+      0.10
+    );
+}
+
+
+.nav-item.active
+.nav-icon {
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--violet),
+      var(--blue)
+    );
+
+  box-shadow:
+    0 7px 17px
+    rgba(
+      99,
+      102,
+      241,
+      0.32
+    );
+
+  animation:
+    activeIconPulse
+    3s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes activeIconPulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 7px 17px
+      rgba(
+        99,
+        102,
+        241,
+        0.28
+      );
+  }
+
+  50% {
+    box-shadow:
+      0 7px 22px
+      rgba(
+        139,
+        92,
+        246,
+        0.48
+      );
+  }
+
+}
+
+
+/* =====================================================
+   BOTONES PRONTO
+===================================================== */
+
+.navigation-item.disabled {
+  opacity: 1;
+
+  color:
+    #7d818b;
+
+  cursor:
+    default;
+
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.035
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.018
+    );
+}
+
+
+/*
+   Aunque todavía no son clickeables,
+   conservan la misma identidad visual.
+*/
+
+.navigation-item.disabled
+.navigation-icon {
+  color:
+    #a58aff;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        139,
+        92,
+        246,
+        0.13
+      ),
+      rgba(
+        59,
+        130,
+        246,
+        0.10
+      )
+    );
+
+  border:
+    1px solid
+    rgba(
+      139,
+      92,
+      246,
+      0.10
+    );
+}
+
+
+/* =====================================================
+   MOVIMIENTO SUTIL PRONTO
+===================================================== */
+
+.navigation-item.disabled:hover {
+  transform:
+    translateX(2px);
+
+  color:
+    #9296a0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        139,
+        92,
+        246,
+        0.055
+      ),
+      rgba(
+        59,
+        130,
+        246,
+        0.035
+      )
+    );
+}
+
+
+.navigation-item.disabled:hover
+.navigation-icon {
+  transform:
+    scale(1.04);
+
+  color:
+    var(--violet-light);
+
+  background:
+    rgba(
+      139,
+      92,
+      246,
+      0.12
+    );
+}
+
+
+/* =====================================================
+   PRONTO BADGE
+===================================================== */
+
+.coming-soon {
+  position: relative;
+
+  margin-left:
+    auto;
+
+  flex:
+    0 0 auto;
+
+  padding:
+    4px 6px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      139,
+      92,
+      246,
+      0.12
+    );
+
+  border-radius:
+    999px;
+
+  color:
+    #9083bf;
+
+  background:
+    rgba(
+      139,
+      92,
+      246,
+      0.075
+    );
+
+  font-size:
+    6px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.10em;
+}
+
+
+.coming-soon::after {
+  content: '';
+
+  position: absolute;
+
+  top: -15px;
+  left: -18px;
+
+  width: 8px;
+  height: 40px;
+
+  transform:
+    rotate(25deg);
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.13
+    );
+
+  animation:
+    soonShine
+    5s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes soonShine {
+
+  0%,
+  75% {
+    left: -18px;
+  }
+
+  95%,
+  100% {
+    left: 55px;
+  }
+
+}
+
+
+/* =====================================================
+   ADMIN FOOTER
+===================================================== */
+
+.sidebar-user {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  flex: 0 0 auto;
+
+  padding:
+    17px 18px;
+
+  border-top:
+    1px solid var(--border);
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.015
+    );
+}
+
+
+/* =====================================================
+   ADMIN AVATAR
+===================================================== */
+
+.admin-avatar {
+  position: relative;
+
+  width: 37px;
+  height: 37px;
+
+  display: grid;
+  place-items: center;
+
+  flex:
+    0 0 auto;
+
+  overflow: hidden;
+
+  border-radius:
+    11px;
+
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--violet),
+      var(--blue)
+    );
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      99,
+      102,
+      241,
+      0.25
+    );
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.sidebar-user:hover
+.admin-avatar {
+  transform:
+    scale(1.06);
+
+  box-shadow:
+    0 9px 24px
+    rgba(
+      99,
+      102,
+      241,
+      0.38
+    );
+}
+
+
+/* =====================================================
+   ADMIN INFORMATION
+===================================================== */
+
+.admin-information {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.admin-information strong {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color:
+    #eeeeef;
+
+  font-size:
+    10px;
+
+  font-weight:
+    750;
+}
+
+
+.admin-information span {
+  color:
+    #666c76;
+
+  font-size:
+    7px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.08em;
+}
+
+
+/* =====================================================
+   FOCUS
+===================================================== */
+
+.navigation-item:focus-visible,
+.nav-item:focus-visible,
+.brand:focus-visible {
+  outline:
+    2px solid
+    rgba(
+      139,
+      92,
+      246,
+      0.85
+    );
+
+  outline-offset:
+    2px;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (
+  max-width: 900px
+) {
+
+  .admin-sidebar {
+    display: none;
+  }
+
+}
+
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+
+}
+
+:host {
+  display: block;
+
+  --bg: #f7f7fa;
+  --surface: #ffffff;
+  --surface-soft: #fafafd;
+
+  --text: #18181b;
+  --text-secondary: #52525b;
+  --muted: #85858f;
+
+  --border: #e8e8ee;
+  --border-strong: #dddde6;
+
+  --violet: #7c3aed;
+  --violet-soft: #f5f1ff;
+
+  --blue: #3b82f6;
+  --blue-soft: #eff6ff;
+
+  --green: #16a34a;
+  --green-soft: #f0fdf4;
+
+  --red: #dc2626;
+  --red-soft: #fef2f2;
+
+  --shadow:
+    0 1px 2px rgba(15, 23, 42, 0.02),
+    0 8px 26px rgba(15, 23, 42, 0.045);
+
+  --shadow-hover:
+    0 2px 4px rgba(15, 23, 42, 0.03),
+    0 14px 34px rgba(15, 23, 42, 0.065);
+
+  color: var(--text);
+}
+
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+.settings-page {
+  width: 100%;
+  max-width: 1220px;
+
+  margin: 0 auto;
+
+  padding:
+    38px
+    34px
+    70px;
+
+  box-sizing: border-box;
+
+  counter-reset: settings-section;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.page-header {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-bottom: 30px;
+}
+
+
+.header-copy {
+  max-width: 680px;
+}
+
+
+.eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  min-height: 25px;
+
+  margin-bottom: 12px;
+
+  padding:
+    0
+    10px;
+
+  border:
+    1px solid
+    rgba(124, 58, 237, 0.12);
+
+  border-radius: 999px;
+
+  color: var(--violet);
+
+  background:
+    var(--violet-soft);
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.14em;
+}
+
+
+.page-header h1 {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size:
+    clamp(
+      30px,
+      4vw,
+      42px
+    );
+
+  font-weight: 760;
+
+  line-height: 1.08;
+
+  letter-spacing: -0.04em;
+}
+
+
+.page-header p {
+  max-width: 650px;
+
+  margin:
+    12px
+    0
+    0;
+
+  color: var(--text-secondary);
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+/* =====================================================
+   BARBERSHOP SELECTOR
+===================================================== */
+
+.barbershop-selector-card {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(280px, 390px);
+
+  gap: 32px;
+
+  align-items: center;
+
+  margin-bottom: 14px;
+
+  padding:
+    22px
+    24px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 16px;
+
+  background:
+    var(--surface);
+
+  box-shadow:
+    var(--shadow);
+}
+
+
+.selector-copy > span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: var(--muted);
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.13em;
+}
+
+
+.selector-copy strong {
+  display: block;
+
+  color: var(--text);
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  letter-spacing: -0.01em;
+}
+
+
+.selector-copy p {
+  max-width: 590px;
+
+  margin:
+    7px
+    0
+    0;
+
+  color: var(--muted);
+
+  font-size: 12px;
+
+  line-height: 1.55;
+}
+
+
+.selector-control {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.selector-control label {
+  color: var(--text-secondary);
+
+  font-size: 11px;
+
+  font-weight: 650;
+}
+
+
+.selector-control select {
+  width: 100%;
+
+  height: 46px;
+
+  padding:
+    0
+    42px
+    0
+    14px;
+
+  border:
+    1px solid
+    var(--border-strong);
+
+  border-radius: 11px;
+
+  outline: none;
+
+  color: var(--text);
+
+  background:
+    #ffffff;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 620;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+
+.selector-control select:hover {
+  border-color: #c9cad4;
+}
+
+
+.selector-control select:focus {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.55
+    );
+
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      124,
+      58,
+      237,
+      0.08
+    );
+}
+
+
+.selector-control select:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+
+/* =====================================================
+   SELECTED BARBERSHOP
+===================================================== */
+
+.selected-shop-summary {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  margin-bottom: 24px;
+
+  padding:
+    12px
+    16px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 13px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.72
+    );
+}
+
+
+.shop-avatar {
+  display: grid;
+
+  place-items: center;
+
+  width: 38px;
+  height: 38px;
+
+  flex:
+    0
+    0
+    38px;
+
+  border-radius: 10px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--violet),
+      var(--blue)
+    );
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 5px 14px
+    rgba(
+      99,
+      102,
+      241,
+      0.18
+    );
+}
+
+
+.shop-summary-copy {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.shop-summary-copy > span {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: var(--muted);
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.13em;
+}
+
+
+.shop-summary-copy strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: var(--text);
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.shop-summary-copy p {
+  margin:
+    2px
+    0
+    0;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   SHOP STATUS
+===================================================== */
+
+.shop-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding:
+    6px
+    9px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+
+.shop-status.active {
+  color: #15803d;
+
+  background:
+    var(--green-soft);
+}
+
+
+.shop-status.inactive {
+  color: #b91c1c;
+
+  background:
+    var(--red-soft);
+}
+
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+}
+
+
+/* =====================================================
+   FEEDBACK
+===================================================== */
+
+.feedback {
+  display: grid;
+
+  grid-template-columns:
+    auto
+    1fr
+    auto;
+
+  gap: 10px;
+
+  align-items: center;
+
+  margin-bottom: 16px;
+
+  padding:
+    11px
+    13px;
+
+  border-radius: 11px;
+
+  font-size: 11px;
+
+  animation:
+    feedbackIn
+    0.18s
+    ease-out;
+}
+
+
+.feedback.success {
+  border:
+    1px solid
+    #d8f3df;
+
+  color: #166534;
+
+  background:
+    #f6fff8;
+}
+
+
+.feedback.error {
+  border:
+    1px solid
+    #fee2e2;
+
+  color: #991b1b;
+
+  background:
+    #fff8f8;
+}
+
+
+.feedback > span {
+  display: grid;
+
+  place-items: center;
+
+  width: 23px;
+  height: 23px;
+
+  border-radius: 7px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.8
+    );
+
+  font-weight: 800;
+}
+
+
+.feedback p {
+  margin: 0;
+
+  font-weight: 580;
+}
+
+
+.feedback button {
+  width: 25px;
+  height: 25px;
+
+  border: 0;
+
+  border-radius: 7px;
+
+  color: inherit;
+
+  background: transparent;
+
+  font-size: 17px;
+
+  cursor: pointer;
+}
+
+
+.feedback button:hover {
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.04
+    );
+}
+
+
+@keyframes feedbackIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+/* =====================================================
+   SETTINGS SECTION
+===================================================== */
+
+.settings-section {
+  position: relative;
+
+  overflow: hidden;
+
+  margin-bottom: 16px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 16px;
+
+  background:
+    var(--surface);
+
+  box-shadow:
+    var(--shadow);
+
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
+}
+
+
+.settings-section:hover {
+  border-color:
+    #dfdfe8;
+
+  box-shadow:
+    var(--shadow-hover);
+}
+
+
+.settings-section::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+
+  opacity: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--violet),
+      var(--blue)
+    );
+
+  transition:
+    opacity 0.2s ease;
+}
+
+
+.settings-section:hover::before {
+  opacity: 1;
+}
+
+
+/* =====================================================
+   SECTION HEADER
+===================================================== */
+
+.section-heading {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding:
+    22px
+    26px;
+
+  border-bottom:
+    1px solid
+    #eeeeF3;
+
+  background:
+    #ffffff;
+}
+
+
+.section-icon {
+  counter-increment:
+    settings-section;
+
+  display: grid;
+
+  place-items: center;
+
+  width: 35px;
+  height: 35px;
+
+  flex:
+    0
+    0
+    35px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.1
+    );
+
+  border-radius: 10px;
+
+  color: transparent;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        124,
+        58,
+        237,
+        0.08
+      ),
+      rgba(
+        59,
+        130,
+        246,
+        0.07
+      )
+    );
+
+  font-size: 0;
+}
+
+
+.section-icon::after {
+  content:
+    '0'
+    counter(settings-section);
+
+  color: var(--violet);
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.04em;
+}
+
+
+.section-heading > div:last-child {
+  min-width: 0;
+}
+
+
+.section-heading span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #9999a3;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.14em;
+}
+
+
+.section-heading h2 {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: 15px;
+
+  font-weight: 710;
+
+  letter-spacing: -0.015em;
+}
+
+
+.section-heading p {
+  margin:
+    4px
+    0
+    0;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  line-height: 1.45;
+}
+
+
+/* =====================================================
+   SETTINGS LIST
+===================================================== */
+
+.settings-list {
+  padding:
+    2px
+    26px
+    8px;
+}
+
+
+.setting-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  gap: 28px;
+
+  align-items: center;
+
+  min-height: 76px;
+
+  padding:
+    16px
+    0;
+
+  border-bottom:
+    1px solid
+    #f0f0f4;
+}
+
+
+.settings-list
+.setting-row:last-of-type {
+  border-bottom: 0;
+}
+
+
+.setting-copy {
+  min-width: 0;
+}
+
+
+.setting-copy strong {
+  display: block;
+
+  color: var(--text);
+
+  font-size: 12.5px;
+
+  font-weight: 660;
+
+  letter-spacing: -0.005em;
+}
+
+
+.setting-copy p {
+  max-width: 720px;
+
+  margin:
+    5px
+    0
+    0;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  line-height: 1.55;
+}
+
+
+/* =====================================================
+   FEATURED SETTING
+===================================================== */
+
+.setting-row.featured {
+  position: relative;
+
+  margin:
+    12px
+    0;
+
+  padding:
+    16px
+    17px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.12
+    );
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        124,
+        58,
+        237,
+        0.045
+      ),
+      rgba(
+        59,
+        130,
+        246,
+        0.035
+      )
+    );
+}
+
+
+.setting-title-line {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+.recommended-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  height: 18px;
+
+  padding:
+    0
+    7px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.15
+    );
+
+  border-radius: 999px;
+
+  color: var(--violet);
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.78
+    );
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.09em;
+}
+
+
+/* =====================================================
+   SWITCH
+===================================================== */
+
+.switch {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 0;
+
+  border: 0;
+
+  color: var(--muted);
+
+  background: transparent;
+
+  font-family: inherit;
+
+  cursor: pointer;
+}
+
+
+.switch:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+}
+
+
+.switch-track {
+  position: relative;
+
+  display: block;
+
+  width: 42px;
+  height: 23px;
+
+  flex:
+    0
+    0
+    42px;
+
+  border:
+    1px solid
+    #d8d9df;
+
+  border-radius: 999px;
+
+  background: #e7e8ec;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.switch-thumb {
+  position: absolute;
+
+  top: 2px;
+  left: 2px;
+
+  width: 17px;
+  height: 17px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 1px 4px
+    rgba(
+      15,
+      23,
+      42,
+      0.18
+    );
+
+  transition:
+    transform 0.2s
+    cubic-bezier(
+      0.2,
+      0.8,
+      0.2,
+      1
+    );
+}
+
+
+.switch > strong {
+  min-width: 24px;
+
+  color: #9a9aa3;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.04em;
+}
+
+
+.switch.on
+.switch-track {
+  border-color:
+    transparent;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--violet),
+      var(--blue)
+    );
+
+  box-shadow:
+    0 3px 9px
+    rgba(
+      99,
+      102,
+      241,
+      0.2
+    );
+}
+
+
+.switch.on
+.switch-thumb {
+  transform:
+    translateX(19px);
+}
+
+
+.switch.on > strong {
+  color: var(--violet);
+}
+
+
+.danger-switch.on
+.switch-track {
+  background:
+    var(--red);
+
+  box-shadow:
+    0 3px 9px
+    rgba(
+      220,
+      38,
+      38,
+      0.16
+    );
+}
+
+
+.danger-switch.on > strong {
+  color: var(--red);
+}
+
+
+/* =====================================================
+   FORM FIELDS
+===================================================== */
+
+.settings-fields-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 12px;
+
+  padding:
+    18px
+    0
+    16px;
+}
+
+
+.setting-field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  padding:
+    14px
+    15px;
+
+  border:
+    1px solid
+    #ececf1;
+
+  border-radius: 12px;
+
+  background:
+    #fafafd;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+
+.setting-field:hover {
+  border-color:
+    #dedee6;
+
+  background:
+    #fafafa;
+}
+
+
+.setting-field > span {
+  color: var(--text);
+
+  font-size: 11px;
+
+  font-weight: 670;
+}
+
+
+.setting-field > small {
+  min-height: 17px;
+
+  color: var(--muted);
+
+  font-size: 9.5px;
+
+  line-height: 1.4;
+}
+
+
+.setting-field select {
+  width: 100%;
+
+  height: 40px;
+
+  margin-top: 7px;
+
+  padding:
+    0
+    11px;
+
+  border:
+    1px solid
+    #dfe0e7;
+
+  border-radius: 9px;
+
+  outline: none;
+
+  color: var(--text);
+
+  background:
+    #ffffff;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 580;
+}
+
+
+.setting-field select:focus {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.45
+    );
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      124,
+      58,
+      237,
+      0.06
+    );
+}
+
+
+.number-input {
+  display: flex;
+
+  align-items: center;
+
+  overflow: hidden;
+
+  margin-top: 7px;
+
+  border:
+    1px solid
+    #dfe0e7;
+
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+.number-input:focus-within {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.45
+    );
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      124,
+      58,
+      237,
+      0.06
+    );
+}
+
+
+.number-input input {
+  width: 100%;
+
+  min-width: 0;
+
+  height: 39px;
+
+  padding:
+    0
+    11px;
+
+  border: 0;
+
+  outline: none;
+
+  color: var(--text);
+
+  background: transparent;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 620;
+}
+
+
+.number-input > span {
+  display: flex;
+
+  align-items: center;
+
+  align-self: stretch;
+
+  padding:
+    0
+    10px;
+
+  border-left:
+    1px solid
+    #ececf1;
+
+  color: #9999a3;
+
+  background:
+    #fafafa;
+
+  font-size: 8px;
+
+  font-weight: 750;
+
+  text-transform: uppercase;
+}
+
+
+.number-input input:disabled,
+.setting-field select:disabled {
+  color: #aaaab2;
+
+  background: #f4f4f6;
+
+  cursor: not-allowed;
+}
+
+
+/* =====================================================
+   STATE CARDS
+===================================================== */
+
+.state-card {
+  display: flex;
+
+  min-height: 220px;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 32px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 16px;
+
+  background:
+    var(--surface);
+
+  text-align: center;
+
+  box-shadow:
+    var(--shadow);
+}
+
+
+.state-card strong {
+  margin-top: 5px;
+
+  color: var(--text);
+
+  font-size: 13px;
+
+  font-weight: 680;
+}
+
+
+.state-card p {
+  max-width: 420px;
+
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  line-height: 1.55;
+}
+
+
+.state-icon {
+  display: grid;
+
+  place-items: center;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 10px;
+
+  color: var(--violet);
+
+  background:
+    var(--violet-soft);
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+
+.error-state
+.state-icon {
+  color: var(--red);
+
+  background:
+    var(--red-soft);
+}
+
+
+/* =====================================================
+   LOADER
+===================================================== */
+
+.loader {
+  width: 25px;
+  height: 25px;
+
+  border:
+    2px solid
+    #e5e5ea;
+
+  border-top-color:
+    var(--violet);
+
+  border-radius: 50%;
+
+  animation:
+    settingsSpin
+    0.7s
+    linear
+    infinite;
+}
+
+
+@keyframes settingsSpin {
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.secondary-button {
+  min-height: 37px;
+
+  margin-top: 8px;
+
+  padding:
+    0
+    14px;
+
+  border:
+    1px solid
+    #dedee5;
+
+  border-radius: 9px;
+
+  color: var(--text-secondary);
+
+  background:
+    #ffffff;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 680;
+
+  cursor: pointer;
+
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+.secondary-button:hover {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.24
+    );
+
+  color: var(--violet);
+
+  background:
+    var(--violet-soft);
+
+  box-shadow:
+    0 4px 12px
+    rgba(
+      124,
+      58,
+      237,
+      0.07
+    );
+}
+
+
+/* =====================================================
+   FOOTER INFORMATION
+===================================================== */
+
+.settings-footer-info {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 0;
+
+  overflow: hidden;
+
+  margin-top: 18px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 13px;
+
+  background:
+    var(--surface);
+}
+
+
+.settings-footer-info > div {
+  padding:
+    14px
+    17px;
+
+  border-right:
+    1px solid
+    #eeeeF2;
+}
+
+
+.settings-footer-info > div:last-child {
+  border-right: 0;
+}
+
+
+.settings-footer-info span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #a0a0a8;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+
+.settings-footer-info strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: var(--text-secondary);
+
+  font-size: 10px;
+
+  font-weight: 650;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (
+  max-width: 950px
+) {
+
+  .settings-page {
+    padding:
+      28px
+      24px
+      60px;
+  }
+
+
+  .barbershop-selector-card {
+    grid-template-columns:
+      1fr;
+
+    gap: 18px;
+  }
+
+
+  .settings-fields-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+@media (
+  max-width: 640px
+) {
+
+  .settings-page {
+    padding:
+      22px
+      15px
+      50px;
+  }
+
+
+  .page-header {
+    margin-bottom: 22px;
+  }
+
+
+  .page-header h1 {
+    font-size: 31px;
+  }
+
+
+  .page-header p {
+    font-size: 12px;
+  }
+
+
+  .barbershop-selector-card {
+    padding:
+      18px
+      16px;
+
+    border-radius: 14px;
+  }
+
+
+  .selected-shop-summary {
+    align-items: flex-start;
+
+    padding:
+      12px
+      13px;
+  }
+
+
+  .shop-status {
+    padding:
+      5px
+      7px;
+
+    font-size: 8px;
+  }
+
+
+  .section-heading {
+    align-items: flex-start;
+
+    padding:
+      19px
+      17px;
+  }
+
+
+  .settings-list {
+    padding:
+      2px
+      17px
+      6px;
+  }
+
+
+  .setting-row {
+    grid-template-columns:
+      1fr;
+
+    gap: 12px;
+
+    min-height: auto;
+
+    padding:
+      17px
+      0;
+  }
+
+
+  .setting-row.featured {
+    padding:
+      15px;
+  }
+
+
+  .switch {
+    justify-self: flex-start;
+  }
+
+
+  .settings-fields-grid {
+    gap: 9px;
+
+    padding:
+      14px
+      0;
+  }
+
+
+  .setting-field {
+    padding:
+      13px;
+  }
+
+
+  .settings-footer-info {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .settings-footer-info > div {
+    border-right: 0;
+
+    border-bottom:
+      1px solid
+      #eeeeF2;
+  }
+
+
+  .settings-footer-info > div:last-child {
+    border-bottom: 0;
+  }
+
+}
+
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+
+}
