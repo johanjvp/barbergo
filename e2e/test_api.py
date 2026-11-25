@@ -68,6 +68,16 @@ def emails_to(email: str) -> str:
     return "\n".join(b for b in re.split(r"(?=\[EMAIL-DEV\] Para: )", log_text()) if f"Para: {email}" in b)
 
 
+def email_arrived(email: str, needle: str, timeout: float = 8.0) -> bool:
+    """Los correos de cambio de estado salen en un hilo: se espera a que aparezcan en el log."""
+    end = time.time() + timeout
+    while time.time() < end:
+        if needle in emails_to(email):
+            return True
+        time.sleep(0.4)
+    return False
+
+
 _slot = [0]
 
 
@@ -141,7 +151,7 @@ check("mismo horario ocupado -> 409", r.status_code == 409, r.text)
 
 r = http.post(f"/guest/bookings/{token}/cancel")
 check("cancelar por enlace -> 200", r.status_code == 200 and r.json()["status_code"] == "CANCELLED_BY_CUSTOMER", r.text)
-check("correo de cancelación enviado", "Tu reserva fue cancelada" in emails_to(email))
+check("correo de cancelación enviado", email_arrived(email, "Tu reserva fue cancelada"))
 check("cancelar dos veces -> 409", http.post(f"/guest/bookings/{token}/cancel").status_code == 409)
 
 r = guest_book("otra@test.co", start)
@@ -152,15 +162,15 @@ codes = [http.post("/guest/verification-code", json={"email": rl}).status_code f
 check("límite de 3 códigos por correo (4.º -> 429)", codes == [200, 200, 200, 429], str(codes))
 
 dbs = SessionLocal()
-dbs.execute(text("UPDATE barbershop_settings SET require_customer_account = 1 WHERE barbershop_id = :s"), {"s": IDS["shop"]})
+dbs.execute(text("UPDATE barbershop_settings SET require_customer_account = TRUE WHERE barbershop_id = :s"), {"s": IDS["shop"]})
 dbs.commit()
 r = guest_book("exigecuenta@test.co", slot(3, 10))
 check("si la barbería exige cuenta, el invitado recibe 403", r.status_code == 403 and "cuenta" in r.text, r.text)
-dbs.execute(text("UPDATE barbershop_settings SET require_customer_account = 0, bookings_enabled = 0 WHERE barbershop_id = :s"), {"s": IDS["shop"]})
+dbs.execute(text("UPDATE barbershop_settings SET require_customer_account = FALSE, bookings_enabled = FALSE WHERE barbershop_id = :s"), {"s": IDS["shop"]})
 dbs.commit()
 r = guest_book("sinreservas@test.co", slot(3, 10))
 check("si la barbería pausó las reservas, el invitado recibe 409", r.status_code == 409, r.text)
-dbs.execute(text("UPDATE barbershop_settings SET bookings_enabled = 1 WHERE barbershop_id = :s"), {"s": IDS["shop"]})
+dbs.execute(text("UPDATE barbershop_settings SET bookings_enabled = TRUE WHERE barbershop_id = :s"), {"s": IDS["shop"]})
 dbs.commit()
 dbs.close()
 
@@ -314,7 +324,7 @@ check("domicilio sin dirección -> 400/422", r.status_code in (400, 422), r.text
 barber_h = login("barber@test.co")
 r = http.patch(f"/bookings/{hb['id']}/confirm", headers=barber_h)
 check("el barbero confirma la reserva a domicilio", r.status_code == 200 and r.json()["status_code"] == "CONFIRMED", r.text)
-check("correo 'reserva confirmada' por cambio de estado", "fue confirmada" in emails_to("dom3@test.co"))
+check("correo 'reserva confirmada' por cambio de estado", email_arrived("dom3@test.co", "fue confirmada"))
 
 r = http.post(f"/admin/barbershops/{SHOP}/home-service/suspend", headers=admin, json={"reason": "Quejas de clientes"})
 check("el admin suspende el servicio", r.status_code == 200 and r.json()["status"] == "SUSPENDED" and r.json()["offers_home_service"] is False, r.text)

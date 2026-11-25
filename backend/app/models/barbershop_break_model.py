@@ -1,3 +1,4 @@
+from sqlalchemy.sql import expression
 from datetime import datetime, time
 
 from sqlalchemy import (
@@ -14,6 +15,7 @@ from sqlalchemy.orm import (
     mapped_column
 )
 
+from sqlalchemy import SmallInteger
 from sqlalchemy.dialects.mysql import (
     INTEGER,
     TINYINT
@@ -41,7 +43,7 @@ class BarbershopBreak(Base):
     )
 
     day_of_week: Mapped[int] = mapped_column(
-        TINYINT(unsigned=True),
+        SmallInteger().with_variant(TINYINT(unsigned=True), "mysql"),
         nullable=False
     )
 
@@ -64,7 +66,7 @@ class BarbershopBreak(Base):
     is_active: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
-        server_default=text("1")
+        server_default=expression.true()
     )
 
     created_at: Mapped[datetime] = mapped_column(

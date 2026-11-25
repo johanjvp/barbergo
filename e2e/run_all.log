@@ -1,0 +1,15 @@
+
+===== MYSQL =====
+[OK]    mysql: preparar datos              [OK] datos cargados: {'admin': 1, 'owner': 2, 'barber_user': 3, 'client': 4, 'shop': 1, 'barber': 1, 'cut': 1, 'beard': 2}  (33s)
+[OK]    mysql: API                         RESULTADO API: 80 pruebas OK, 0 con fallo  (41s)
+[OK]    mysql: preparar datos (UI)         [OK] datos cargados: {'admin': 1, 'owner': 2, 'barber_user': 3, 'client': 4, 'shop': 1, 'barber': 1, 'cut': 1, 'beard': 2}  (38s)
+[OK]    mysql: interfaz (Chromium)         RESULTADO UI: 61 pruebas OK, 0 con fallo  (92s)
+[OK]    mysql: simulación de Vercel        [OK] datos cargados: {'admin': 1, 'owner': 2, 'barber_user': 3, 'client': 4, 'shop': 1, 'barber': 1, 'cut': 1, 'beard': 2}  (29s)
+[OK]    mysql: simulación de Vercel (pruebas) RESULTADO SIMULACIÓN VERCEL: 16 OK, 0 con fallo  (34s)
+
+===== POSTGRES =====
+[OK]    postgres: preparar datos           [OK] datos cargados: {'admin': 1, 'owner': 2, 'barber_user': 3, 'client': 4, 'shop': 1, 'barber': 1, 'cut': 1, 'beard': 2}  (7s)
+[FALLO] postgres: API                      RESULTADO API: 79 pruebas OK, 1 con fallo  (45s)
+  [FALLO] correo 'reserva confirmada' por cambio de estado
+[OK]    postgres: preparar datos (UI)      [OK] datos cargados: {'admin': 1, 'owner': 2, 'barber_user': 3, 'client': 4, 'shop': 1, 'barber': 1, 'cut': 1, 'beard': 2}  (11s)
+[OK]    postgres: interfaz (Chromium)      RESULTADO UI: 61 pruebas OK, 0 con fallo  (98s)

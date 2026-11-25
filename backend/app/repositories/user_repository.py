@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.models.user_model import User
@@ -20,7 +20,7 @@ class UserRepository:
         statement = select(
             User
         ).where(
-            User.email == email
+            func.lower(User.email) == email.strip().lower()
         )
 
         return db.scalar(

@@ -1,3 +1,4 @@
+from sqlalchemy.sql import expression
 from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 
@@ -64,19 +65,19 @@ class User(Base):
     email_verified: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
-        server_default=text("0")
+        server_default=expression.false()
     )
 
     phone_verified: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
-        server_default=text("0")
+        server_default=expression.false()
     )
 
     is_active: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
-        server_default=text("1")
+        server_default=expression.true()
     )
 
     created_at: Mapped[datetime] = mapped_column(

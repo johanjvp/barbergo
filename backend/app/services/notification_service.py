@@ -162,9 +162,9 @@ def _layout(title: str, intro: str, rows: list[tuple[str, str]] | None = None,
 def _dev_print(message: str) -> None:
     """print() que no falla con consolas que no admiten ciertos caracteres (Windows cp1252)."""
     try:
-        print(message)
+        print(message, flush=True)
     except UnicodeEncodeError:
-        print(message.encode("ascii", "replace").decode("ascii"))
+        print(message.encode("ascii", "replace").decode("ascii"), flush=True)
 
 
 class NotificationService:

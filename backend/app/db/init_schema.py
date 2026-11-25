@@ -5,7 +5,7 @@ Crea todas las tablas, la de ajustes de barbería (que no está en los modelos O
 aplica las migraciones aditivas y carga los datos base (roles y estados de reserva).
 Es idempotente: se puede ejecutar varias veces.
 
-Uso:  python init_db.py            (ver backend/init_db.py)
+Uso:  python init_db.py            (ver backend/init_db.py). Funciona en MySQL y PostgreSQL.
 """
 
 import importlib
@@ -13,45 +13,6 @@ import pkgutil
 
 from sqlalchemy import inspect, text
 from sqlalchemy.engine import Engine
-
-BARBERSHOP_SETTINGS_DDL = """
-CREATE TABLE IF NOT EXISTS barbershop_settings (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    barbershop_id INT UNSIGNED NOT NULL UNIQUE,
-    bookings_enabled TINYINT(1) NOT NULL DEFAULT 1,
-    auto_confirm_bookings TINYINT(1) NOT NULL DEFAULT 0,
-    allow_same_day_booking TINYINT(1) NOT NULL DEFAULT 1,
-    allow_overbooking TINYINT(1) NOT NULL DEFAULT 0,
-    allow_any_available_barber TINYINT(1) NOT NULL DEFAULT 1,
-    allow_customer_notes TINYINT(1) NOT NULL DEFAULT 1,
-    allow_customer_cancellation TINYINT(1) NOT NULL DEFAULT 1,
-    allow_reschedule TINYINT(1) NOT NULL DEFAULT 1,
-    customer_can_choose_barber TINYINT(1) NOT NULL DEFAULT 1,
-    require_customer_account TINYINT(1) NOT NULL DEFAULT 0,
-    require_customer_phone TINYINT(1) NOT NULL DEFAULT 0,
-    booking_interval_minutes INT NOT NULL DEFAULT 15,
-    max_booking_days_ahead INT NOT NULL DEFAULT 60,
-    min_booking_notice_minutes INT NOT NULL DEFAULT 0,
-    buffer_between_bookings_minutes INT NOT NULL DEFAULT 0,
-    cancellation_limit_minutes INT NOT NULL DEFAULT 120,
-    reschedule_limit_minutes INT NOT NULL DEFAULT 120,
-    tolerance_minutes INT NOT NULL DEFAULT 10,
-    barber_can_confirm_bookings TINYINT(1) NOT NULL DEFAULT 1,
-    barber_can_cancel_bookings TINYINT(1) NOT NULL DEFAULT 1,
-    barber_can_start_service TINYINT(1) NOT NULL DEFAULT 1,
-    barber_can_complete_service TINYINT(1) NOT NULL DEFAULT 1,
-    barber_can_edit_schedule TINYINT(1) NOT NULL DEFAULT 0,
-    barber_can_block_schedule TINYINT(1) NOT NULL DEFAULT 1,
-    send_booking_reminders TINYINT(1) NOT NULL DEFAULT 1,
-    reminder_minutes_before INT NOT NULL DEFAULT 60,
-    notify_customer_confirmation TINYINT(1) NOT NULL DEFAULT 1,
-    notify_customer_cancellation TINYINT(1) NOT NULL DEFAULT 1,
-    notify_barber_new_booking TINYINT(1) NOT NULL DEFAULT 1,
-    notify_barber_cancellation TINYINT(1) NOT NULL DEFAULT 1,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-"""
 
 ROLES = ("CLIENT", "BARBER", "BARBERSHOP_ADMIN", "PLATFORM_ADMIN")
 
@@ -82,6 +43,7 @@ def init_schema(engine: Engine) -> list[str]:
 
     done: list[str] = []
     _import_models()
+    importlib.import_module("app.db.extra_tables")   # barbershop_settings, métodos de pago, verificaciones
 
     before = set(inspect(engine).get_table_names())
     Base.metadata.create_all(engine)
@@ -89,25 +51,17 @@ def init_schema(engine: Engine) -> list[str]:
     if created:
         done.append(f"tablas creadas: {', '.join(sorted(created))}")
 
-    with engine.begin() as conn:
-        conn.execute(text(BARBERSHOP_SETTINGS_DDL))
-
     done += [f"migración: {c}" for c in ensure_schema(engine)]
 
+    # Consultar y luego insertar (en dos pasos) funciona igual en MySQL y PostgreSQL.
     with engine.begin() as conn:
         for role in ROLES:
-            conn.execute(
-                text("INSERT INTO roles (name) SELECT :n WHERE NOT EXISTS (SELECT 1 FROM roles WHERE name = :n)"),
-                {"n": role},
-            )
+            if conn.execute(text("SELECT 1 FROM roles WHERE name = :n"), {"n": role}).first() is None:
+                conn.execute(text("INSERT INTO roles (name) VALUES (:n)"), {"n": role})
+
         for code, name in BOOKING_STATUSES:
-            conn.execute(
-                text(
-                    "INSERT INTO booking_statuses (code, name) "
-                    "SELECT :c, :n FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM booking_statuses WHERE code = :c)"
-                ),
-                {"c": code, "n": name},
-            )
+            if conn.execute(text("SELECT 1 FROM booking_statuses WHERE code = :c"), {"c": code}).first() is None:
+                conn.execute(text("INSERT INTO booking_statuses (code, name) VALUES (:c, :n)"), {"c": code, "n": name})
     done.append("datos base: roles y estados de reserva")
     return done
 
@@ -122,7 +76,7 @@ def create_platform_admin(engine: Engine, email: str, password: str, first_name:
             conn.execute(
                 text(
                     "INSERT INTO users (first_name, last_name, email, password_hash, is_active) "
-                    "VALUES (:f, :l, :e, :p, 1)"
+                    "VALUES (:f, :l, :e, :p, TRUE)"
                 ),
                 {"f": first_name, "l": last_name, "e": email, "p": hash_password(password)},
             )
@@ -131,12 +85,10 @@ def create_platform_admin(engine: Engine, email: str, password: str, first_name:
         else:
             msg = f"usuario existente promovido: {email}"
 
-        conn.execute(
-            text(
-                "INSERT INTO user_roles (user_id, role_id) "
-                "SELECT :u, r.id FROM roles r WHERE r.name = 'PLATFORM_ADMIN' "
-                "AND NOT EXISTS (SELECT 1 FROM user_roles ur WHERE ur.user_id = :u AND ur.role_id = r.id)"
-            ),
-            {"u": user_id},
-        )
+        role_id = conn.execute(text("SELECT id FROM roles WHERE name = 'PLATFORM_ADMIN'")).scalar()
+        already = conn.execute(
+            text("SELECT 1 FROM user_roles WHERE user_id = :u AND role_id = :r"), {"u": user_id, "r": role_id}
+        ).first()
+        if already is None:
+            conn.execute(text("INSERT INTO user_roles (user_id, role_id) VALUES (:u, :r)"), {"u": user_id, "r": role_id})
     return msg + " con rol PLATFORM_ADMIN"

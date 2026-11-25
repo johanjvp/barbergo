@@ -91,7 +91,7 @@ COLS = ("method, bank_name, account_type, account_number, account_holder, "
 def _methods(db: Session, barbershop_id: int, only_active: bool) -> list[dict]:
     sql = f"SELECT {COLS} FROM barbershop_payment_methods WHERE barbershop_id = :i"
     if only_active:
-        sql += " AND is_active = 1"
+        sql += " AND is_active = TRUE"
     sql += " ORDER BY id"
     rows = db.execute(text(sql), {"i": barbershop_id}).mappings().all()
     return [{**dict(r), "is_active": bool(r["is_active"])} for r in rows]
@@ -135,7 +135,7 @@ def save_payment_methods(
             "shop": barbershop_id, "method": m.method,
             "bank": m.bank_name, "atype": m.account_type, "number": m.account_number,
             "holder": m.account_holder, "doc": m.holder_document, "ins": m.instructions,
-            "active": 1 if m.is_active else 0,
+            "active": bool(m.is_active),
         })
     db.commit()
     return _methods(db, barbershop_id, only_active=False)

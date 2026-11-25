@@ -6,3 +6,4 @@ e2e/backend.log
 e2e/ids.json
 e2e/__pycache__/
 e2e/vercel_sim_api.log
+e2e/parity_*.log

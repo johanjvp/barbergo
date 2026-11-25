@@ -27,16 +27,21 @@ def run_once() -> int:
             ("reminder_24h_sent_at", "REMINDER_24H", now + timedelta(hours=2, minutes=30), now + timedelta(hours=24), 25 * 60),
             ("reminder_2h_sent_at", "REMINDER_2H", now, now + timedelta(hours=2), 150),
         ):
-            rows = db.execute(text(f"""
-                SELECT b.id
+            # created_at y start_at se comparan en Python (TIMESTAMPDIFF no existe en PostgreSQL).
+            candidates = db.execute(text(f"""
+                SELECT b.id, b.created_at, b.start_at
                 FROM bookings b
                 JOIN booking_statuses st ON st.id = b.status_id
                 WHERE st.code = 'CONFIRMED'
                   AND b.{column} IS NULL
                   AND b.start_at > :lower AND b.start_at <= :upper
-                  AND TIMESTAMPDIFF(MINUTE, b.created_at, b.start_at) >= :lead
-                LIMIT 200
-            """), {"lower": lower, "upper": upper, "lead": min_lead_minutes}).fetchall()
+                LIMIT 500
+            """), {"lower": lower, "upper": upper}).fetchall()
+
+            rows = [
+                (row[0],) for row in candidates
+                if (row[2] - row[1]).total_seconds() / 60 >= min_lead_minutes
+            ][:200]
 
             for (booking_id,) in rows:
                 # Se marca primero: si el envío falla no se reintenta en bucle.

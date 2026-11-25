@@ -1,3 +1,4 @@
+from sqlalchemy.sql import expression
 from datetime import datetime
 from decimal import Decimal
 from typing import Optional
@@ -64,19 +65,19 @@ class Service(Base):
     is_vip: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
-        server_default=text("0")
+        server_default=expression.false()
     )
 
     home_service_allowed: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
-        server_default=text("0")
+        server_default=expression.false()
     )
 
     is_active: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
-        server_default=text("1")
+        server_default=expression.true()
     )
 
     created_at: Mapped[datetime] = mapped_column(

@@ -16,6 +16,11 @@ class Settings(BaseSettings):
     # Bases en la nube (TiDB, Aiven, PlanetScale...) exigen TLS
     DB_SSL: bool = False
 
+    # Alternativa a DB_*: una sola URL de conexión (Neon, Railway, Supabase...).
+    #   postgresql://usuario:clave@host/base?sslmode=require
+    #   mysql://usuario:clave@host:3306/base
+    DATABASE_URL: str = ""
+
     # JWT
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str = "HS256"

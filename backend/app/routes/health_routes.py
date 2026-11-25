@@ -16,29 +16,23 @@ def health():
     try:
 
         with engine.connect() as connection:
+            if engine.dialect.name == "postgresql":
+                query = "SELECT current_database() AS database_name, version() AS database_version"
+            else:
+                query = "SELECT DATABASE() AS database_name, VERSION() AS database_version"
 
-            row = connection.execute(
-                text(
-                    """
-                    SELECT
-                        DATABASE() AS database_name,
-                        VERSION() AS mysql_version
-                    """
-                )
-            ).mappings().one()
+            row = connection.execute(text(query)).mappings().one()
 
         return {
             "api": "ok",
             "database": "ok",
-            "database_name":
-                row["database_name"],
-            "mysql_version":
-                row["mysql_version"]
+            "engine": engine.dialect.name,
+            "database_name": row["database_name"],
+            "database_version": row["database_version"]
         }
-
     except SQLAlchemyError:
 
         raise HTTPException(
             status_code=503,
-            detail="No fue posible conectar con MySQL."
+            detail="No fue posible conectar con la base de datos."
         )

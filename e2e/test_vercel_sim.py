@@ -42,12 +42,15 @@ def check(name, cond, detail=""):
 assert (DIST / "index.html").exists(), "falta el build: cd frontend && npm run build"
 
 # ------------------------------------------------------------------ API (api/index.py, VERCEL=1)
+sys.path.insert(0, str(Path(__file__).parent))
+import env as e2e_env  # noqa: E402
+
 env = dict(os.environ)
+env.update(e2e_env.DB_ENV)          # MySQL o PostgreSQL según E2E_DB
 env.update({
-    "VERCEL": "1", "DB_HOST": "127.0.0.1", "DB_PORT": "3399", "DB_USER": "root", "DB_PASSWORD": "test",
-    "DB_NAME": "barbergo_test", "JWT_SECRET_KEY": "sim-secret-0123456789", "RESEND_API_KEY": "", "SMTP_HOST": "",
+    "VERCEL": "1", "JWT_SECRET_KEY": "sim-secret-0123456789", "RESEND_API_KEY": "", "SMTP_HOST": "",
     "FRONTEND_URL": f"http://{HOST}:{WEB_PORT}", "CRON_SECRET": "secreto-de-cron", "RATE_LIMIT_MULTIPLIER": "100",
-    "TRUST_PROXY": "1", "PYTHONIOENCODING": "utf-8",
+    "TRUST_PROXY": "1", "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1",
 })
 api = subprocess.Popen(
     [str(ROOT / "backend" / ".venv" / "Scripts" / "python.exe"), "-m", "uvicorn", "api.index:app", "--port", str(API_PORT)],

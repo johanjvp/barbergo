@@ -55,23 +55,44 @@ def step(msg):
 
 # ---------------------------------------------------------------- esquema
 step("1. Esquema legado + migración")
+IS_PG = engine.dialect.name == "postgresql"
+print(f"     base de datos: {engine.dialect.name}")
+
 with engine.begin() as c:
-    c.execute(text("SET FOREIGN_KEY_CHECKS = 0"))
-    for t in ("email_verifications", "barbershop_payment_methods"):
-        c.execute(text(f"DROP TABLE IF EXISTS {t}"))
-    Base.metadata.drop_all(c)
-    c.execute(text("SET FOREIGN_KEY_CHECKS = 1"))
+    if IS_PG:
+        c.execute(text("DROP SCHEMA public CASCADE"))
+        c.execute(text("CREATE SCHEMA public"))
+    else:
+        c.execute(text("SET FOREIGN_KEY_CHECKS = 0"))
+        for t in ("email_verifications", "barbershop_payment_methods", "barbershop_settings"):
+            c.execute(text(f"DROP TABLE IF EXISTS {t}"))
+        Base.metadata.drop_all(c)
+        c.execute(text("SET FOREIGN_KEY_CHECKS = 1"))
 
 Base.metadata.create_all(engine)
 
 # Dejamos las tablas como estaban ANTES de esta funcionalidad.
 with engine.begin() as c:
-    c.execute(text("ALTER TABLE bookings DROP INDEX manage_token"))
+    insp = inspect(c)
+    dropped = set()
+    for uc in insp.get_unique_constraints("bookings"):
+        if uc["column_names"] == ["manage_token"] and uc["name"] not in dropped:
+            dropped.add(uc["name"])
+            c.execute(text(f"ALTER TABLE bookings DROP CONSTRAINT {uc['name']}" if IS_PG else f"ALTER TABLE bookings DROP INDEX {uc['name']}"))
+    for ix in insp.get_indexes("bookings"):
+        if ix.get("unique") and ix["column_names"] == ["manage_token"] and ix["name"] not in dropped:
+            dropped.add(ix["name"])
+            c.execute(text(f"DROP INDEX {ix['name']}" + ("" if IS_PG else " ON bookings")))
     for col in BOOKING_COLUMNS:
         c.execute(text(f"ALTER TABLE bookings DROP COLUMN {col}"))
     for col in BARBERSHOP_COLUMNS:
         c.execute(text(f"ALTER TABLE barbershops DROP COLUMN {col}"))
-    c.execute(text("ALTER TABLE bookings MODIFY client_user_id INT UNSIGNED NOT NULL"))
+    if IS_PG:
+        c.execute(text("ALTER TABLE bookings ALTER COLUMN client_user_id SET NOT NULL"))
+    else:
+        c.execute(text("ALTER TABLE bookings MODIFY client_user_id INT UNSIGNED NOT NULL"))
+    for t in ("email_verifications", "barbershop_payment_methods"):
+        c.execute(text(f"DROP TABLE IF EXISTS {t}"))
 
 legacy_cols = {c["name"] for c in inspect(engine).get_columns("bookings")}
 assert "guest_email" not in legacy_cols and "payment_method" not in legacy_cols
@@ -95,15 +116,6 @@ again = ensure_schema(engine)
 assert again == [], f"no es idempotente: {again}"
 print(f"{OK} segunda ejecución: sin cambios (idempotente)")
 
-# La tabla barbershop_settings existe en la base real pero no en los modelos ORM
-# (la consultan los endpoints de configuración con SQL directo).
-from app.db.init_schema import BARBERSHOP_SETTINGS_DDL  # noqa: E402
-
-with engine.begin() as c:
-    c.execute(text("DROP TABLE IF EXISTS barbershop_settings"))
-    c.execute(text(BARBERSHOP_SETTINGS_DDL))
-    c.execute(text("INSERT INTO barbershop_settings (barbershop_id) VALUES (1)"))
-print(f"{OK} tabla barbershop_settings (ajustes de la barbería) creada")
 
 # ------------------------------------------------------------------ datos
 step("2. Datos de prueba")
@@ -169,6 +181,7 @@ for dow in range(1, 8):
 db.execute(text("INSERT INTO barbershop_admins (user_id, barbershop_id) VALUES (:u,:s)"),
            {"u": owner.id, "s": shop.id}) if "barbershop_admins" in inspect(engine).get_table_names() else None
 
+db.execute(text("INSERT INTO barbershop_settings (barbershop_id) VALUES (:s)"), {"s": shop.id})
 db.commit()
 
 ids = {

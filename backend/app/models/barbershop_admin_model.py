@@ -1,3 +1,4 @@
+from sqlalchemy.sql import expression
 from datetime import datetime
 
 from sqlalchemy import (
@@ -58,7 +59,7 @@ class BarbershopAdmin(Base):
     is_active: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
-        server_default=text("1")
+        server_default=expression.true()
     )
 
     created_at: Mapped[datetime] = mapped_column(

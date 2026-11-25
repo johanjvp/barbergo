@@ -410,7 +410,7 @@ def get_accessible_barbershops(
 
                         AND
                             ba.is_active =
-                                1
+                                TRUE
 
                     WHERE
 

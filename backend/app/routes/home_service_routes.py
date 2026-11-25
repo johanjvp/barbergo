@@ -134,10 +134,10 @@ def request_home_service(
 
     # ¿Hay al menos un barbero y un servicio habilitados para domicilio?
     barbers = db.execute(text(
-        "SELECT COUNT(*) FROM barbers WHERE barbershop_id = :i AND is_active = 1 AND accepts_home_service = 1"
+        "SELECT COUNT(*) FROM barbers WHERE barbershop_id = :i AND is_active = TRUE AND accepts_home_service = TRUE"
     ), {"i": barbershop_id}).scalar() or 0
     services = db.execute(text(
-        "SELECT COUNT(*) FROM services WHERE barbershop_id = :i AND is_active = 1 AND home_service_allowed = 1"
+        "SELECT COUNT(*) FROM services WHERE barbershop_id = :i AND is_active = TRUE AND home_service_allowed = TRUE"
     ), {"i": barbershop_id}).scalar() or 0
     if barbers == 0 or services == 0:
         raise HTTPException(

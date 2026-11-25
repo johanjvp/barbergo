@@ -1,3 +1,4 @@
+from app.db.dialect import days_ago, same_iso_week_as_today, string_agg_distinct
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from app.models.user_model import User
@@ -107,7 +108,7 @@ class AdminRepository:
         ):
 
             conditions.append(
-                "bs.is_active = 1"
+                "bs.is_active = TRUE"
             )
 
         elif (
@@ -116,7 +117,7 @@ class AdminRepository:
         ):
 
             conditions.append(
-                "bs.is_active = 0"
+                "bs.is_active = FALSE"
             )
 
         # =================================================
@@ -627,7 +628,7 @@ class AdminRepository:
 
                         AND
 
-                        is_active = 1
+                        is_active = TRUE
                     """
                 ),
                 {
@@ -817,9 +818,7 @@ class AdminRepository:
                     barbershop_id,
 
                 "is_active":
-                    1
-                    if is_active
-                    else 0
+                    bool(is_active)
 
             }
         )
@@ -872,7 +871,7 @@ class AdminRepository:
                 """
                 SELECT COUNT(*)
                 FROM users
-                WHERE DATE(created_at) = CURDATE()
+                WHERE DATE(created_at) = CURRENT_DATE
                 """
             )
             or 0
@@ -890,15 +889,7 @@ class AdminRepository:
                 SELECT COUNT(*)
                 FROM users
                 WHERE
-                    YEARWEEK(
-                        created_at,
-                        1
-                    )
-                    =
-                    YEARWEEK(
-                        CURDATE(),
-                        1
-                    )
+                    """ + same_iso_week_as_today("created_at") + """
                 """
             )
             or 0
@@ -916,15 +907,15 @@ class AdminRepository:
                 SELECT COUNT(*)
                 FROM users
                 WHERE
-                    YEAR(created_at)
+                    EXTRACT(YEAR FROM created_at)
                     =
-                    YEAR(CURDATE())
+                    EXTRACT(YEAR FROM CURRENT_DATE)
 
                     AND
 
-                    MONTH(created_at)
+                    EXTRACT(MONTH FROM created_at)
                     =
-                    MONTH(CURDATE())
+                    EXTRACT(MONTH FROM CURRENT_DATE)
                 """
             )
             or 0
@@ -961,7 +952,7 @@ class AdminRepository:
                 """
                 SELECT COUNT(*)
                 FROM barbershops
-                WHERE is_active = 1
+                WHERE is_active = TRUE
                 """
             )
             or 0
@@ -979,15 +970,15 @@ class AdminRepository:
                 SELECT COUNT(*)
                 FROM barbershops
                 WHERE
-                    YEAR(created_at)
+                    EXTRACT(YEAR FROM created_at)
                     =
-                    YEAR(CURDATE())
+                    EXTRACT(YEAR FROM CURRENT_DATE)
 
                     AND
 
-                    MONTH(created_at)
+                    EXTRACT(MONTH FROM created_at)
                     =
-                    MONTH(CURDATE())
+                    EXTRACT(MONTH FROM CURRENT_DATE)
                 """
             )
             or 0
@@ -1024,7 +1015,7 @@ class AdminRepository:
                 """
                 SELECT COUNT(*)
                 FROM bookings
-                WHERE DATE(created_at) = CURDATE()
+                WHERE DATE(created_at) = CURRENT_DATE
                 """
             )
             or 0
@@ -1042,15 +1033,7 @@ class AdminRepository:
                 SELECT COUNT(*)
                 FROM bookings
                 WHERE
-                    YEARWEEK(
-                        created_at,
-                        1
-                    )
-                    =
-                    YEARWEEK(
-                        CURDATE(),
-                        1
-                    )
+                    """ + same_iso_week_as_today("created_at") + """
                 """
             )
             or 0
@@ -1068,15 +1051,15 @@ class AdminRepository:
                 SELECT COUNT(*)
                 FROM bookings
                 WHERE
-                    YEAR(created_at)
+                    EXTRACT(YEAR FROM created_at)
                     =
-                    YEAR(CURDATE())
+                    EXTRACT(YEAR FROM CURRENT_DATE)
 
                     AND
 
-                    MONTH(created_at)
+                    EXTRACT(MONTH FROM created_at)
                     =
-                    MONTH(CURDATE())
+                    EXTRACT(MONTH FROM CURRENT_DATE)
                 """
             )
             or 0
@@ -1452,7 +1435,7 @@ class AdminRepository:
                 WHERE
                     DATE(b.created_at)
                     =
-                    CURDATE()
+                    CURRENT_DATE
                 """
             )
         )
@@ -1503,15 +1486,15 @@ class AdminRepository:
                     ON bs.id = b.status_id
 
                 WHERE
-                    YEAR(b.created_at)
+                    EXTRACT(YEAR FROM b.created_at)
                     =
-                    YEAR(CURDATE())
+                    EXTRACT(YEAR FROM CURRENT_DATE)
 
                     AND
 
-                    MONTH(b.created_at)
+                    EXTRACT(MONTH FROM b.created_at)
                     =
-                    MONTH(CURDATE())
+                    EXTRACT(MONTH FROM CURRENT_DATE)
                 """
             )
         )
@@ -1553,15 +1536,15 @@ class AdminRepository:
 
                     AND
 
-                    YEAR(b.created_at)
+                    EXTRACT(YEAR FROM b.created_at)
                     =
-                    YEAR(CURDATE())
+                    EXTRACT(YEAR FROM CURRENT_DATE)
 
                     AND
 
-                    MONTH(b.created_at)
+                    EXTRACT(MONTH FROM b.created_at)
                     =
-                    MONTH(CURDATE())
+                    EXTRACT(MONTH FROM CURRENT_DATE)
                 """
             )
         )
@@ -1593,10 +1576,7 @@ class AdminRepository:
                     WHERE
                         created_at
                         >=
-                        DATE_SUB(
-                            CURDATE(),
-                            INTERVAL 29 DAY
-                        )
+                        """ + days_ago(29) + """
 
                     GROUP BY
                         DATE(created_at)
@@ -1653,10 +1633,7 @@ class AdminRepository:
                     WHERE
                         created_at
                         >=
-                        DATE_SUB(
-                            CURDATE(),
-                            INTERVAL 29 DAY
-                        )
+                        """ + days_ago(29) + """
 
                     GROUP BY
                         DATE(created_at)
@@ -2304,7 +2281,7 @@ class AdminRepository:
         ):
 
             conditions.append(
-                "u.is_active = 1"
+                "u.is_active = TRUE"
             )
 
         elif (
@@ -2313,7 +2290,7 @@ class AdminRepository:
         ):
 
             conditions.append(
-                "u.is_active = 0"
+                "u.is_active = FALSE"
             )
 
         # =================================================
@@ -2368,7 +2345,7 @@ class AdminRepository:
 
                         SUM(
                             CASE
-                                WHEN is_active = 1
+                                WHEN is_active = TRUE
                                 THEN 1
                                 ELSE 0
                             END
@@ -2377,7 +2354,7 @@ class AdminRepository:
 
                         SUM(
                             CASE
-                                WHEN is_active = 0
+                                WHEN is_active = FALSE
                                 THEN 1
                                 ELSE 0
                             END
@@ -2388,13 +2365,13 @@ class AdminRepository:
                             CASE
 
                                 WHEN
-                                    YEAR(created_at) =
-                                    YEAR(CURDATE())
+                                    EXTRACT(YEAR FROM created_at) =
+                                    EXTRACT(YEAR FROM CURRENT_DATE)
 
                                     AND
 
-                                    MONTH(created_at) =
-                                    MONTH(CURDATE())
+                                    EXTRACT(MONTH FROM created_at) =
+                                    EXTRACT(MONTH FROM CURRENT_DATE)
 
                                 THEN 1
 
@@ -2550,13 +2527,7 @@ class AdminRepository:
 
                             ur.user_id,
 
-                            GROUP_CONCAT(
-                                DISTINCT
-                                r.name
-                                ORDER BY
-                                    r.name
-                                SEPARATOR ','
-                            )
+                            {string_agg_distinct("r.name")}
                                 AS roles
 
                         FROM user_roles ur
@@ -3358,7 +3329,7 @@ class AdminRepository:
                                 WHEN DATE(
                                     b.start_at
                                 ) =
-                                CURDATE()
+                                CURRENT_DATE
 
                                 THEN 1
                                 ELSE 0

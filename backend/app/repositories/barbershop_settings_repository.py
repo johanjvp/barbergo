@@ -585,9 +585,7 @@ class BarbershopSettingsRepository:
                 barbershop_id=barbershop_id,
                 values={
                     "auto_confirm_bookings":
-                        1
-                        if enabled
-                        else 0
+                        bool(enabled)
                 }
             )
         )

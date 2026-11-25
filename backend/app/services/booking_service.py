@@ -231,7 +231,7 @@ class BookingService:
             db.execute(
                 sql_text(
                     "SELECT method FROM barbershop_payment_methods "
-                    "WHERE barbershop_id = :i AND is_active = 1"
+                    "WHERE barbershop_id = :i AND is_active = TRUE"
                 ),
                 {"i": barbershop_id}
             ).scalars()
