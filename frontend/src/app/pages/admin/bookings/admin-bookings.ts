@@ -1,3 +1,4 @@
+import { Icon } from '../../../components/icon/icon';
 import {
   ChangeDetectorRef,
   Component,
@@ -97,6 +98,7 @@ interface AdminBarberOption {
   selector: 'app-admin-bookings',
 
   imports: [
+    Icon,
     AdminBookingCalendar
   ],
 

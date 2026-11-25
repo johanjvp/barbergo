@@ -1,7 +1,7 @@
 .footer {
   padding: 50px 0;
 
-  background: #111111;
+  background: var(--grad-primary);
 
   color: white;
 }
@@ -29,14 +29,14 @@ p {
 
   margin: 12px 0 0;
 
-  color: #999999;
+  color: var(--muted);
 
   line-height: 1.6;
 }
 
 
 .copyright {
-  color: #777777;
+  color: var(--muted);
 
   font-size: 13px;
 }
@@ -50,3 +50,9 @@ p {
   }
 
 }
+
+
+/* ===== redesign ===== */
+.footer { background: linear-gradient(135deg, #06161d, #0f3d3a) !important; color: #cfe7e3 !important; border: 0 !important; }
+.footer .brand { background: var(--grad-accent); -webkit-background-clip: text; background-clip: text; color: transparent !important; font-size: 22px; }
+.footer p, .copyright { color: #8fb5b0 !important; }

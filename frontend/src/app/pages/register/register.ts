@@ -1,3 +1,4 @@
+import { Icon } from '../../components/icon/icon';
 import {
   Component,
   inject
@@ -14,14 +15,6 @@ import {
 } from '@angular/router';
 
 import {
-  Navbar
-} from '../../components/navbar/navbar';
-
-import {
-  Footer
-} from '../../components/footer/footer';
-
-import {
   AuthService
 } from '../../services/auth';
 
@@ -30,10 +23,9 @@ import {
   selector: 'app-register',
 
   imports: [
+    Icon,
     FormsModule,
-    RouterLink,
-    Navbar,
-    Footer
+    RouterLink
   ],
 
   templateUrl:

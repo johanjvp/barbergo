@@ -1,252 +1,82 @@
-<header class="navbar">
-
+<header class="navbar" [class.scrolled]="scrolled" [class.open]="menuOpen">
   <div class="navbar-container">
 
-
-    <!-- ====================================== -->
-    <!-- MARCA -->
-    <!-- ====================================== -->
-
-    <a
-      class="brand"
-      routerLink="/"
-      aria-label="Ir al inicio de BarberGo"
-    >
-
-      <span class="brand-mark">
-        B
-      </span>
-
-      <span class="brand-text">
-        BarberGo
-      </span>
-
+    <a class="brand" routerLink="/" aria-label="Ir al inicio de BarberGo" (click)="closeMenu()">
+      <span class="brand-mark"><app-icon name="scissors"></app-icon></span>
+      <span class="brand-text">BarberGo</span>
     </a>
 
-
-    <!-- ====================================== -->
-    <!-- NAVEGACIÓN -->
-    <!-- ====================================== -->
-
-    <nav
-      class="navigation"
-      aria-label="Navegación principal"
-    >
-
-      <a
-        routerLink="/"
-        class="nav-link"
-      >
-        Inicio
-      </a>
-
-
-      <a
-        routerLink="/barberias"
-        class="nav-link"
-      >
-        Barberías
-      </a>
-
+    <nav class="navigation" [class.show]="menuOpen" aria-label="Navegación principal">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link" (click)="closeMenu()">Inicio</a>
+      <a routerLink="/barberias" routerLinkActive="active" class="nav-link" (click)="closeMenu()">Barberías</a>
 
       @if (currentUser) {
+        @if (isBarber) {
+          <a routerLink="/barber" routerLinkActive="active" class="nav-link" (click)="closeMenu()">Mi agenda</a>
+        } @else {
+          <a routerLink="/mis-reservas" routerLinkActive="active" class="nav-link" (click)="closeMenu()">Mis reservas</a>
+        }
+      }
 
-  @if (isBarber) {
-
-    <a
-      routerLink="/barber"
-      class="nav-link"
-    >
-      Mi agenda
-    </a>
-
-  }
-
-  @else {
-
-    <a
-      routerLink="/mis-reservas"
-      class="nav-link"
-    >
-      Mis reservas
-    </a>
-
-  }
-
-}
-
+      <!-- acciones dentro del menú móvil -->
+      <div class="mobile-actions">
+        @if (currentUser) {
+          @if (hasAdminAccess) {
+            <button type="button" class="mobile-link" (click)="goToAdminPanel(); closeMenu()">Panel administrativo</button>
+          }
+          <button type="button" class="mobile-link danger" (click)="logout(); closeMenu()">Cerrar sesión</button>
+        } @else {
+          <a class="login-button" routerLink="/login" (click)="closeMenu()">Iniciar sesión</a>
+          <a class="register-button" routerLink="/registro" (click)="closeMenu()">Crear cuenta</a>
+        }
+      </div>
     </nav>
 
-
-    <!-- ====================================== -->
-    <!-- ACCIONES -->
-    <!-- ====================================== -->
-
     <div class="actions">
-
-
-      <!-- ==================================== -->
-      <!-- CARGANDO SESIÓN -->
-      <!-- ==================================== -->
-
       @if (loadingSession) {
-
-        <div
-          class="session-loading"
-          aria-label="Validando sesión"
-        >
-
-          <span class="session-loading-dot">
-          </span>
-
-        </div>
-
+        <div class="session-loading" aria-label="Validando sesión"><span class="session-loading-dot"></span></div>
       }
-
-
-      <!-- ==================================== -->
-      <!-- USUARIO LOGUEADO -->
-      <!-- ==================================== -->
-
       @else if (currentUser) {
-
-
-        <!-- ================================== -->
-        <!-- ACCESO ADMINISTRATIVO -->
-        <!-- ================================== -->
-
         @if (hasAdminAccess) {
-
-  <button
-    type="button"
-    class="admin-panel-button"
-    (click)="goToAdminPanel()"
-    title="Panel administrativo"
-    aria-label="Ir al panel administrativo"
-  >
-
-    <svg
-      class="admin-panel-icon"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-
-      <rect
-        x="3"
-        y="3"
-        width="7"
-        height="7"
-        rx="1.5"
-      ></rect>
-
-      <rect
-        x="14"
-        y="3"
-        width="7"
-        height="7"
-        rx="1.5"
-      ></rect>
-
-      <rect
-        x="3"
-        y="14"
-        width="7"
-        height="7"
-        rx="1.5"
-      ></rect>
-
-      <rect
-        x="14"
-        y="14"
-        width="7"
-        height="7"
-        rx="1.5"
-      ></rect>
-
-    </svg>
-
-  </button>
-
-}
-
-
-        <!-- ================================== -->
-        <!-- USUARIO -->
-        <!-- ================================== -->
-
-        <div class="user-session">
-
-
-          <div class="user-avatar">
-
-            {{ userInitials }}
-
-          </div>
-
-
-          <div class="user-information">
-
-            <span>
-              MI CUENTA
-            </span>
-
-            <strong>
-              {{ userFullName }}
-            </strong>
-
-          </div>
-
-
-          <div class="user-divider">
-          </div>
-
-
-          <button
-            type="button"
-            class="logout-button"
-            (click)="logout()"
-          >
-
-            <span>
-              Cerrar sesión
-            </span>
-
+          <button type="button" class="admin-panel-button" (click)="goToAdminPanel()" title="Panel administrativo" aria-label="Ir al panel administrativo">
+            <svg class="admin-panel-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+            </svg>
           </button>
-
+        }
+        <div class="user-session">
+          <div class="user-avatar">{{ userInitials }}</div>
+          <div class="user-information">
+            <span>MI CUENTA</span>
+            <strong>{{ userFullName }}</strong>
+          </div>
+          <button type="button" class="logout-button" (click)="logout()" title="Cerrar sesión" aria-label="Cerrar sesión"><app-icon name="power"></app-icon></button>
         </div>
-
       }
-
-
-      <!-- ==================================== -->
-      <!-- SIN SESIÓN -->
-      <!-- ==================================== -->
-
       @else {
-
         <div class="guest-actions">
-
-          <a
-            class="login-button"
-            routerLink="/login"
-          >
-            Iniciar sesión
-          </a>
-
-
-          <a
-            class="register-button"
-            routerLink="/registro"
-          >
-            Crear cuenta
-          </a>
-
+          <a class="login-button" routerLink="/login">Iniciar sesión</a>
+          <a class="register-button" appMagnetic routerLink="/registro">Crear cuenta</a>
         </div>
-
       }
 
+      <button type="button" class="theme-toggle" role="switch" [attr.aria-checked]="isDark" (click)="themeService.toggle()"
+              [attr.aria-label]="isDark ? 'Activar modo claro' : 'Activar modo oscuro'" [title]="isDark ? 'Modo claro' : 'Modo oscuro'" [class.dark]="isDark">
+        <span class="stars" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="clouds" aria-hidden="true"><i></i><i></i></span>
+        <span class="thumb">
+          <app-icon class="sun" name="sun"></app-icon>
+          <app-icon class="moon" name="moon"></app-icon>
+        </span>
+      </button>
+
+      <button type="button" class="burger" (click)="menuOpen = !menuOpen" [attr.aria-expanded]="menuOpen" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
     </div>
 
   </div>
-
 </header>

@@ -1,3 +1,4 @@
+import { Icon } from '../../../components/icon/icon';
 import {
   ChangeDetectorRef,
   Component,
@@ -23,7 +24,8 @@ import {
 @Component({
   selector: 'app-admin-dashboard',
 
-  imports: [],
+  imports: [
+    Icon,],
 
   templateUrl:
     './admin-dashboard.html',

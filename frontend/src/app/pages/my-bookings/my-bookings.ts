@@ -1,3 +1,4 @@
+import { Icon } from '../../components/icon/icon';
 import {
   ChangeDetectorRef,
   Component,
@@ -72,6 +73,7 @@ interface BookingViewItem
   selector: 'app-my-bookings',
 
   imports: [
+    Icon,
     Navbar,
     Footer,
     RouterLink

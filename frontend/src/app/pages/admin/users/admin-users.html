@@ -637,7 +637,7 @@
           <span class="all-loaded">
 
             <span>
-              ✓
+              <app-icon name="check"></app-icon>
             </span>
 
             Todos cargados
@@ -1184,11 +1184,7 @@
 
       <span class="account-button-icon">
 
-        {{
-          selectedUser.is_active
-            ? '×'
-            : '✓'
-        }}
+        @if (selectedUser.is_active) { <app-icon name="power"></app-icon> } @else { <app-icon name="check"></app-icon> }
 
       </span>
 
@@ -1239,11 +1235,7 @@
 
       <div class="confirmation-icon">
 
-        {{
-          selectedUser.is_active
-            ? '!'
-            : '✓'
-        }}
+        @if (selectedUser.is_active) { ! } @else { <app-icon name="check"></app-icon> }
 
       </div>
 

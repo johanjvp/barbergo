@@ -1,3 +1,4 @@
+import { Icon } from '../icon/icon';
 import {
   Component
 } from '@angular/core';
@@ -13,6 +14,7 @@ import {
     'app-admin-sidebar',
 
   imports: [
+    Icon,
     RouterLink,
     RouterLinkActive
   ],

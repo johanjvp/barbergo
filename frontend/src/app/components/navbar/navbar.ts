@@ -1,3 +1,8 @@
+import { ThemeService } from '../../services/theme';
+import { ToastService } from '../../services/toast';
+import { MagneticDirective } from '../../directives-extra';
+import { Icon } from '../icon/icon';
+import { HostListener } from "@angular/core";
 import {
   ChangeDetectorRef,
   Component,
@@ -7,7 +12,8 @@ import {
 
 import {
   Router,
-  RouterLink
+  RouterLink,
+  RouterLinkActive
 } from '@angular/router';
 
 import {
@@ -23,7 +29,10 @@ import {
   selector: 'app-navbar',
 
   imports: [
-    RouterLink
+    MagneticDirective,
+    Icon,
+    RouterLink,
+    RouterLinkActive
   ],
 
   templateUrl:
@@ -68,6 +77,23 @@ export class Navbar
 
   loadingSession =
     true;
+
+  readonly themeService = inject(ThemeService);
+  private readonly toast = inject(ToastService);
+
+  get isDark(): boolean { return this.themeService.theme === 'dark'; }
+
+  menuOpen = false;
+  scrolled = false;
+
+  @HostListener("window:scroll")
+  onScroll(): void {
+    this.scrolled = window.scrollY > 10;
+  }
+
+  closeMenu(): void {
+    this.menuOpen = false;
+  }
 
 
   // =====================================================
@@ -516,6 +542,8 @@ export class Navbar
   // =====================================================
 
   logout(): void {
+
+    this.toast.success('Sesión cerrada. ¡Hasta pronto!');
 
     this.authService
       .logout();

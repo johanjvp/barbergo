@@ -4,7 +4,8 @@ import {
 } from '@angular/core';
 
 import {
-  provideRouter
+  provideRouter,
+  withViewTransitions
 } from '@angular/router';
 
 import {
@@ -28,7 +29,8 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
 
     provideRouter(
-      routes
+      routes,
+      withViewTransitions()
     ),
 
     provideHttpClient(

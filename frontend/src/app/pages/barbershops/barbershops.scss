@@ -115,7 +115,7 @@ input:focus-visible {
   overflow: hidden;
   border-radius: 28px 28px 3px 3px;
 
-  background: #fff;
+  background: var(--surface);
 
   // Franjas diagonales. La capa es más alta que el poste para
   // poder desplazarla sin que se vea el borde.
@@ -127,9 +127,9 @@ input:focus-visible {
     background: repeating-linear-gradient(
       -45deg,
       var(--red) 0 12px,
-      #ffffff 12px 24px,
+      var(--surface) 12px 24px,
       var(--blue) 24px 36px,
-      #ffffff 36px 48px
+      var(--surface) 36px 48px
     );
   }
 
@@ -139,12 +139,11 @@ input:focus-visible {
     position: absolute;
     inset: 0;
 
-    background:
-      linear-gradient(#e3e8ea, #a9b3b9) top / 100% 20px no-repeat,
-      linear-gradient(#a9b3b9, #e3e8ea) bottom / 100% 18px no-repeat,
+    background: linear-gradient(var(--surface-2), #a9b3b9) top / 100% 20px no-repeat,
+      linear-gradient(#a9b3b9, var(--surface-2)) bottom / 100% 18px no-repeat,
       linear-gradient(
         90deg,
-        rgba(255, 255, 255, 0.55),
+        var(--glass),
         rgba(255, 255, 255, 0) 32%,
         rgba(14, 26, 34, 0) 62%,
         rgba(14, 26, 34, 0.3)
@@ -243,7 +242,7 @@ input:focus-visible {
   border: 0;
   border-radius: var(--r-control);
 
-  background: var(--ink);
+  background: var(--ink-solid);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
@@ -271,7 +270,7 @@ input:focus-visible {
   height: 14px;
 
   border: 2px solid rgba(255, 255, 255, 0.35);
-  border-top-color: #fff;
+  border-top-color: var(--border);
   border-radius: 50%;
 
   animation: spin 0.7s linear infinite;
@@ -422,9 +421,9 @@ input:focus-visible {
   background: repeating-linear-gradient(
     -45deg,
     var(--red) 0 8px,
-    #ffffff 8px 16px,
+    var(--surface) 8px 16px,
     var(--blue) 16px 24px,
-    #ffffff 24px 32px
+    var(--surface) 24px 32px
   );
 
   background-size: 45.25px 100%;
@@ -530,7 +529,7 @@ input:focus-visible {
   border: 0;
   border-radius: 50%;
 
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--glass);
   color: var(--ink);
   font-size: 18px;
   line-height: 1;
@@ -539,7 +538,7 @@ input:focus-visible {
   transition: background 0.2s ease, color 0.2s ease;
 
   &:hover {
-    background: var(--ink);
+    background: var(--ink-solid);
     color: #fff;
   }
 }
@@ -630,7 +629,7 @@ input:focus-visible {
   border: 0;
   border-radius: var(--r-control);
 
-  background: var(--ink);
+  background: var(--ink-solid);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
@@ -743,7 +742,7 @@ input:focus-visible {
   }
 
   &.active {
-    background: var(--ink);
+    background: var(--ink-solid);
     border-color: var(--ink);
     color: #fff;
   }
@@ -808,7 +807,7 @@ input:focus-visible {
   border: 0;
   border-radius: 999px;
 
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--glass);
   color: var(--ink);
   font-size: 13px;
   font-weight: 600;
@@ -819,7 +818,7 @@ input:focus-visible {
   transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease;
 
   &:hover {
-    background: var(--ink);
+    background: var(--ink-solid);
     color: #fff;
   }
 
@@ -934,7 +933,7 @@ input:focus-visible {
 
   border-radius: var(--r-media);
 
-  background: linear-gradient(90deg, #e4e9ea 25%, #f1f4f4 50%, #e4e9ea 75%);
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface-2) 50%, var(--surface-2) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -946,7 +945,7 @@ input:focus-visible {
   margin: 12px 12px;
 
   border-radius: 20px;
-  background: #e4e9ea;
+  background: var(--surface-2);
 
   &.large {
     width: 75%;
@@ -1004,7 +1003,7 @@ input:focus-visible {
   border: 0;
   border-radius: var(--r-control);
 
-  background: var(--ink);
+  background: var(--ink-solid);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
@@ -1059,7 +1058,7 @@ input:focus-visible {
   }
 
   .leaflet-control-attribution {
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--glass);
     font-size: 10px;
   }
 
@@ -1072,10 +1071,10 @@ input:focus-visible {
     display: grid;
     place-items: center;
 
-    border: 3px solid #fff;
+    border: 3px solid var(--border);
     border-radius: 50% 50% 50% 0;
 
-    background: var(--ink);
+    background: var(--ink-solid);
     box-shadow: 0 8px 16px -4px rgba(14, 26, 34, 0.5);
     transform: rotate(-45deg);
 
@@ -1264,3 +1263,26 @@ input:focus-visible {
   }
 
 }
+
+
+/* ===== redesign ===== */
+:host { display: block; background: radial-gradient(circle at 90% 0%, rgba(20,184,166,.12), transparent 40%), var(--bg); }
+:host > * > * , section { animation: fade-in .6s var(--ease) both; }
+.booking-card, .info-card, .stat-card, .coming-card, .search-panel, .map-shell, .service-card, .barber-card { border-radius: 20px !important; border: 1px solid var(--border) !important; box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+.booking-card:hover, .info-card:hover, .stat-card:hover, .service-card:hover, .barber-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.filter-chip, .status-badge { border-radius: 99px; }
+.eyebrow, .section-eyebrow, .dashboard-eyebrow { color: var(--accent) !important; }
+
+
+/* ===== modo oscuro: variables locales ===== */
+:host-context([data-theme="dark"]) {
+  --porcelain: #071419;
+  --paper: #0e222a;
+  --ink: #e6f1ef;
+  --steel: #8fb0ab;
+  --hair: #1f3a43;
+}
+
+
+:host-context([data-theme="dark"]) .search-button, :host-context([data-theme="dark"]) .secondary-button { background: var(--grad-primary); color: #fff; border-color: transparent; }
+:host-context([data-theme="dark"]) .secondary-button { background: var(--surface-2); color: var(--ink); border: 1px solid var(--border); }

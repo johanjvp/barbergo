@@ -7,7 +7,19 @@
   <!-- HERO -->
   <!-- ===================================== -->
 
-  <section class="hero">
+  <section class="hero" appParallax>
+
+    <div class="hero-glow" aria-hidden="true"></div>
+
+    <div class="hero-layers" aria-hidden="true">
+      <span class="layer l1" data-depth="46"><app-icon name="scissors"></app-icon></span>
+      <span class="layer l2" data-depth="28"><app-icon name="sparkle"></app-icon></span>
+      <span class="layer l3" data-depth="64"><app-icon name="star"></app-icon></span>
+      <span class="layer l4" data-depth="36"><app-icon name="pin"></app-icon></span>
+      <span class="ring r1" data-depth="18"></span>
+      <span class="ring r2" data-depth="-24"></span>
+    </div>
+
 
     <div class="container hero-grid">
 
@@ -31,7 +43,7 @@
 
         <!-- BUSCADOR -->
 
-        <div class="search-box">
+        <form class="search-box" (submit)="$event.preventDefault(); goSearch()" autocomplete="off">
 
           <div class="search-field">
 
@@ -41,8 +53,24 @@
 
             <input
               type="text"
+              name="q"
               placeholder="Corte, barba, barbería..."
+              [value]="query"
+              (input)="query = $any($event.target).value; showSuggest = true"
+              (focus)="showSuggest = true"
+              (blur)="hideSuggest()"
             >
+
+            @if (showSuggest && suggestions.length) {
+              <ul class="suggestions" role="listbox">
+                @for (s of suggestions; track s) {
+                  <li role="option" (mousedown)="pick(s)">
+                    <app-icon name="scissors"></app-icon>
+                    {{ s }}
+                  </li>
+                }
+              </ul>
+            }
 
           </div>
 
@@ -58,31 +86,34 @@
 
             <input
               type="text"
+              name="zona"
               placeholder="Barrio o zona"
+              [value]="zone"
+              (input)="zone = $any($event.target).value"
             >
 
           </div>
 
 
-          <button class="search-button">
+          <button class="search-button" type="submit" appMagnetic>
             Buscar
           </button>
 
-        </div>
+        </form>
 
 
         <div class="quick-info">
 
           <span>
-            ✓ Reserva en minutos
+            <app-icon name="check"></app-icon> Reserva en minutos
           </span>
 
           <span>
-            ✓ Elige tu barbero
+            <app-icon name="check"></app-icon> Elige tu barbero
           </span>
 
           <span>
-            ✓ Consulta disponibilidad
+            <app-icon name="check"></app-icon> Consulta disponibilidad
           </span>
 
         </div>
@@ -92,7 +123,7 @@
 
       <!-- TARJETA DERECHA -->
 
-      <div class="visual-card">
+      <div class="visual-card" appReveal appTilt>
 
         <div class="card-top">
 
@@ -121,7 +152,7 @@
 
           <div class="steps">
 
-            <div class="step">
+            <div class="step" appReveal>
 
               <span>
                 01
@@ -134,7 +165,7 @@
             </div>
 
 
-            <div class="step">
+            <div class="step" appReveal>
 
               <span>
                 02
@@ -147,7 +178,7 @@
             </div>
 
 
-            <div class="step">
+            <div class="step" appReveal>
 
               <span>
                 03
@@ -170,11 +201,27 @@
   </section>
 
 
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      @for (i of [1, 2]; track i) {
+        <div class="marquee-group">
+          <span><app-icon name="scissors"></app-icon> Corte clásico</span>
+          <span><app-icon name="sparkle"></app-icon> Fade y degradados</span>
+          <span><app-icon name="star"></app-icon> Barba y perfilado</span>
+          <span><app-icon name="shield"></app-icon> Afeitado con toalla</span>
+          <span><app-icon name="clock"></app-icon> Reserva en minutos</span>
+          <span><app-icon name="pin"></app-icon> Cerca de ti</span>
+        </div>
+      }
+    </div>
+  </div>
+
+
   <!-- ===================================== -->
 <!-- BARBERÍAS DESTACADAS -->
 <!-- ===================================== -->
 
-<section class="featured">
+<section class="featured" appReveal>
 
   <div class="container">
 
@@ -243,7 +290,7 @@
   <!-- BENEFICIOS -->
   <!-- ===================================== -->
 
-  <section class="benefits">
+  <section class="benefits" appReveal>
 
     <div class="container">
 
@@ -328,14 +375,14 @@
 <!-- EXPERIENCE -->
 <!-- ===================================== -->
 
-<section class="experience">
+<section class="experience" appReveal>
 
   <div class="container experience-grid">
 
 
     <div class="experience-image">
 
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/barbergo/hero-barber.jpg"
         alt="Experiencia BarberGo"
       >
@@ -434,6 +481,20 @@
 
   </div>
 
+</section>
+
+<section class="transform" appReveal>
+  <div class="container transform-grid">
+    <div class="transform-copy">
+      <span class="eyebrow">TRANSFORMACIONES</span>
+      <h2>El antes y después que <em>sí se nota.</em></h2>
+      <p>Desliza para comparar. Nuestros barberos muestran su trabajo para que elijas con confianza.</p>
+    </div>
+    <app-compare>
+      <img before src="/images/barbergo/antes.jpg" alt="Antes del corte: cabello largo y barba sin perfilar" draggable="false" loading="lazy">
+      <img after src="/images/barbergo/despues.jpg" alt="Después del corte: fade bajo y barba perfilada" draggable="false" loading="lazy">
+    </app-compare>
+  </div>
 </section>
 
 </main>

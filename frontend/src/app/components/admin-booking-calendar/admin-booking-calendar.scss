@@ -13,14 +13,13 @@
   width: 100%;
   min-width: 0;
 
-  border:
-    1px solid
-    #e8eaf0;
+  border: 1px solid
+    var(--border);
 
   border-radius: 18px;
 
   background:
-    #ffffff;
+    var(--surface);
 
   overflow: hidden;
 
@@ -49,15 +48,14 @@
 
   padding: 20px;
 
-  border-bottom:
-    1px solid
-    #eef0f4;
+  border-bottom: 1px solid
+    var(--border);
 }
 
 
 .calendar-eyebrow {
   color:
-    #2563eb;
+    var(--primary);
 
   font-size: 7px;
   font-weight: 900;
@@ -72,7 +70,7 @@
     5px 0 0;
 
   color:
-    #111318;
+    var(--ink);
 
   font-size: 20px;
 }
@@ -82,8 +80,7 @@
   margin:
     4px 0 0;
 
-  color:
-    #777b84;
+  color: var(--muted);
 
   font-size: 9px;
 }
@@ -106,17 +103,15 @@
   min-width: 38px;
   min-height: 36px;
 
-  border:
-    1px solid
-    #e8eaf0;
+  border: 1px solid
+    var(--border);
 
   border-radius: 9px;
 
   background:
-    #ffffff;
+    var(--surface);
 
-  color:
-    #454951;
+  color: var(--ink);
 
   font: inherit;
   font-size: 12px;
@@ -142,7 +137,7 @@
     );
 
   color:
-    #2563eb;
+    var(--primary);
 }
 
 
@@ -153,10 +148,10 @@
     13px;
 
   color:
-    #2563eb;
+    var(--primary);
 
   background:
-    #eff6ff;
+    var(--primary-50);
 }
 
 
@@ -204,19 +199,16 @@
   align-items: center;
   justify-content: center;
 
-  border-right:
-    1px solid
-    #edf0f4;
+  border-right: 1px solid
+    var(--border);
 
-  border-bottom:
-    1px solid
-    #edf0f4;
+  border-bottom: 1px solid
+    var(--border);
 
-  color:
-    #999da6;
+  color: var(--muted);
 
   background:
-    #fafbfc;
+    var(--surface-2);
 
   font-size: 7px;
   font-weight: 900;
@@ -240,22 +232,19 @@
   align-items: center;
   justify-content: center;
 
-  border-right:
-    1px solid
-    #edf0f4;
+  border-right: 1px solid
+    var(--border);
 
-  border-bottom:
-    1px solid
-    #edf0f4;
+  border-bottom: 1px solid
+    var(--border);
 
   background:
-    #fafbfc;
+    var(--surface-2);
 }
 
 
 .calendar-day-header span {
-  color:
-    #8b8f98;
+  color: var(--muted);
 
   font-size: 8px;
   font-weight: 800;
@@ -269,26 +258,24 @@
   margin-top: 3px;
 
   color:
-    #111318;
+    var(--ink);
 
   font-size: 17px;
 }
 
 
 .calendar-day-header small {
-  color:
-    #999da6;
+  color: var(--muted);
 
   font-size: 7px;
 }
 
 
 .calendar-day-header.today {
-  background:
-    linear-gradient(
+  background: linear-gradient(
       180deg,
-      #eff6ff,
-      #f8faff
+      var(--primary-50),
+      var(--surface-2)
     );
 }
 
@@ -322,12 +309,11 @@
 .calendar-time-column {
   position: relative;
 
-  border-right:
-    1px solid
-    #edf0f4;
+  border-right: 1px solid
+    var(--border);
 
   background:
-    #fafbfc;
+    var(--surface-2);
 }
 
 
@@ -339,9 +325,8 @@
 
   padding-top: 5px;
 
-  border-bottom:
-    1px solid
-    #edf0f4;
+  border-bottom: 1px solid
+    var(--border);
 
   color:
     #9297a1;
@@ -357,12 +342,11 @@
 .calendar-day-column {
   position: relative;
 
-  border-right:
-    1px solid
-    #edf0f4;
+  border-right: 1px solid
+    var(--border);
 
   background:
-    #ffffff;
+    var(--surface);
 }
 
 
@@ -380,9 +364,8 @@
 .calendar-hour-line {
   width: 100%;
 
-  border-bottom:
-    1px solid
-    #f0f2f5;
+  border-bottom: 1px solid
+    var(--border);
 }
 
 
@@ -497,8 +480,7 @@
 ===================================================== */
 
 .calendar-booking.pending {
-  color:
-    #92400e;
+  color: var(--ink);
 
   border-color:
     #fde68a;
@@ -509,14 +491,12 @@
 
 
 .calendar-booking.confirmed {
-  color:
-    #5b21b6;
+  color: var(--ink);
 
   border-color:
     #ddd6fe;
 
-  background:
-    #f5f3ff;
+  background: var(--surface-2);
 }
 
 
@@ -545,14 +525,12 @@
 
 
 .calendar-booking.cancelled {
-  color:
-    #b91c1c;
+  color: var(--ink);
 
   border-color:
     #fecaca;
 
-  background:
-    #fef2f2;
+  background: var(--surface-2);
 }
 
 
@@ -569,14 +547,13 @@
 
 
 .calendar-booking.no-show {
-  color:
-    #475569;
+  color: var(--ink);
 
   border-color:
     #cbd5e1;
 
   background:
-    #f8fafc;
+    var(--surface-2);
 }
 
 
@@ -603,17 +580,15 @@
 
   padding: 13px;
 
-  border:
-    1px solid
-    #e6e8ee;
+  border: 1px solid
+    var(--border);
 
   border-radius: 12px;
 
   background:
-    #ffffff;
+    var(--surface);
 
-  color:
-    #454951;
+  color: var(--ink);
 
   box-shadow:
     0 20px 45px
@@ -645,7 +620,7 @@
   display: block;
 
   color:
-    #2563eb;
+    var(--primary);
 
   font-size: 8px;
   font-weight: 850;
@@ -658,7 +633,7 @@
   margin-top: 7px;
 
   color:
-    #111318;
+    var(--ink);
 
   font-size: 11px;
 }
@@ -690,8 +665,7 @@
 
   margin-top: 8px;
 
-  color:
-    #999da6;
+  color: var(--muted);
 
   font-size: 7px;
   font-style: normal;
@@ -735,12 +709,11 @@
     10px
     18px;
 
-  border-bottom:
-    1px solid
-    #eef0f4;
+  border-bottom: 1px solid
+    var(--border);
 
   background:
-    #f8fafc;
+    var(--surface-2);
 
   color:
     #64748b;
@@ -751,11 +724,9 @@
 
 
 .calendar-agenda-state.error {
-  color:
-    #b91c1c;
+  color: var(--ink);
 
-  background:
-    #fef2f2;
+  background: var(--surface-2);
 }
 
 
@@ -774,7 +745,7 @@
     #dbeafe;
 
   border-top-color:
-    #2563eb;
+    var(--primary);
 
   border-radius:
     50%;
@@ -818,12 +789,11 @@
     10px
     18px;
 
-  border-bottom:
-    1px solid
-    #eef0f4;
+  border-bottom: 1px solid
+    var(--border);
 
   background:
-    #ffffff;
+    var(--surface);
 }
 
 
@@ -932,8 +902,7 @@
 
 
 .day-status.closed {
-  color:
-    #991b1b;
+  color: var(--ink);
 
   background:
     #fee2e2;
@@ -941,17 +910,15 @@
 
 
 .day-status.off {
-  color:
-    #475569;
+  color: var(--ink);
 
-  background:
-    #e2e8f0;
+  background: var(--surface-2);
 }
 
 
 .calendar-day-header.closed {
   background:
-    #f8fafc;
+    var(--surface-2);
 }
 
 
@@ -961,13 +928,12 @@
 
 .calendar-day-column.barbershop-closed {
   background:
-    #fafafa;
+    var(--surface-2);
 }
 
 
 .calendar-day-column.barber-off {
-  background:
-    #fbfcfd;
+  background: var(--surface);
 }
 
 
@@ -1186,8 +1152,7 @@
       0.92
     );
 
-  color:
-    #92400e;
+  color: var(--ink);
 
   pointer-events: none;
 }
@@ -1252,11 +1217,10 @@
   border-radius:
     7px;
 
-  background:
-    repeating-linear-gradient(
+  background: repeating-linear-gradient(
       135deg,
-      #fef2f2,
-      #fef2f2
+      var(--surface-2),
+      var(--surface-2)
       7px,
       #fee2e2
       7px,
@@ -1264,8 +1228,7 @@
       14px
     );
 
-  color:
-    #991b1b;
+  color: var(--ink);
 
   pointer-events: none;
 }
@@ -1366,3 +1329,58 @@
 
 }
 
+
+
+/* ===== redesign (admin) ===== */
+:host { display: block; }
+.page-header, .calendar-header, .section-heading-row { animation: fade-up .6s var(--ease) both; }
+.page-header h1, .page-header h2 { background: linear-gradient(120deg, var(--ink) 30%, var(--primary) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.eyebrow, .section-eyebrow, .drawer-eyebrow, .agenda-eyebrow, .calendar-eyebrow, .header-eyebrow { color: var(--accent) !important; }
+
+/* cards */
+.kpi-card, .financial-card, .analytics-card, .ranking-card, .visual-chart-card, .status-card, .summary-card, .booking-card, .user-card, .shop-card,
+.content-card, .mini-metric-card, .booking-summary-card, .section-panel, .settings-section-panel, .admin-card, .barbershop-selector-card, .state-box, .state-card, .shop-booking-card {
+  border-radius: 20px !important; border: 1px solid var(--border) !important; background: var(--surface);
+  box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
+  animation: fade-up .6s var(--ease) both;
+}
+.kpi-card:hover, .financial-card:hover, .analytics-card:hover, .ranking-card:hover, .summary-card:hover, .booking-card:hover, .user-card:hover, .shop-card:hover, .mini-metric-card:hover, .admin-card:hover {
+  transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: rgba(13,148,136,.35) !important;
+}
+.kpi-grid > *:nth-child(2), .summary-grid > *:nth-child(2), .bookings-list > *:nth-child(2) { animation-delay: .08s; }
+.kpi-grid > *:nth-child(3), .summary-grid > *:nth-child(3), .bookings-list > *:nth-child(3) { animation-delay: .16s; }
+.kpi-grid > *:nth-child(4), .summary-grid > *:nth-child(4), .bookings-list > *:nth-child(4) { animation-delay: .24s; }
+.kpi-value { font-family: Sora, Inter, sans-serif; background: var(--grad-primary); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kpi-icon, .summary-icon, .section-icon, .financial-card-icon, .status-icon { border-radius: 14px; background: var(--primary-50) !important; color: var(--primary-600) !important; }
+.kpi-glow { background: radial-gradient(circle, rgba(20,184,166,.35), transparent 70%) !important; }
+.live-chip, .results-badge, .total-badge, .simulation-badge, .recommended-badge { border-radius: 99px; background: var(--primary-50); color: var(--primary-600); }
+
+/* toolbar & filters */
+.toolbar { border-radius: 18px; border: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(10px); box-shadow: var(--shadow-sm); }
+.status-filter button, .filter-tabs button, .barber-tab, .settings-tab, .tab-label { border-radius: 12px; transition: all .25s var(--ease); }
+.status-filter button:hover, .filter-tabs button:hover, .barber-tab:hover, .settings-tab:hover { background: var(--primary-50); color: var(--primary-600); }
+.status-filter .active, .filter-tabs .active, .barber-tab.active, .settings-tab.active, .settings-tab.selected { background: var(--grad-primary) !important; color: #fff !important; box-shadow: var(--shadow-md); }
+
+/* buttons */
+.primary-button, .refresh-button, .load-more-button, .confirm-booking-button, .details-button, .manage-button, .view-button, .today-button {
+  border-radius: 12px; font-weight: 700;
+}
+.primary-button, .confirm-booking-button, .manage-button { background: var(--grad-primary) !important; color: #fff !important; border: 0 !important; box-shadow: var(--shadow-md); }
+.load-more-button:hover, .refresh-button:hover, .details-button:hover, .secondary-button:hover { border-color: var(--primary) !important; color: var(--primary-600) !important; background: var(--primary-50) !important; }
+.complete-booking-button { background: linear-gradient(135deg,#059669,#10b981) !important; color: #fff !important; border: 0 !important; }
+.cancel-booking-button { border-radius: 12px; }
+
+/* avatars & progress */
+.client-avatar, .barber-avatar, .shop-avatar, .admin-avatar, .drawer-avatar, .barber-tab-avatar, .shop-booking-client-avatar { background: var(--grad-primary) !important; color: #fff !important; box-shadow: var(--shadow-md); }
+.status-progress > *, .progress-bar { background: var(--grad-primary); transition: width 1s var(--ease); }
+
+/* drawers & modals */
+.drawer, [class*="drawer-panel"], [class*="drawer-content"], .modal { animation: slide-in .45s var(--ease) both; border-radius: 24px 0 0 24px; box-shadow: var(--shadow-lg); }
+.drawer-overlay, [class*="backdrop"], [class*="overlay"]:not(.image-overlay) { backdrop-filter: blur(6px); animation: fade-in .3s ease both; }
+@keyframes slide-in { from { transform: translateX(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* skeleton / loaders */
+.loader, .button-loader, .dashboard-loader { border-top-color: var(--primary) !important; }
+.loading-state, .state-box { animation: fade-in .5s var(--ease) both; }
+tbody tr { transition: background .2s; }
+tbody tr:hover { background: var(--primary-50); }

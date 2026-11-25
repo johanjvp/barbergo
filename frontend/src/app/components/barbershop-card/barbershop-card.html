@@ -1,8 +1,8 @@
-<article class="shop-card">
+<article class="shop-card" appTilt>
 
   <div class="image-wrapper">
 
-    <img
+    <img loading="lazy" decoding="async"
       [src]="image"
       [alt]="name"
       class="shop-image"
@@ -21,7 +21,7 @@
       class="favorite-button"
       aria-label="Guardar barbería"
     >
-      ♡
+      <app-icon name="heart"></app-icon>
     </button>
 
   </div>
@@ -88,9 +88,7 @@
         Ver barbería
       </span>
 
-      <span class="arrow">
-        →
-      </span>
+      <span class="arrow"><app-icon name="arrow-right"></app-icon></span>
 
     </button>
 

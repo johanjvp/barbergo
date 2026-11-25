@@ -1,3 +1,4 @@
+import { Icon } from '../../../components/icon/icon';
 import {
   ChangeDetectorRef,
   Component,
@@ -29,6 +30,7 @@ import {
     'app-admin-barbershops',
 
   imports: [
+    Icon,
     RouterLink
   ],
 

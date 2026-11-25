@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import {
   ChangeDetectorRef,
   Component,
@@ -53,6 +54,7 @@ export class Barbershops implements OnInit, OnDestroy {
   private readonly barbershopService = inject(BarbershopService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
 
   // ======================================
@@ -86,6 +88,9 @@ export class Barbershops implements OnInit, OnDestroy {
   // ======================================
 
   ngOnInit(): void {
+    const qp = this.route.snapshot.queryParamMap;
+    this.search = qp.get('search') ?? '';
+    this.neighborhood = qp.get('zona') ?? '';
     this.loadBarbershops();
   }
 

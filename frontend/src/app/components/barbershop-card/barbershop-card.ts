@@ -1,3 +1,5 @@
+import { TiltDirective } from "../../directives-tilt";
+import { Icon } from '../icon/icon';
 
 import {
   Component,
@@ -13,6 +15,8 @@ import {
   selector: 'app-barbershop-card',
 
   imports: [
+    TiltDirective,
+    Icon,
     RouterLink
   ],
 

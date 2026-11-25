@@ -1,3 +1,4 @@
+import { Icon } from '../../../components/icon/icon';
 import {
   ChangeDetectorRef,
   Component,
@@ -53,7 +54,8 @@ interface SettingsSectionItem {
 @Component({
   selector: 'app-admin-settings',
 
-  imports: [],
+  imports: [
+    Icon,],
 
   templateUrl:
     './admin-settings.html',

@@ -3,69 +3,12 @@ import {
 } from '@angular/router';
 
 import {
-  Home
-} from './pages/home/home';
-
-import {
   adminGuard
 } from './guards/admin.guard';
 
 import {
   barberGuard
 } from './guards/barber.guard';
-
-import {
-  Barbershops
-} from './pages/barbershops/barbershops';
-
-import {
-  BarbershopDetail
-} from './pages/barbershop-detail/barbershop-detail';
-
-import {
-  Login
-} from './pages/login/login';
-
-import {
-  Register
-} from './pages/register/register';
-
-import {
-  MyBookings
-} from './pages/my-bookings/my-bookings';
-
-import {
-  AdminLayout
-} from './pages/admin/admin-layout/admin-layout';
-
-import {
-  AdminDashboard
-} from './pages/admin/dashboard/admin-dashboard';
-
-import {
-  AdminBarbershops
-} from './pages/admin/barbershops/admin-barbershops';
-
-import {
-  AdminBarbershopDetail
-} from './pages/admin/barbershops/detail/admin-barbershop-detail';
-
-import {
-  AdminUsers
-} from './pages/admin/users/admin-users';
-
-import {
-  AdminBookings
-} from './pages/admin/bookings/admin-bookings';
-
-import {
-  AdminSettings
-} from './pages/admin/admin-settings/admin-settings';
-
-import {
-  BarberDashboard
-} from './pages/barber/barber-dashboard';
-
 
 export const routes:
   Routes = [
@@ -76,7 +19,7 @@ export const routes:
 
     {
       path: '',
-      component: Home
+      loadComponent: () => import('./pages/home/home').then(m => m.Home)
     },
 
 
@@ -86,13 +29,13 @@ export const routes:
 
     {
       path: 'barberias',
-      component: Barbershops
+      loadComponent: () => import('./pages/barbershops/barbershops').then(m => m.Barbershops)
     },
 
 
     {
       path: 'barberias/:id',
-      component: BarbershopDetail
+      loadComponent: () => import('./pages/barbershop-detail/barbershop-detail').then(m => m.BarbershopDetail)
     },
 
 
@@ -102,13 +45,13 @@ export const routes:
 
     {
       path: 'login',
-      component: Login
+      loadComponent: () => import('./pages/login/login').then(m => m.Login)
     },
 
 
     {
       path: 'registro',
-      component: Register
+      loadComponent: () => import('./pages/register/register').then(m => m.Register)
     },
 
 
@@ -118,7 +61,7 @@ export const routes:
 
     {
       path: 'mis-reservas',
-      component: MyBookings
+      loadComponent: () => import('./pages/my-bookings/my-bookings').then(m => m.MyBookings)
     },
 
 
@@ -129,8 +72,7 @@ export const routes:
     {
       path: 'barber',
 
-      component:
-        BarberDashboard,
+      loadComponent: () => import('./pages/barber/barber-dashboard').then(m => m.BarberDashboard),
 
       canActivate: [
         barberGuard
@@ -145,8 +87,7 @@ export const routes:
     {
       path: 'admin',
 
-      component:
-        AdminLayout,
+      loadComponent: () => import('./pages/admin/admin-layout/admin-layout').then(m => m.AdminLayout),
 
       canActivate: [
         adminGuard
@@ -160,8 +101,7 @@ export const routes:
 
         {
           path: '',
-          component:
-            AdminDashboard
+          loadComponent: () => import('./pages/admin/dashboard/admin-dashboard').then(m => m.AdminDashboard)
         },
 
 
@@ -171,8 +111,7 @@ export const routes:
 
         {
           path: 'barberias',
-          component:
-            AdminBarbershops
+          loadComponent: () => import('./pages/admin/barbershops/admin-barbershops').then(m => m.AdminBarbershops)
         },
 
 
@@ -182,8 +121,7 @@ export const routes:
 
         {
           path: 'barberias/:id',
-          component:
-            AdminBarbershopDetail
+          loadComponent: () => import('./pages/admin/barbershops/detail/admin-barbershop-detail').then(m => m.AdminBarbershopDetail)
         },
 
 
@@ -193,8 +131,7 @@ export const routes:
 
         {
           path: 'usuarios',
-          component:
-            AdminUsers
+          loadComponent: () => import('./pages/admin/users/admin-users').then(m => m.AdminUsers)
         },
 
 
@@ -204,8 +141,7 @@ export const routes:
 
         {
           path: 'reservas',
-          component:
-            AdminBookings
+          loadComponent: () => import('./pages/admin/bookings/admin-bookings').then(m => m.AdminBookings)
         },
 
 
@@ -215,8 +151,7 @@ export const routes:
 
         {
           path: 'configuracion',
-          component:
-            AdminSettings
+          loadComponent: () => import('./pages/admin/admin-settings/admin-settings').then(m => m.AdminSettings)
         }
 
       ]

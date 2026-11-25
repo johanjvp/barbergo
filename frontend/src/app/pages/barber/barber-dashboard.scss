@@ -15,8 +15,7 @@
   padding:
     42px 0 72px;
 
-  color:
-    #171717;
+  color: var(--ink);
 }
 
 
@@ -55,8 +54,7 @@
   margin-bottom:
     7px;
 
-  color:
-    #8b8b8b;
+  color: var(--muted);
 
   font-size:
     10px;
@@ -74,7 +72,7 @@
     0;
 
   color:
-    #111111;
+    var(--ink);
 
   font-size:
     clamp(
@@ -95,8 +93,7 @@
   margin:
     8px 0 0;
 
-  color:
-    #777777;
+  color: var(--muted);
 
   font-size:
     14px;
@@ -132,8 +129,7 @@
 
 
 .date-control span {
-  color:
-    #8a8a8a;
+  color: var(--muted);
 
   font-size:
     9px;
@@ -158,16 +154,15 @@
 
   border:
     1px solid
-    #dddddd;
+    var(--border);
 
   border-radius:
     10px;
 
   background:
-    #ffffff;
+    var(--surface);
 
-  color:
-    #202020;
+  color: var(--ink);
 
   font:
     inherit;
@@ -221,13 +216,13 @@
 
   border:
     1px solid
-    #e8e8e8;
+    var(--border);
 
   border-radius:
     18px;
 
   background:
-    #ffffff;
+    var(--surface);
 
   text-align:
     center;
@@ -238,8 +233,7 @@
   margin-top:
     18px;
 
-  color:
-    #222222;
+  color: var(--ink);
 
   font-size:
     17px;
@@ -250,8 +244,7 @@
   margin:
     6px 0 0;
 
-  color:
-    #858585;
+  color: var(--muted);
 
   font-size:
     13px;
@@ -262,8 +255,7 @@
   border-color:
     #f0d5d5;
 
-  background:
-    #fffafa;
+  background: var(--surface-2);
 }
 
 
@@ -276,10 +268,10 @@
 
   border:
     3px solid
-    #e8e8e8;
+    var(--border);
 
   border-top-color:
-    #111111;
+    var(--primary);
 
   border-radius:
     50%;
@@ -311,18 +303,16 @@
   padding:
     0 15px;
 
-  border:
-    1px solid
-    #d7d7d7;
+  border: 1px solid
+    var(--border);
 
   border-radius:
     9px;
 
   background:
-    #ffffff;
+    var(--surface);
 
-  color:
-    #222222;
+  color: var(--ink);
 
   font-size:
     12px;
@@ -357,13 +347,13 @@
 
   border:
     1px solid
-    #e8e8e8;
+    var(--border);
 
   border-radius:
     16px;
 
   background:
-    #ffffff;
+    var(--surface);
 }
 
 
@@ -387,7 +377,7 @@
     11px;
 
   background:
-    #111111;
+    var(--grad-primary);
 
   color:
     #ffffff;
@@ -431,8 +421,7 @@
   margin-bottom:
     2px;
 
-  color:
-    #929292;
+  color: var(--muted);
 
   font-size:
     8px;
@@ -449,8 +438,7 @@
   display:
     block;
 
-  color:
-    #161616;
+  color: var(--ink);
 
   font-size:
     15px;
@@ -461,8 +449,7 @@
   margin:
     3px 0 0;
 
-  color:
-    #7f7f7f;
+  color: var(--muted);
 
   font-size:
     12px;
@@ -494,13 +481,13 @@
 
   border:
     1px solid
-    #e8e8e8;
+    var(--border);
 
   border-radius:
     13px;
 
   background:
-    #ffffff;
+    var(--surface);
 }
 
 
@@ -532,8 +519,7 @@
   background:
     transparent;
 
-  color:
-    #777777;
+  color: var(--muted);
 
   font-size:
     12px;
@@ -554,16 +540,15 @@
 
 .agenda-tab:hover {
   background:
-    #f4f4f4;
+    var(--surface-2);
 
-  color:
-    #222222;
+  color: var(--ink);
 }
 
 
 .agenda-tab.active {
   background:
-    #111111;
+    var(--grad-primary);
 
   color:
     #ffffff;
@@ -586,8 +571,7 @@
 
 
 .agenda-range span {
-  color:
-    #999999;
+  color: var(--muted);
 
   font-size:
     8px;
@@ -607,8 +591,7 @@
   margin-top:
     2px;
 
-  color:
-    #333333;
+  color: var(--ink);
 
   font-size:
     11px;
@@ -643,13 +626,13 @@
 
   border:
     1px solid
-    #e8e8e8;
+    var(--border);
 
   border-radius:
     15px;
 
   background:
-    #ffffff;
+    var(--surface);
 }
 
 
@@ -657,8 +640,7 @@
   display:
     block;
 
-  color:
-    #999999;
+  color: var(--muted);
 
   font-size:
     9px;
@@ -679,7 +661,7 @@
     8px;
 
   color:
-    #111111;
+    var(--ink);
 
   font-size:
     28px;
@@ -696,8 +678,7 @@
   margin:
     3px 0 0;
 
-  color:
-    #898989;
+  color: var(--muted);
 
   font-size:
     11px;
@@ -734,8 +715,7 @@
 
 
 .section-heading span {
-  color:
-    #999999;
+  color: var(--muted);
 
   font-size:
     9px;
@@ -752,8 +732,7 @@
   margin:
     4px 0 0;
 
-  color:
-    #171717;
+  color: var(--ink);
 
   font-size:
     19px;
@@ -770,15 +749,14 @@
   padding:
     6px 9px;
 
-  border:
-    1px solid
-    #e1e1e1;
+  border: 1px solid
+    var(--border);
 
   border-radius:
     8px;
 
   background:
-    #ffffff;
+    var(--surface);
 }
 
 
@@ -796,15 +774,14 @@
   overflow:
     hidden;
 
-  border:
-    1px solid
-    #e3e3e3;
+  border: 1px solid
+    var(--border);
 
   border-radius:
     18px;
 
   background:
-    #ffffff;
+    var(--surface);
 
   box-shadow:
     0 10px 30px
@@ -832,7 +809,7 @@
     20px;
 
   background:
-    #111111;
+    var(--grad-primary);
 
   color:
     #ffffff;
@@ -840,8 +817,7 @@
 
 
 .next-booking-time span {
-  color:
-    #9d9d9d;
+  color: var(--muted);
 
   font-size:
     9px;
@@ -903,8 +879,7 @@
 
 
 .booking-label {
-  color:
-    #a0a0a0;
+  color: var(--muted);
 
   font-size:
     8px;
@@ -921,8 +896,7 @@
   margin:
     5px 0 0;
 
-  color:
-    #151515;
+  color: var(--ink);
 
   font-size:
     21px;
@@ -954,15 +928,14 @@
   padding:
     12px;
 
-  border:
-    1px solid
-    #ededed;
+  border: 1px solid
+    var(--border);
 
   border-radius:
     10px;
 
   background:
-    #fafafa;
+    var(--surface-2);
 }
 
 
@@ -970,8 +943,7 @@
   display:
     block;
 
-  color:
-    #999999;
+  color: var(--muted);
 
   font-size:
     8px;
@@ -988,8 +960,7 @@
   margin-top:
     4px;
 
-  color:
-    #333333;
+  color: var(--ink);
 
   font-size:
     12px;
@@ -1007,13 +978,12 @@
     10px;
 
   background:
-    #f7f7f7;
+    var(--surface-2);
 }
 
 
 .booking-notes span {
-  color:
-    #999999;
+  color: var(--muted);
 
   font-size:
     8px;
@@ -1030,8 +1000,7 @@
   margin:
     4px 0 0;
 
-  color:
-    #555555;
+  color: var(--ink);
 
   font-size:
     12px;
@@ -1045,21 +1014,19 @@
   padding:
     26px;
 
-  border:
-    1px dashed
-    #dcdcdc;
+  border: 1px dashed
+    var(--border);
 
   border-radius:
     14px;
 
   background:
-    #fafafa;
+    var(--surface-2);
 }
 
 
 .empty-next-booking strong {
-  color:
-    #333333;
+  color: var(--ink);
 
   font-size:
     14px;
@@ -1070,8 +1037,7 @@
   margin:
     4px 0 0;
 
-  color:
-    #8a8a8a;
+  color: var(--muted);
 
   font-size:
     12px;
@@ -1119,8 +1085,7 @@
 
 
 .status-badge.confirmed {
-  background:
-    #eef7f1;
+  background: var(--surface-2);
 
   color:
     #267145;
@@ -1140,17 +1105,14 @@
   background:
     #edf3ff;
 
-  color:
-    #345ca8;
+  color: var(--ink);
 }
 
 
 .status-badge.completed {
-  background:
-    #efefef;
+  background: var(--surface-2);
 
-  color:
-    #555555;
+  color: var(--ink);
 }
 
 
@@ -1158,26 +1120,21 @@
   background:
     #fff0f0;
 
-  color:
-    #a13b3b;
+  color: var(--ink);
 }
 
 
 .status-badge.no-show {
-  background:
-    #f5edf8;
+  background: var(--surface-2);
 
-  color:
-    #744183;
+  color: var(--ink);
 }
 
 
 .status-badge.default {
-  background:
-    #f2f2f2;
+  background: var(--surface-2);
 
-  color:
-    #666666;
+  color: var(--muted);
 }
 
 
@@ -1204,15 +1161,14 @@
   padding:
     30px;
 
-  border:
-    1px dashed
-    #dcdcdc;
+  border: 1px dashed
+    var(--border);
 
   border-radius:
     15px;
 
   background:
-    #fafafa;
+    var(--surface-2);
 
   text-align:
     center;
@@ -1238,11 +1194,9 @@
   border-radius:
     11px;
 
-  background:
-    #eeeeee;
+  background: var(--surface-2);
 
-  color:
-    #5f5f5f;
+  color: var(--ink);
 }
 
 
@@ -1271,8 +1225,7 @@
 
 
 .agenda-empty strong {
-  color:
-    #333333;
+  color: var(--ink);
 
   font-size:
     14px;
@@ -1283,8 +1236,7 @@
   margin:
     4px 0 0;
 
-  color:
-    #8d8d8d;
+  color: var(--muted);
 
   font-size:
     12px;
@@ -1332,8 +1284,7 @@
 
 
 .agenda-item-time strong {
-  color:
-    #222222;
+  color: var(--ink);
 
   font-size:
     12px;
@@ -1347,8 +1298,7 @@
   margin-top:
     2px;
 
-  color:
-    #a0a0a0;
+  color: var(--muted);
 
   font-size:
     9px;
@@ -1383,8 +1333,7 @@
   width:
     1px;
 
-  background:
-    #e6e6e6;
+  background: var(--surface-2);
 }
 
 
@@ -1404,15 +1353,14 @@
   margin-top:
     22px;
 
-  border:
-    2px solid
-    #ffffff;
+  border: 2px solid
+    var(--border);
 
   border-radius:
     50%;
 
   background:
-    #111111;
+    var(--grad-primary);
 
   box-shadow:
     0 0 0 1px
@@ -1427,15 +1375,14 @@
   padding:
     16px;
 
-  border:
-    1px solid
-    #e7e7e7;
+  border: 1px solid
+    var(--border);
 
   border-radius:
     14px;
 
   background:
-    #ffffff;
+    var(--surface);
 
   transition:
     border-color
@@ -1448,8 +1395,7 @@
 
 
 .agenda-item-card:hover {
-  border-color:
-    #d8d8d8;
+  border-color: var(--border);
 
   box-shadow:
     0 8px 24px
@@ -1476,8 +1422,7 @@
 
 
 .agenda-item-client span {
-  color:
-    #999999;
+  color: var(--muted);
 
   font-size:
     8px;
@@ -1500,8 +1445,7 @@
   margin-top:
     4px;
 
-  color:
-    #202020;
+  color: var(--ink);
 
   font-size:
     14px;
@@ -1512,8 +1456,7 @@
   margin:
     3px 0 0;
 
-  color:
-    #777777;
+  color: var(--muted);
 
   font-size:
     11px;
@@ -1536,12 +1479,10 @@
   padding-top:
     12px;
 
-  border-top:
-    1px solid
-    #f0f0f0;
+  border-top: 1px solid
+    var(--border);
 
-  color:
-    #777777;
+  color: var(--muted);
 
   font-size:
     10px;
@@ -1549,8 +1490,7 @@
 
 
 .agenda-item-meta strong {
-  color:
-    #444444;
+  color: var(--ink);
 }
 
 
@@ -1565,13 +1505,12 @@
     9px;
 
   background:
-    #f8f8f8;
+    var(--surface-2);
 }
 
 
 .agenda-item-note span {
-  color:
-    #999999;
+  color: var(--muted);
 
   font-size:
     8px;
@@ -1588,8 +1527,7 @@
   margin:
     3px 0 0;
 
-  color:
-    #555555;
+  color: var(--ink);
 
   font-size:
     11px;
@@ -1798,3 +1736,12 @@
   }
 
 }
+
+
+/* ===== redesign ===== */
+:host { display: block; background: radial-gradient(circle at 90% 0%, rgba(20,184,166,.12), transparent 40%), var(--bg); }
+:host > * > * , section { animation: fade-in .6s var(--ease) both; }
+.booking-card, .info-card, .stat-card, .coming-card, .search-panel, .map-shell, .service-card, .barber-card { border-radius: 20px !important; border: 1px solid var(--border) !important; box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+.booking-card:hover, .info-card:hover, .stat-card:hover, .service-card:hover, .barber-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.filter-chip, .status-badge { border-radius: 99px; }
+.eyebrow, .section-eyebrow, .dashboard-eyebrow { color: var(--accent) !important; }

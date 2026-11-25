@@ -1,3 +1,5 @@
+import { Confetti } from '../../components/confetti/confetti';
+import { Icon } from '../../components/icon/icon';
 import {
   ChangeDetectorRef,
   Component,
@@ -72,6 +74,8 @@ import {
   selector: 'app-barbershop-detail',
 
   imports: [
+    Confetti,
+    Icon,
     Navbar,
     Footer,
     RouterLink

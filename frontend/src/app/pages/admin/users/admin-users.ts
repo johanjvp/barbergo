@@ -1,3 +1,4 @@
+import { Icon } from '../../../components/icon/icon';
 import {
   ChangeDetectorRef,
   Component,
@@ -24,7 +25,8 @@ import {
 @Component({
   selector: 'app-admin-users',
 
-  imports: [],
+  imports: [
+    Icon,],
 
   templateUrl:
     './admin-users.html',
