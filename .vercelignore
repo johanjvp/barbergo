@@ -9,3 +9,4 @@ frontend/dist/
 frontend/.angular/
 .git/
 *.log
+.env.vercel
