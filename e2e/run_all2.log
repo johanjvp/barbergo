@@ -1,0 +1,22 @@
+
+===== MYSQL =====
+[OK]    mysql: preparar datos              [OK] datos cargados: {'admin': 1, 'owner': 2, 'barber_user': 3, 'client': 4, 'shop': 1, 'barber': 1, 'cut': 1, 'beard': 2}  (28s)
+[OK]    mysql: API                         RESULTADO API: 80 pruebas OK, 0 con fallo  (39s)
+[OK]    mysql: preparar datos (UI)         [OK] datos cargados: {'admin': 1, 'owner': 2, 'barber_user': 3, 'client': 4, 'shop': 1, 'barber': 1, 'cut': 1, 'beard': 2}  (40s)
+[OK]    mysql: interfaz (Chromium)         RESULTADO UI: 61 pruebas OK, 0 con fallo  (103s)
+[OK]    mysql: simulación de Vercel        [OK] datos cargados: {'admin': 1, 'owner': 2, 'barber_user': 3, 'client': 4, 'shop': 1, 'barber': 1, 'cut': 1, 'beard': 2}  (28s)
+[OK]    mysql: simulación de Vercel (pruebas) RESULTADO SIMULACIÓN VERCEL: 16 OK, 0 con fallo  (34s)
+
+===== POSTGRES =====
+[OK]    postgres: preparar datos           [OK] datos cargados: {'admin': 1, 'owner': 2, 'barber_user': 3, 'client': 4, 'shop': 1, 'barber': 1, 'cut': 1, 'beard': 2}  (6s)
+[OK]    postgres: API                      RESULTADO API: 80 pruebas OK, 0 con fallo  (37s)
+[OK]    postgres: preparar datos (UI)      [OK] datos cargados: {'admin': 1, 'owner': 2, 'barber_user': 3, 'client': 4, 'shop': 1, 'barber': 1, 'cut': 1, 'beard': 2}  (7s)
+[OK]    postgres: interfaz (Chromium)      RESULTADO UI: 61 pruebas OK, 0 con fallo  (107s)
+[OK]    postgres: simulación de Vercel     [OK] datos cargados: {'admin': 1, 'owner': 2, 'barber_user': 3, 'client': 4, 'shop': 1, 'barber': 1, 'cut': 1, 'beard': 2}  (12s)
+[OK]    postgres: simulación de Vercel (pruebas) RESULTADO SIMULACIÓN VERCEL: 16 OK, 0 con fallo  (32s)
+
+===== COMPARATIVAS =====
+[OK]    paridad MySQL <-> PostgreSQL       RESULTADO PARIDAD: 44 idénticos, 0 con diferencias o errores  (100s)
+[OK]    envío por SMTP                     RESULTADO SMTP: 7 OK, 0 con fallo  (6s)
+
+RESUMEN: 14 bloques OK, 0 con fallo
