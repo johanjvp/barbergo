@@ -1,3 +1,5 @@
+import os
+
 from sqlalchemy import URL, create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -21,17 +23,30 @@ DATABASE_URL = URL.create(
 )
 
 
+# En Vercel cada petición puede ser una instancia nueva: pocas conexiones y recicladas.
+IS_SERVERLESS = bool(os.getenv("VERCEL"))
+
+connect_args: dict = {}
+
+if settings.DB_SSL:
+    import certifi
+
+    connect_args["ssl"] = {"ca": certifi.where()}
+
+engine_options: dict = {
+    # Verifica conexiones muertas antes de utilizarlas.
+    "pool_pre_ping": True,
+    "echo": False,
+    "connect_args": connect_args,
+}
+
+if IS_SERVERLESS:
+    engine_options.update(pool_size=1, max_overflow=2, pool_recycle=240)
+
 engine = create_engine(
     DATABASE_URL,
-
-    # Verifica conexiones muertas antes de utilizarlas.
-    pool_pre_ping=True,
-
-    # Más adelante podemos poner True para estudiar
-    # las consultas SQL generadas por SQLAlchemy.
-    echo=False
+    **engine_options
 )
-
 
 SessionLocal = sessionmaker(
     bind=engine,

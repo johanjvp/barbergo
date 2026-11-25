@@ -1711,6 +1711,18 @@
 
 
       <!-- ================================================= -->
+      <!-- DOMICILIO Y PAGOS -->
+      <!-- ================================================= -->
+
+      @if (isSectionActive('home') && selectedBarbershopId !== null) {
+        <app-home-service-panel [barbershopId]="selectedBarbershopId"></app-home-service-panel>
+      }
+
+      @if (isSectionActive('payments') && selectedBarbershopId !== null) {
+        <app-payment-methods-panel [barbershopId]="selectedBarbershopId"></app-payment-methods-panel>
+      }
+
+      <!-- ================================================= -->
       <!-- NOTIFICACIONES -->
       <!-- ================================================= -->
 

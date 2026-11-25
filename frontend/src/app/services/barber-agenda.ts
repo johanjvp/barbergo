@@ -1,3 +1,4 @@
+import { API_URL } from '../core/api';
 import {
   Injectable,
   inject
@@ -30,7 +31,7 @@ export class BarberAgendaService {
 
 
   private readonly apiUrl =
-    'http://127.0.0.1:8000/api/v1/barber-agenda';
+    `${API_URL}/barber-agenda`;
 
 
   // =====================================================

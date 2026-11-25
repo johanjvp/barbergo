@@ -46,10 +46,12 @@ class BookingController:
     def create(
         db: Session,
         data: BookingCreate,
-        current_user: User
+        current_user: User | None = None,
+        _runner=None
     ):
-
         try:
+            if _runner is not None:
+                return _runner()
 
             return BookingService.create(
                 db,
@@ -169,6 +171,30 @@ class BookingController:
                 )
             )
 
+
+    
+    # =====================================================
+    # CREAR RESERVA SIN CUENTA
+    # =====================================================
+    @staticmethod
+    def create_guest(
+        db: Session,
+        data
+    ):
+        from app.services.guest_booking_service import (
+            GuestBookingService
+        )
+
+        return BookingController.create(
+            db,
+            data,
+            None,
+            _runner=lambda:
+                GuestBookingService.create_booking(
+                    db,
+                    data
+                )
+        )
 
     # =====================================================
     # MIS RESERVAS

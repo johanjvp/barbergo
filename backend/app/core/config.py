@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     DB_USER: str = "root"
     DB_PASSWORD: str = ""
     DB_NAME: str = "barbergo"
+    # Bases en la nube (TiDB, Aiven, PlanetScale...) exigen TLS
+    DB_SSL: bool = False
 
     # JWT
     JWT_SECRET_KEY: str

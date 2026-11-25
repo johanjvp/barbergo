@@ -1,3 +1,4 @@
+import { API_URL } from '../core/api';
 import {
   Injectable,
   inject
@@ -112,7 +113,7 @@ export class BarbershopSettingsService {
   // =====================================================
 
   private readonly apiBaseUrl =
-    'http://127.0.0.1:8000/api/v1';
+    API_URL;
 
 
   private readonly settingsUrl =

@@ -1,3 +1,4 @@
+import { API_URL } from '../core/api';
 import {
   Injectable,
   inject
@@ -26,7 +27,7 @@ export class AdminDashboardService {
 
 
   private readonly apiUrl =
-    'http://127.0.0.1:8000/api/v1/admin/dashboard';
+    `${API_URL}/admin/dashboard`;
 
 
   // =====================================================

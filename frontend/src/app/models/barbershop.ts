@@ -72,5 +72,10 @@ export interface BarbershopDetail {
   tolerance_minutes: number;
 
   is_active: boolean;
+  home_service_status?: string;
+  home_service_radius_km?: number | null;
+  home_service_fee?: number;
+  home_service_min_notice_hours?: number;
+  home_service_zones?: string | null;
 
 }

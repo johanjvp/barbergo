@@ -1,3 +1,4 @@
+import { API_URL } from '../core/api';
 import {
   inject,
   Injectable
@@ -27,7 +28,7 @@ export class BookingService {
 
 
   private readonly apiUrl =
-    'http://127.0.0.1:8000/api/v1/bookings';
+    `${API_URL}/bookings`;
 
 
   // =====================================================

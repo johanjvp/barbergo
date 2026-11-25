@@ -1,3 +1,4 @@
+import { API_URL } from '../core/api';
 import {
   inject,
   Injectable
@@ -31,7 +32,7 @@ export class AuthService {
 
 
   private readonly apiUrl =
-    'http://127.0.0.1:8000/api/v1/auth';
+    `${API_URL}/auth`;
 
 
   private readonly tokenKey =

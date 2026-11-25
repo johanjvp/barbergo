@@ -1271,16 +1271,16 @@ input:focus-visible {
 .booking-card, .info-card, .stat-card, .coming-card, .search-panel, .map-shell, .service-card, .barber-card { border-radius: 20px !important; border: 1px solid var(--border) !important; box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
 .booking-card:hover, .info-card:hover, .stat-card:hover, .service-card:hover, .barber-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 .filter-chip, .status-badge { border-radius: 99px; }
-.eyebrow, .section-eyebrow, .dashboard-eyebrow { color: var(--accent) !important; }
+.eyebrow, .section-eyebrow, .dashboard-eyebrow { color: var(--accent-text) !important; }
 
 
 /* ===== modo oscuro: variables locales ===== */
 :host-context([data-theme="dark"]) {
-  --porcelain: #071419;
-  --paper: #0e222a;
-  --ink: #e6f1ef;
-  --steel: #8fb0ab;
-  --hair: #1f3a43;
+  --porcelain: #0b0b0c;
+  --paper: #1c1c1e;
+  --ink: #f5f5f7;
+  --steel: #98989d;
+  --hair: #38383a;
 }
 
 

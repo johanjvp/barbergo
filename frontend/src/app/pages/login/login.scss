@@ -8,7 +8,7 @@
 .visual::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(6,22,29,.55) 0%, rgba(6,22,29,.2) 40%, rgba(6,22,29,.92) 100%), linear-gradient(135deg, rgba(15,118,110,.55), transparent 60%); }
 @keyframes zoom { to { transform: scale(1.12); } }
 
-.logo { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font: 800 22px Sora, sans-serif; width: fit-content; animation: fade-in .8s var(--ease) both; }
+.logo { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font: 800 22px Inter, sans-serif; width: fit-content; animation: fade-in .8s var(--ease) both; }
 .logo i { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--grad-accent); font-style: normal; font-size: 20px; }
 
 .pitch { max-width: 520px; animation: fade-up .9s .15s var(--ease) both; }
@@ -18,7 +18,7 @@
 .perks { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 28px; padding: 0; list-style: none; }
 .perks li { padding: 8px 14px; border-radius: 99px; background: rgba(255,255,255,.14); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.22); font-size: 13px; font-weight: 600; }
 .stats { display: flex; gap: 36px; }
-.stats b { display: block; font: 800 28px Sora, sans-serif; }
+.stats b { display: block; font: 800 28px Inter, sans-serif; }
 .stats span { font-size: 12px; color: #a9cbc6; }
 
 /* ---------- form side ---------- */
@@ -59,3 +59,10 @@
 .auth-submit app-icon { font-size: 20px; }
 .perks li app-icon { color: #5eead4; margin-right: 4px; }
 .back { display: inline-flex; align-items: center; gap: 6px; }
+
+/* ===================== DISEÑO V2 · autenticación ===================== */
+.panel { background: var(--bg); }
+.form-box h2 { font-weight: 700; letter-spacing: -0.04em; }
+.form-field input { background: var(--surface); border-color: var(--border); border-radius: 14px; }
+.auth-submit { background: var(--grad-primary); border-radius: 980px; box-shadow: none; justify-content: center; gap: 10px; }
+.auth-submit:hover:not(:disabled) { box-shadow: none; filter: brightness(1.06); }

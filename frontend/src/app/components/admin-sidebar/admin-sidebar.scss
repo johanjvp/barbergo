@@ -1248,7 +1248,6 @@
   --text-secondary: #52525b;
   --muted: #85858f;
 
-  --border: var(--border);
   --border-strong: #dddde6;
 
   --violet: var(--accent-violet);
@@ -3067,16 +3066,53 @@
 
 /* ===== modo oscuro: variables locales ===== */
 :host-context([data-theme="dark"]) {
-  --text-soft: #b7d3ce;
-  --text-muted: #8fb0ab;
-  --bg: #071419;
-  --surface: #0e222a;
-  --surface-soft: #132c35;
-  --text: #e6f1ef;
-  --text-secondary: #b7d3ce;
-  --muted: #8fb0ab;
-  --border-strong: #2a4a54;
-  --violet-soft: #132c35;
-  --green-soft: #132c35;
-  --red-soft: #132c35;
+  --text-soft: #d1d1d6;
+  --text-muted: #98989d;
+  --bg: #0b0b0c;
+  --surface: #1c1c1e;
+  --surface-soft: #2c2c2e;
+  --text: #f5f5f7;
+  --text-secondary: #d1d1d6;
+  --muted: #98989d;
+  --border-strong: #48484a;
+  --violet-soft: #2c2c2e;
+  --green-soft: #2c2c2e;
+  --red-soft: #2c2c2e;
 }
+
+
+/* ===== cerrar sesión ===== */
+.sidebar-user { align-items: center; }
+.sidebar-logout {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .06);
+  color: #fda4af;
+  font-size: 18px;
+  transition: all .25s var(--ease);
+}
+.sidebar-logout:hover {
+  background: #e11d48;
+  border-color: #e11d48;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* ===================== DISEÑO V2 · barra lateral ===================== */
+.admin-sidebar { background: #1c1c1e !important; box-shadow: none !important; border-right: 1px solid rgba(255, 255, 255, .06) !important; }
+.admin-sidebar::before, .admin-sidebar::after { display: none !important; }
+.navigation-item.active, .nav-item.active, .nav-item.active:hover, .active {
+  background: rgba(255, 255, 255, .12) !important;
+  box-shadow: none !important;
+}
+.nav-item:hover, .navigation-item:hover { background: rgba(255, 255, 255, .07) !important; transform: none !important; }
+
+.navigation-label, .navigation-label.second { color: rgba(255, 255, 255, .42) !important; }
+
+.navigation-item.active, .nav-item.active, .navigation-item.active span, .nav-item.active span, .nav-item.active .nav-label { color: #fff !important; }

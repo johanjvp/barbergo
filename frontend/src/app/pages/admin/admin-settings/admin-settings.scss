@@ -21,7 +21,6 @@
   --text-secondary: #4a433b;
   --muted: #6f675e;
 
-  --border: var(--border);
   --border-strong: #d9d2c5;
 
   --success: #2f7d5b;
@@ -223,7 +222,7 @@
   flex: 0 0 42px;
   border-radius: 11px;
   color: var(--brass);
-  background: linear-gradient(135deg, var(--ink), var(--charcoal));
+  background: linear-gradient(135deg, var(--ink-solid), var(--charcoal));
   font-size: 15px;
   font-weight: 800;
   box-shadow: 0 6px 14px rgba(20, 17, 15, 0.2);
@@ -1473,8 +1472,8 @@
 /* ===== redesign (admin) ===== */
 :host { display: block; }
 .page-header, .calendar-header, .section-heading-row { animation: fade-up .6s var(--ease) both; }
-.page-header h1, .page-header h2 { background: linear-gradient(120deg, var(--ink) 30%, var(--primary) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.eyebrow, .section-eyebrow, .drawer-eyebrow, .agenda-eyebrow, .calendar-eyebrow, .header-eyebrow { color: var(--accent) !important; }
+.page-header h1, .page-header h2 { background: linear-gradient(120deg, var(--ink-solid) 30%, var(--primary) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.eyebrow, .section-eyebrow, .drawer-eyebrow, .agenda-eyebrow, .calendar-eyebrow, .header-eyebrow { color: var(--accent-text) !important; }
 
 /* cards */
 .kpi-card, .financial-card, .analytics-card, .ranking-card, .visual-chart-card, .status-card, .summary-card, .booking-card, .user-card, .shop-card,
@@ -1489,7 +1488,7 @@
 .kpi-grid > *:nth-child(2), .summary-grid > *:nth-child(2), .bookings-list > *:nth-child(2) { animation-delay: .08s; }
 .kpi-grid > *:nth-child(3), .summary-grid > *:nth-child(3), .bookings-list > *:nth-child(3) { animation-delay: .16s; }
 .kpi-grid > *:nth-child(4), .summary-grid > *:nth-child(4), .bookings-list > *:nth-child(4) { animation-delay: .24s; }
-.kpi-value { font-family: Sora, Inter, sans-serif; background: var(--grad-primary); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kpi-value { font-family: Inter, sans-serif; background: var(--grad-primary); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .kpi-icon, .summary-icon, .section-icon, .financial-card-icon, .status-icon { border-radius: 14px; background: var(--primary-50) !important; color: var(--primary-600) !important; }
 .kpi-glow { background: radial-gradient(circle, rgba(20,184,166,.35), transparent 70%) !important; }
 .live-chip, .results-badge, .total-badge, .simulation-badge, .recommended-badge { border-radius: 99px; background: var(--primary-50); color: var(--primary-600); }
@@ -1511,7 +1510,7 @@
 
 /* avatars & progress */
 .client-avatar, .barber-avatar, .shop-avatar, .admin-avatar, .drawer-avatar, .barber-tab-avatar, .shop-booking-client-avatar { background: var(--grad-primary) !important; color: #fff !important; box-shadow: var(--shadow-md); }
-.status-progress > *, .progress-bar { background: var(--grad-primary); transition: width 1s var(--ease); }
+.progress-bar { background: var(--grad-primary); transition: width 1s var(--ease); }
 
 /* drawers & modals */
 .drawer, [class*="drawer-panel"], [class*="drawer-content"], .modal { animation: slide-in .45s var(--ease) both; border-radius: 24px 0 0 24px; box-shadow: var(--shadow-lg); }
@@ -1527,15 +1526,36 @@ tbody tr:hover { background: var(--primary-50); }
 
 /* ===== modo oscuro: variables locales ===== */
 :host-context([data-theme="dark"]) {
-  --ink: #e6f1ef;
-  --charcoal: #b7d3ce;
+  --ink: #f5f5f7;
+  --charcoal: #d1d1d6;
   --brass-soft: #433614;
-  --bg: #071419;
-  --surface: #0e222a;
-  --surface-soft: #132c35;
-  --text-secondary: #b7d3ce;
-  --muted: #8fb0ab;
-  --border-strong: #2a4a54;
-  --success-soft: #132c35;
+  --bg: #0b0b0c;
+  --surface: #1c1c1e;
+  --surface-soft: #2c2c2e;
+  --text-secondary: #d1d1d6;
+  --muted: #98989d;
+  --border-strong: #48484a;
+  --success-soft: #2c2c2e;
   --danger-soft: #431a14;
 }
+
+
+/* ===== con 8 pestañas el menú se desplaza en horizontal en lugar de cortar los nombres ===== */
+.settings-subnav {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scroll-snap-type: x proximity;
+}
+.settings-subnav .settings-tab {
+  flex: 1 0 auto;
+  min-width: max-content;
+  scroll-snap-align: start;
+}
+.settings-subnav .tab-copy strong,
+.settings-subnav .tab-copy small {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.settings-subnav .settings-tab.active .tab-copy small { color: rgba(255, 255, 255, .88); }

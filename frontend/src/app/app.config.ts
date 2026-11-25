@@ -1,3 +1,8 @@
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import { LOCALE_ID } from '@angular/core';
+
+registerLocaleData(localeEs);
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners
@@ -25,6 +30,7 @@ import {
 export const appConfig: ApplicationConfig = {
 
   providers: [
+    { provide: LOCALE_ID, useValue: 'es' },
 
     provideBrowserGlobalErrorListeners(),
 

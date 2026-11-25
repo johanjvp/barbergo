@@ -1,3 +1,10 @@
+import { CalendarButtons } from '../../components/calendar-buttons/calendar-buttons';
+import { CalendarEvent } from '../../utils/calendar';
+import { HomeAddress } from '../../components/home-address/home-address';
+import { PaymentPicker } from '../../components/payment-picker/payment-picker';
+import { GuestCheckout, GuestCheckoutBooking, GuestCheckoutSummary } from '../../components/guest-checkout/guest-checkout';
+import { HomeAddressValue } from '../../models/booking';
+import { PAYMENT_LABELS, PaymentApi, PaymentMethod, PaymentMethodCode } from '../../services/payment';
 import { Confetti } from '../../components/confetti/confetti';
 import { Icon } from '../../components/icon/icon';
 import {
@@ -73,8 +80,7 @@ import {
 @Component({
   selector: 'app-barbershop-detail',
 
-  imports: [
-    Confetti,
+  imports: [ CalendarButtons, HomeAddress, PaymentPicker, GuestCheckout, Confetti,
     Icon,
     Navbar,
     Footer,
@@ -236,6 +242,15 @@ export class BarbershopDetail
    * que aparecerá después de crear
    * correctamente la reserva.
    */
+  // ---------- domicilio, pago directo y reserva sin cuenta ----------
+  private readonly paymentApi = inject(PaymentApi);
+
+  bookingType: 'IN_SHOP' | 'HOME' = 'IN_SHOP';
+  homeAddress: HomeAddressValue | null = null;
+  paymentMethods: PaymentMethod[] = [];
+  paymentMethod: PaymentMethodCode | null = null;
+  showGuestCheckout = false;
+
   showBookingSuccessModal =
     false;
 
@@ -315,8 +330,8 @@ export class BarbershopDetail
 
         next: (response) => {
 
-          this.barbershop =
-            response.barbershop;
+          this.barbershop = response.barbershop;
+          this.loadPaymentMethods(response.barbershop.id);
 
 
           this.services =
@@ -1052,8 +1067,20 @@ export class BarbershopDetail
     };
 
 
+    const extrasError = this.validateExtras();
+
+    if (extrasError) {
+      this.bookingError = extrasError;
+      return;
+    }
+
+    if (!this.authService.isAuthenticated()) {
+      this.showGuestCheckout = true;
+      return;
+    }
+
     // ===================================================
-    // USUARIO NO AUTENTICADO
+    // USUARIO NO AUTENTICADO (ya no se usa: ver checkout de invitado)
     // ===================================================
 
     if (
@@ -1149,8 +1176,10 @@ export class BarbershopDetail
         start_at:
           startAt,
 
-        customer_notes:
-          null
+        customer_notes: null,
+        booking_type: this.bookingType,
+        home: this.bookingType === 'HOME' ? this.homeAddress : null,
+        payment_method: this.paymentMethod
 
       })
       .subscribe({
@@ -1790,6 +1819,176 @@ export class BarbershopDetail
 
   // =====================================================
   // PRECIO
+  // =====================================================
+  // DOMICILIO / PAGO / INVITADO
+  // =====================================================
+  private loadPaymentMethods(barbershopId: number): void {
+    this.paymentApi.forBarbershop(barbershopId).subscribe({
+      next: methods => {
+        this.paymentMethods = methods;
+        this.paymentMethod = methods.length === 1 ? methods[0].method : null;
+        this.cdr.detectChanges();
+      },
+      error: () => { this.paymentMethods = []; }
+    });
+  }
+
+  get canHome(): boolean {
+    const shop = this.barbershop;
+
+    return (
+      !!shop
+      && !!shop.offers_home_service
+      && (shop.home_service_status ?? 'APPROVED') === 'APPROVED'
+      && !!this.selectedBarber?.accepts_home_service
+      && !!this.selectedService?.home_service_allowed
+    );
+  }
+
+  get calendarEvent(): CalendarEvent | null {
+    const slot = this.selectedSlot;
+    const service = this.selectedService;
+
+    if (!slot || !service || !this.selectedDate || !this.barbershop) {
+      return null;
+    }
+
+    const barber = this.selectedBarber;
+
+    return {
+      title: `${service.name} · ${this.barbershop.name}`,
+      start: `${this.selectedDate}T${slot.start_time}`,
+      end: `${this.selectedDate}T${slot.end_time}`,
+      location: this.bookingType === 'HOME' ? this.homeAddress?.address : this.barbershop.address,
+      description: barber ? `Barbero: ${barber.first_name} ${barber.last_name}` : '',
+      uid: this.createdBookingId ? `barbergo-${this.createdBookingId}@barbergo` : undefined
+    };
+  }
+
+  get homeFee(): number {
+    return this.bookingType === 'HOME'
+      ? Number(this.barbershop?.home_service_fee ?? 0)
+      : 0;
+  }
+
+  get totalNumber(): number {
+    return Number(this.selectedService?.price ?? 0) + this.homeFee;
+  }
+
+  get homeRadiusKm(): number | null {
+    return this.barbershop?.home_service_radius_km ?? null;
+  }
+
+  get homeLat(): number | null {
+    const v = this.barbershop?.latitude;
+    return v === null || v === undefined ? null : Number(v);
+  }
+
+  get homeLng(): number | null {
+    const v = this.barbershop?.longitude;
+    return v === null || v === undefined ? null : Number(v);
+  }
+
+  setBookingType(type: 'IN_SHOP' | 'HOME'): void {
+    this.bookingType = type;
+    this.bookingError = '';
+
+    if (type === 'IN_SHOP') {
+      this.homeAddress = null;
+    }
+  }
+
+  private validateExtras(): string | null {
+    if (this.bookingType === 'HOME') {
+      if (!this.canHome) {
+        return 'Este servicio no está disponible a domicilio.';
+      }
+
+      if (!this.homeAddress) {
+        return 'Indica tu dirección y marca el punto en el mapa, dentro de la zona de cobertura.';
+      }
+    }
+
+    if (this.paymentMethods.length && !this.paymentMethod) {
+      return 'Elige cómo vas a pagar tu cita.';
+    }
+
+    return null;
+  }
+
+  get selectedPaymentDetails(): PaymentMethod | null {
+    return this.paymentMethods.find(m => m.method === this.paymentMethod) ?? null;
+  }
+
+  get guestBooking(): GuestCheckoutBooking | null {
+    if (
+      this.selectedBarberId === null
+      || this.selectedServiceId === null
+      || !this.selectedDate
+      || !this.selectedSlot
+    ) {
+      return null;
+    }
+
+    return {
+      barberId: this.selectedBarberId,
+      serviceId: this.selectedServiceId,
+      startAt: `${this.selectedDate}T${this.selectedSlot.start_time}`,
+      bookingType: this.bookingType,
+      home: this.bookingType === 'HOME' ? this.homeAddress : null,
+      paymentMethod: this.paymentMethod,
+      paymentDetails: this.selectedPaymentDetails
+    };
+  }
+
+  get guestSummary(): GuestCheckoutSummary {
+    const barber = this.selectedBarber;
+
+    return {
+      shopName: this.barbershop?.name ?? '',
+      serviceName: this.selectedService?.name ?? '',
+      barberName: barber ? `${barber.first_name} ${barber.last_name}` : '',
+      dateText: `${this.selectedDate} · ${this.selectedSlot?.start_time?.slice(0, 5) ?? ''}`,
+      total: this.getPrice(this.totalNumber),
+      homeFee: this.homeFee > 0 ? this.getPrice(this.homeFee) : null,
+      needsApproval:
+        this.bookingType === 'HOME'
+        || !!this.barbershop?.requires_manual_confirmation,
+      paymentLabel: this.paymentMethod ? PAYMENT_LABELS[this.paymentMethod] : null,
+      shopAddress: this.barbershop?.address ?? null
+    };
+  }
+
+  guestLogin(): void {
+    if (
+      !this.barbershop
+      || this.selectedServiceId === null
+      || this.selectedBarberId === null
+      || !this.selectedDate
+      || !this.selectedSlot
+    ) {
+      return;
+    }
+
+    this.savePendingBooking({
+      barbershop_id: this.barbershop.id,
+      service_id: this.selectedServiceId,
+      barber_id: this.selectedBarberId,
+      date: this.selectedDate,
+      start_time: this.selectedSlot.start_time,
+      end_time: this.selectedSlot.end_time
+    });
+
+    this.router.navigate(
+      ['/login'],
+      { queryParams: { returnUrl: `/barberias/${this.barbershop.id}` } }
+    );
+  }
+
+  closeGuestCheckout(): void {
+    this.showGuestCheckout = false;
+  }
+
   // =====================================================
 
   getPrice(

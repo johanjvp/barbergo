@@ -2881,4 +2881,44 @@
 .booking-card, .info-card, .stat-card, .coming-card, .search-panel, .map-shell, .service-card, .barber-card { border-radius: 20px !important; border: 1px solid var(--border) !important; box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
 .booking-card:hover, .info-card:hover, .stat-card:hover, .service-card:hover, .barber-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 .filter-chip, .status-badge { border-radius: 99px; }
-.eyebrow, .section-eyebrow, .dashboard-eyebrow { color: var(--accent) !important; }
+.eyebrow, .section-eyebrow, .dashboard-eyebrow { color: var(--accent-text) !important; }
+
+
+/* ===== domicilio / pago ===== */
+.where { display: grid; gap: 12px; margin: 18px 0; }
+.where-label { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.where-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.where-options button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px; border: 1.5px solid var(--border); border-radius: 14px; background: var(--surface-2); color: var(--ink); font-weight: 700; }
+.where-options button.on { border-color: var(--primary); background: var(--primary-50); color: var(--primary-600); box-shadow: 0 0 0 3px rgba(13,148,136,.15); }
+.where-note { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+app-payment-picker { margin: 18px 0; }
+.booking-feedback.info { background: var(--primary-50); color: var(--primary-600); border: 1px solid transparent; }
+
+/* ===================== DISEÑO V2 · detalle ===================== */
+.detail-hero {
+  background:
+    radial-gradient(800px circle at 90% 0%, rgba(13, 148, 136, .12), transparent 55%),
+    var(--bg) !important;
+  color: var(--ink) !important;
+}
+.back-link { color: var(--muted) !important; }
+.hero-content h1, .detail-hero h1 { color: var(--ink) !important; letter-spacing: -0.045em; }
+.detail-hero .eyebrow { color: var(--primary-600) !important; }
+.detail-hero .location, .detail-hero .description { color: var(--muted) !important; }
+.detail-hero .tags span { background: var(--surface) !important; border: 1px solid var(--border) !important; color: var(--ink) !important; }
+.hero-image { border-radius: 28px; box-shadow: var(--shadow-lg); }
+
+.booking-summary {
+  background: var(--glass) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+  color: var(--ink) !important;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg) !important;
+}
+.booking-summary h3, .booking-summary strong { color: var(--ink) !important; }
+.summary-line span, .summary-total span, .summary-label { color: var(--muted) !important; }
+.summary-divider { background: var(--border) !important; }
+.confirm-booking-button { background: var(--grad-primary) !important; color: #fff !important; }
+.service-card.selected, .barber-card.selected, .slot-button.selected { border-color: var(--primary) !important; box-shadow: 0 0 0 3px rgba(13, 148, 136, .14) !important; }
+.continue-button { background: var(--ink-solid) !important; color: #fff !important; border: 0; }

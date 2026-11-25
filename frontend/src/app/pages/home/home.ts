@@ -1,7 +1,8 @@
 import { TiltDirective } from "../../directives-tilt";
 import { Icon } from '../../components/icon/icon';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { BarbershopService } from '../../services/barbershop';
 import { RevealDirective } from "../../directives-reveal";
 import { ParallaxDirective, MagneticDirective } from "../../directives-extra";
 import { Compare } from "../../components/compare/compare";
@@ -9,6 +10,16 @@ import { Compare } from "../../components/compare/compare";
 import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
 import { BarbershopCard } from '../../components/barbershop-card/barbershop-card';
+
+export interface FeaturedShop {
+  id: number;
+  image: string;
+  name: string;
+  neighborhood: string;
+  price: string;
+  distance: string;
+  tags: string[];
+}
 
 @Component({
   selector: 'app-home',
@@ -26,7 +37,7 @@ import { BarbershopCard } from '../../components/barbershop-card/barbershop-card
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
-export class Home {
+export class Home implements OnInit {
 
   private readonly router = inject(Router);
 
@@ -67,77 +78,41 @@ export class Home {
   }
 
 
-  featuredBarbershops = [
+  // Barberías reales (API). Antes eran datos de ejemplo sin id y el enlace fallaba.
+  featuredBarbershops: FeaturedShop[] = [];
+  featuredLoading = true;
 
-    {
-      image:
-        '/images/barbergo/barbershop-1.jpg',
+  private readonly barbershopService = inject(BarbershopService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
-      name:
-        'District Barber Club',
-
-      neighborhood:
-        'Alto Prado',
-
-      price:
-        '$25.000',
-
-      distance:
-        '1.2 km',
-
-      tags: [
-        'Corte',
-        'Barba',
-        'VIP'
-      ]
-    },
-
-    {
-      image:
-        '/images/barbergo/barbershop-2.jpg',
-
-      name:
-        'The Gentlemen Room',
-
-      neighborhood:
-        'Riomar',
-
-      price:
-        '$30.000',
-
-      distance:
-        '2.4 km',
-
-      tags: [
-        'Corte',
-        'Barba',
-        'Premium'
-      ]
-    },
-
-    {
-      image:
-        '/images/barbergo/barbershop-3.jpg',
-
-      name:
-        'Black Chair Studio',
-
-      neighborhood:
-        'Villa Country',
-
-      price:
-        '$20.000',
-
-      distance:
-        '3.1 km',
-
-      tags: [
-        'Corte',
-        'Fade',
-        'Barba'
-      ]
-    }
-
-  ];
+  ngOnInit(): void {
+    this.barbershopService.discover().subscribe({
+      next: response => {
+        this.featuredBarbershops = response.items.slice(0, 3).map((shop, i) => ({
+          id: shop.id,
+          image: ['/images/barbergo/barbershop-1.jpg', '/images/barbergo/barbershop-2.jpg', '/images/barbergo/barbershop-3.jpg'][i % 3],
+          name: shop.name,
+          neighborhood: shop.neighborhood || shop.city,
+          price: shop.starting_price === null
+            ? 'Consultar'
+            : new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(shop.starting_price),
+          distance: shop.distance_km === null ? '' : `${shop.distance_km.toFixed(1)} km`,
+          tags: [
+            'Corte',
+            ...(shop.offers_vip ? ['VIP'] : []),
+            ...(shop.offers_home_service ? ['Domicilio'] : []),
+            ...(shop.only_men ? ['Hombres'] : [])
+          ]
+        }));
+        this.featuredLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.featuredBarbershops = [];
+        this.featuredLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
 
 }

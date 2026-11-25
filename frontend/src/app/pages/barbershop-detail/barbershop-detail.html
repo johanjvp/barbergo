@@ -1335,16 +1335,40 @@
 
                 <strong>
 
-                  {{
-                    getPrice(
-                      selectedService.price
-                    )
-                  }}
+                  {{ getPrice(totalNumber) }} </strong> </div>
 
-                </strong>
+              @if (bookingType === 'HOME' && homeFee > 0) {
+                <p class="booking-feedback info">Incluye {{ getPrice(homeFee) }} de desplazamiento a domicilio.</p>
+              }
 
-              </div>
+              <!-- DOMICILIO -->
+              @if (canHome) {
+                <div class="where">
+                  <span class="where-label">¿Dónde quieres tu servicio?</span>
+                  <div class="where-options">
+                    <button type="button" [class.on]="bookingType === 'IN_SHOP'" (click)="setBookingType('IN_SHOP')">
+                      <app-icon name="scissors"></app-icon> En la barbería
+                    </button>
+                    <button type="button" [class.on]="bookingType === 'HOME'" (click)="setBookingType('HOME')">
+                      <app-icon name="pin"></app-icon> A domicilio
+                    </button>
+                  </div>
+                  @if (bookingType === 'HOME') {
+                    <p class="where-note">
+                      Requiere confirmación de la barbería. Reserva con al menos
+                      {{ barbershop?.home_service_min_notice_hours ?? 3 }} h de anticipación.
+                    </p>
+                    <app-home-address
+                      [shopLat]="homeLat" [shopLng]="homeLng" [radiusKm]="homeRadiusKm"
+                      (valueChange)="homeAddress = $event"></app-home-address>
+                  }
+                </div>
+              }
 
+              <!-- MÉTODO DE PAGO -->
+              @if (paymentMethods.length) {
+                <app-payment-picker [methods]="paymentMethods" [(value)]="paymentMethod"></app-payment-picker>
+              }
 
               <!-- ERROR CREANDO RESERVA -->
 
@@ -1491,11 +1515,10 @@
           </span>
 
           <strong>
-            #{{ createdBookingId }}
-          </strong>
+            #{{ createdBookingId }} </strong> </div> }
 
-        </div>
-
+      @if (calendarEvent; as ev) {
+        <app-calendar-buttons [event]="ev"></app-calendar-buttons>
       }
 
 
@@ -1661,3 +1684,11 @@
 
 
 <app-footer></app-footer>
+
+@if (showGuestCheckout && guestBooking) {
+  <app-guest-checkout
+    [booking]="guestBooking"
+    [summary]="guestSummary"
+    (closed)="closeGuestCheckout()"
+    (login)="guestLogin()"></app-guest-checkout>
+}

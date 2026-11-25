@@ -425,9 +425,8 @@
   </div>
 
 
-  <button
-    type="button"
-    class="cancel-booking-button"
+  <app-calendar-buttons [event]="calendarEvent(booking)"></app-calendar-buttons>
+  <button type="button" class="cancel-booking-button"
 
     [disabled]="
       !canCancelBooking(

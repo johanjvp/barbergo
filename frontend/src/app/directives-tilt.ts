@@ -20,8 +20,8 @@ export class TiltDirective {
     const r = this.el.getBoundingClientRect();
     const x = (e.clientX - r.left) / r.width;
     const y = (e.clientY - r.top) / r.height;
-    this.el.style.setProperty('--rx', `${(0.5 - y) * 10}deg`);
-    this.el.style.setProperty('--ry', `${(x - 0.5) * 12}deg`);
+    this.el.style.setProperty('--rx', `${(0.5 - y) * 4}deg`);
+    this.el.style.setProperty('--ry', `${(x - 0.5) * 5}deg`);
     this.el.style.setProperty('--mx', `${x * 100}%`);
     this.el.style.setProperty('--my', `${y * 100}%`);
   }

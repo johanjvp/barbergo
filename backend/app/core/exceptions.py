@@ -109,3 +109,11 @@ class BookingCancellationWindowError(Exception):
 
 class InvalidBarbershopSearchError(Exception):
     pass
+
+
+class HomeServiceError(InvalidBookingTimeError):
+    """Reglas del servicio a domicilio (se responde 400 con el mensaje)."""
+
+
+class PaymentMethodError(InvalidBookingTimeError):
+    """Método de pago inválido para la barbería (se responde 400 con el mensaje)."""

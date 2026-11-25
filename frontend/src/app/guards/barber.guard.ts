@@ -1,3 +1,4 @@
+import { API_URL } from '../core/api';
 import {
   inject
 } from '@angular/core';
@@ -35,7 +36,7 @@ export const barberGuard:
 
   return http
     .get<any>(
-      'http://127.0.0.1:8000/api/v1/auth/me'
+      `${API_URL}/auth/me`
     )
     .pipe(
 

@@ -1,3 +1,5 @@
+import { CalendarButtons } from '../../components/calendar-buttons/calendar-buttons';
+import { CalendarEvent } from '../../utils/calendar';
 import { Icon } from '../../components/icon/icon';
 import {
   ChangeDetectorRef,
@@ -51,11 +53,7 @@ import {
 } from '../../models/booking';
 
 
-interface BookingViewItem
-  extends BookingResponse {
-
-  barbershop_name:
-    string;
+interface BookingViewItem extends BookingResponse { barbershop_name: string; barbershop_address?: string | null;
 
   service_name:
     string;
@@ -72,8 +70,7 @@ interface BookingViewItem
 @Component({
   selector: 'app-my-bookings',
 
-  imports: [
-    Icon,
+  imports: [ CalendarButtons, Icon,
     Navbar,
     Footer,
     RouterLink
@@ -305,10 +302,8 @@ export class MyBookings
                           ...booking,
 
 
-                          barbershop_name:
-                            response
-                              .barbershop
-                              .name,
+                          barbershop_name: response .barbershop .name,
+                          barbershop_address: response.barbershop.address,
 
 
                           service_name:
@@ -724,6 +719,17 @@ export class MyBookings
   // =====================================================
   // ¿PUEDE CANCELAR?
   // =====================================================
+
+  calendarEvent(booking: BookingViewItem): CalendarEvent {
+    return {
+      title: `${booking.service_name} · ${booking.barbershop_name}`,
+      start: booking.start_at,
+      end: booking.end_at,
+      location: booking.booking_type === 'HOME' ? booking.home_address : booking.barbershop_address,
+      description: `Barbero: ${booking.barber_name}\nReserva #${booking.id}`,
+      uid: `barbergo-${booking.id}@barbergo`
+    };
+  }
 
   canCancelBooking(
     booking:

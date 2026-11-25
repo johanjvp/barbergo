@@ -56,3 +56,8 @@ p {
 .footer { background: linear-gradient(135deg, #06161d, #0f3d3a) !important; color: #cfe7e3 !important; border: 0 !important; }
 .footer .brand { background: var(--grad-accent); -webkit-background-clip: text; background-clip: text; color: transparent !important; font-size: 22px; }
 .footer p, .copyright { color: #8fb5b0 !important; }
+
+/* ===================== DISEÑO V2 · footer ===================== */
+.footer { background: var(--surface-2) !important; color: var(--ink) !important; border-top: 1px solid var(--border) !important; padding: 44px 0; }
+.footer .brand { background: none !important; -webkit-text-fill-color: currentColor; color: var(--ink) !important; font-size: 20px; font-weight: 700; }
+.footer p, .copyright { color: var(--muted) !important; }

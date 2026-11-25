@@ -15,6 +15,11 @@ from app.routes.barbershop_admin_routes import (router as barbershop_admin_route
 from app.routes.barber_agenda_routes import (router as barber_agenda_router)
 
 
+from app.routes.guest_routes import router as guest_router
+from app.routes.payment_routes import router as payment_router
+from app.routes.cron_routes import router as cron_router
+from app.routes.home_service_routes import router as home_service_router
+
 api_router = APIRouter()
 
 api_router.include_router(health_router)
@@ -30,4 +35,7 @@ api_router.include_router(admin_router)
 api_router.include_router(barbershop_settings_router)
 api_router.include_router(barbershop_admin_router)
 api_router.include_router(barber_agenda_router)
-
+api_router.include_router(guest_router)
+api_router.include_router(home_service_router)
+api_router.include_router(payment_router)
+api_router.include_router(cron_router)

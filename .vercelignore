@@ -1,0 +1,11 @@
+# Lo que NO debe subirse a Vercel (la función de Python y el build de Angular no lo necesitan)
+e2e/
+**/__pycache__/
+backend/.venv/
+backend/.env
+backend/send_test_email.py
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+.git/
+*.log

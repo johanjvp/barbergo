@@ -174,6 +174,13 @@ class BarbershopResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+        # --- servicio a domicilio ---
+    home_service_status: str = "NONE"
+    home_service_radius_km: float | None = None
+    home_service_fee: float = 0
+    home_service_min_notice_hours: int = 3
+    home_service_zones: str | None = None
+
     model_config = ConfigDict(
         from_attributes=True
     )

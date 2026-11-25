@@ -20,6 +20,8 @@ from app.core.exceptions import (
     ServiceNotAvailableForBarberError,
     BookingForbiddenError,
     BookingCancellationWindowError,
+        HomeServiceError,
+    PaymentMethodError,
 )
 
 from app.models.booking_model import (
@@ -42,6 +44,8 @@ from app.repositories.booking_repository import (
     BookingRepository
 )
 
+from app.core.geo import haversine_km
+from sqlalchemy import text as sql_text
 from app.schemas.booking_schema import (
     BookingCreate
 )
@@ -119,10 +123,132 @@ class BookingService:
             "created_at":
                 booking.created_at,
 
-            "updated_at":
-                booking.updated_at
+            "updated_at": booking.updated_at,
+            "guest_name": booking.guest_name,
+            "guest_email": booking.guest_email,
+            "booking_type": booking.booking_type or "IN_SHOP",
+            "home_address": booking.home_address,
+            "home_latitude": booking.home_latitude,
+            "home_longitude": booking.home_longitude,
+            "home_access_notes": booking.home_access_notes,
+            "home_fee": booking.home_fee or 0,
+            "payment_method": booking.payment_method,
+            "payment_status": booking.payment_status or "PENDING",
+            "payment_reference": booking.payment_reference
         }
 
+
+        # =====================================================
+    # VALIDAR SERVICIO A DOMICILIO
+    # Devuelve el recargo de desplazamiento.
+    # =====================================================
+    @staticmethod
+    def _validate_home_service(
+        barbershop,
+        barber,
+        service,
+        data: BookingCreate
+    ):
+        if (
+            barbershop.home_service_status != "APPROVED"
+            or not barbershop.offers_home_service
+        ):
+            raise HomeServiceError(
+                "Esta barbería no ofrece "
+                "servicio a domicilio."
+            )
+
+        if not barber.accepts_home_service:
+            raise HomeServiceError(
+                "Este barbero no atiende "
+                "a domicilio."
+            )
+
+        if not service.home_service_allowed:
+            raise HomeServiceError(
+                "Este servicio no está disponible "
+                "a domicilio."
+            )
+
+        if data.home is None:
+            raise HomeServiceError(
+                "Indica la dirección donde "
+                "quieres recibir el servicio."
+            )
+
+        min_hours = (
+            barbershop.home_service_min_notice_hours
+            or 0
+        )
+
+        if (
+            data.start_at
+            < datetime.now()
+            + timedelta(hours=min_hours)
+        ):
+            raise HomeServiceError(
+                "Para domicilio debes reservar con al "
+                f"menos {min_hours} hora(s) de anticipación."
+            )
+
+        if (
+            barbershop.latitude is not None
+            and barbershop.longitude is not None
+            and barbershop.home_service_radius_km
+        ):
+            distance = haversine_km(
+                barbershop.latitude,
+                barbershop.longitude,
+                data.home.latitude,
+                data.home.longitude
+            )
+
+            if distance > float(
+                barbershop.home_service_radius_km
+            ):
+                raise HomeServiceError(
+                    "Tu dirección está fuera de la zona "
+                    "de cobertura "
+                    f"({barbershop.home_service_radius_km} km "
+                    f"a la redonda, estás a {distance:.1f} km)."
+                )
+
+        return barbershop.home_service_fee or 0
+
+    # =====================================================
+    # VALIDAR MÉTODO DE PAGO
+    #
+    # Si la barbería configuró métodos de pago, el cliente
+    # debe elegir uno de ellos.
+    # =====================================================
+    @staticmethod
+    def _validate_payment_method(
+        db: Session,
+        barbershop_id: int,
+        method: str | None
+    ):
+        enabled = list(
+            db.execute(
+                sql_text(
+                    "SELECT method FROM barbershop_payment_methods "
+                    "WHERE barbershop_id = :i AND is_active = 1"
+                ),
+                {"i": barbershop_id}
+            ).scalars()
+        )
+
+        if not enabled:
+            return
+
+        if not method:
+            raise PaymentMethodError(
+                "Elige cómo vas a pagar tu cita."
+            )
+
+        if method not in enabled:
+            raise PaymentMethodError(
+                "La barbería no acepta ese método de pago."
+            )
 
     # =====================================================
     # CREAR RESERVA
@@ -132,10 +258,20 @@ class BookingService:
     def create(
         db: Session,
         data: BookingCreate,
-        current_user: User
+        current_user: User | None = None,
+        guest: dict | None = None
     ):
+        """
+        Crea una reserva.
 
+        * current_user -> cliente con cuenta
+        * guest        -> cliente sin cuenta:
+                          {name, email, phone, manage_token, verified_at}
+        """
         try:
+            if current_user is None and not guest:
+                raise BookingForbiddenError()
+
 
             # =================================================
             # 1. NO PERMITIR FECHA/HORA PASADA
@@ -456,15 +592,41 @@ class BookingService:
                 )
 
 
+                        # =================================================
+            # 15.1 SERVICIO A DOMICILIO
+            # =================================================
+            home_fee = 0
+            is_home = data.booking_type == "HOME"
+
+            if is_home:
+                home_fee = (
+                    BookingService
+                    ._validate_home_service(
+                        barbershop,
+                        barber,
+                        service,
+                        data
+                    )
+                )
+
+            # =================================================
+            # 15.2 MÉTODO DE PAGO (pago directo a la barbería)
+            # =================================================
+            BookingService._validate_payment_method(
+                db,
+                barber.barbershop_id,
+                data.payment_method
+            )
+
             # =================================================
             # 16. ESTADO INICIAL
             # =================================================
 
             if (
-                barbershop
+                is_home
+                or barbershop
                 .requires_manual_confirmation
             ):
-
                 initial_status_code = (
                     "PENDING"
                 )
@@ -494,9 +656,19 @@ class BookingService:
             # =================================================
 
             booking = Booking(
-
-                client_user_id=
-                    current_user.id,
+                client_user_id=current_user.id if current_user else None,
+                guest_name=guest["name"] if guest else None,
+                guest_email=guest["email"] if guest else None,
+                guest_phone=guest.get("phone") if guest else None,
+                manage_token=guest["manage_token"] if guest else None,
+                contact_verified_at=guest.get("verified_at") if guest else None,
+                booking_type="HOME" if is_home else "IN_SHOP",
+                home_address=data.home.address if is_home else None,
+                home_latitude=data.home.latitude if is_home else None,
+                home_longitude=data.home.longitude if is_home else None,
+                home_access_notes=data.home.access_notes if is_home else None,
+                home_fee=home_fee,
+                payment_method=data.payment_method,
 
                 barbershop_id=
                     barber.barbershop_id,

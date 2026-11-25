@@ -256,27 +256,28 @@
 
     <div class="shops-grid">
 
-      @for (
-        shop of featuredBarbershops;
-        track shop.name
-      ) {
+      @if (featuredLoading) {
+        @for (i of [1, 2, 3]; track i) {
+          <div class="skeleton" style="height: 420px; border-radius: 24px"></div>
+        }
+      }
+
+      @for (shop of featuredBarbershops; track shop.id) {
 
         <app-barbershop-card
-
+          [id]="shop.id"
           [image]="shop.image"
-
           [name]="shop.name"
-
           [neighborhood]="shop.neighborhood"
-
           [price]="shop.price"
-
           [distance]="shop.distance"
-
           [tags]="shop.tags"
-
         />
 
+      }
+
+      @if (!featuredLoading && !featuredBarbershops.length) {
+        <p class="featured-empty">Pronto verás aquí las barberías disponibles.</p>
       }
 
     </div>

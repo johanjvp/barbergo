@@ -33,9 +33,10 @@ export const routes:
     },
 
 
+    { path: 'barberias/:id', loadComponent: () => import('./pages/barbershop-detail/barbershop-detail').then(m => m.BarbershopDetail) },
     {
-      path: 'barberias/:id',
-      loadComponent: () => import('./pages/barbershop-detail/barbershop-detail').then(m => m.BarbershopDetail)
+      path: 'reserva/:token',
+      loadComponent: () => import('./pages/guest-booking/guest-booking').then(m => m.GuestBooking)
     },
 
 
@@ -109,9 +110,10 @@ export const routes:
         // BARBERÍAS
         // =================================================
 
+        { path: 'barberias', loadComponent: () => import('./pages/admin/barbershops/admin-barbershops').then(m => m.AdminBarbershops) },
         {
-          path: 'barberias',
-          loadComponent: () => import('./pages/admin/barbershops/admin-barbershops').then(m => m.AdminBarbershops)
+          path: 'domicilio',
+          loadComponent: () => import('./pages/admin/home-service/admin-home-service').then(m => m.AdminHomeService)
         },
 
 

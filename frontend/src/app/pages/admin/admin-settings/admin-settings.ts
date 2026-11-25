@@ -1,3 +1,5 @@
+import { HomeServicePanel } from '../../../components/home-service-panel/home-service-panel';
+import { PaymentMethodsPanel } from '../../../components/payment-methods-panel/payment-methods-panel';
 import { Icon } from '../../../components/icon/icon';
 import {
   ChangeDetectorRef,
@@ -32,8 +34,7 @@ type SettingsSection =
   | 'bookings'
   | 'customers'
   | 'barbers'
-  | 'notifications'
-  | 'admins';
+  | 'notifications' | 'home' | 'payments' | 'admins';
 
 
 // =====================================================
@@ -54,8 +55,7 @@ interface SettingsSectionItem {
 @Component({
   selector: 'app-admin-settings',
 
-  imports: [
-    Icon,],
+  imports: [ Icon, HomeServicePanel, PaymentMethodsPanel,],
 
   templateUrl:
     './admin-settings.html',
@@ -135,15 +135,9 @@ export class AdminSettings
       },
 
       {
-        id:
-          'notifications',
-
-        label:
-          'Notificaciones',
-
-        description:
-          'Avisos'
-      }
+        id: 'notifications', label: 'Notificaciones', description: 'Avisos' },
+      { id: 'home', label: 'Domicilio', description: 'Servicio especial' },
+      { id: 'payments', label: 'Pagos', description: 'Cobro directo' }
 
     ];
 

@@ -1,0 +1,26 @@
+# Recordatorios de citas por correo (24 h y 2 h antes).
+#
+# Vercel no tiene procesos permanentes, así que este flujo llama cada ~10 minutos al endpoint
+# /api/v1/cron/reminders. GitHub Actions es gratuito para esto (el intervalo mínimo es 5 min y
+# puede retrasarse unos minutos en horas de mucha carga).
+#
+# Configura en GitHub > Settings > Secrets and variables > Actions:
+#   APP_URL      https://tu-sitio.vercel.app        (sin barra final)
+#   CRON_SECRET  el mismo valor que la variable CRON_SECRET de Vercel
+
+name: Recordatorios de citas
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Llamar al endpoint de recordatorios
+        run: |
+          curl -fsS -m 60 -X POST \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.APP_URL }}/api/v1/cron/reminders"

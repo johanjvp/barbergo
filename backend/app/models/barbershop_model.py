@@ -9,6 +9,7 @@ from sqlalchemy import (
     ForeignKey,
     TIMESTAMP,
     DECIMAL,
+    DateTime,
     SmallInteger,
     text
 )
@@ -146,3 +147,20 @@ class Barbershop(Base):
         nullable=False,
         server_default=text("CURRENT_TIMESTAMP")
     )
+
+    # ---------- servicio a domicilio (requiere aprobación) ----------
+    home_service_status: Mapped[str] = mapped_column(
+        String(12), nullable=False, server_default=text("'NONE'")
+    )
+    home_service_radius_km: Mapped[Optional[Decimal]] = mapped_column(DECIMAL(5, 1), nullable=True)
+    home_service_fee: Mapped[Decimal] = mapped_column(
+        DECIMAL(12, 2), nullable=False, server_default=text("0")
+    )
+    home_service_min_notice_hours: Mapped[int] = mapped_column(
+        SmallInteger, nullable=False, server_default=text("3")
+    )
+    home_service_zones: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    home_service_requirements: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    home_service_rejection_reason: Mapped[Optional[str]] = mapped_column(String(300), nullable=True)
+    home_service_requested_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    home_service_reviewed_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
